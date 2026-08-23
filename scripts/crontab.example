@@ -1,0 +1,15 @@
+# ─── TikTok Intelligence Platform — Cron Jobs ──────────────
+# Install: crontab -e
+# Verify:  crontab -l
+
+# Database backup - daily at 2 AM
+0 2 * * * /var/www/tiktok-platform/scripts/backup.sh >> /var/log/tiktok-platform/backup.log 2>&1
+
+# Project backup - weekly on Sunday at 3 AM
+0 3 * * 0 /var/www/tiktok-platform/scripts/backup-project.sh >> /var/log/tiktok-platform/backup-project.log 2>&1
+
+# Health monitoring - every 5 minutes
+*/5 * * * * /var/www/tiktok-platform/scripts/monitor.sh >> /var/log/tiktok-platform/monitor.log 2>&1
+
+# Log cleanup - daily at 4 AM (remove logs older than 30 days)
+0 4 * * * find /var/log/tiktok-platform -name "*.log" -mtime +30 -delete

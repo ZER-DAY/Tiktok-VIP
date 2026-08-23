@@ -1,0 +1,662 @@
+{
+  "siteName": "TikTok Intelligence",
+  "hero": {
+    "eyebrow": "Independent analytics built for creators",
+    "titleLine1": "Analyze your account.",
+    "titleLine2": "Understand your growth.",
+    "title": "Smart TikTok Analytics.. Smarter Decisions",
+    "subtitle": "Advanced AI-powered tool to analyze any TikTok account. Get clear strategic insights to grow your account and reach maximum audience.",
+    "cta": "Start Analysis Now",
+    "inputPlaceholder": "Enter TikTok username",
+    "trust": "Trusted by 10,000+ creators and agencies",
+    "viewPricing": "View Pricing",
+    "startNow": "Start Now",
+    "mockupUser": "@khaby.lame",
+    "mockupFollowers": "158.7M",
+    "mockupLikes": "2.4B",
+    "mockupFollowersLabel": "Followers",
+    "mockupLikesLabel": "Likes",
+    "mockupGrowth": "+12%",
+    "mockupGrowthLabel": "Growth",
+    "mockupStrength": "Account Strength: 87/100",
+    "mockupMonthly": "+2.4M this month",
+    "mockupCreator": "Content Creator",
+    "mockupEstimated": "Estimated",
+    "mockupEngagement": "9.2% engagement",
+    "fastReport": "Fast report",
+    "clearInsights": "Clear insights",
+    "privacy": "Privacy first",
+    "reportReady": "Report ready",
+    "accountScore": "Account score",
+    "veryGood": "Very good",
+    "performance": "Performance trend",
+    "lastThirtyDays": "Last 30 days",
+    "contentSignals": "Content signals",
+    "reach": "Reach potential",
+    "consistency": "Posting consistency"
+  },
+  "features": {
+    "eyebrow": "Features built for creators",
+    "titleNew": "A clearer view of your content",
+    "explore": "Explore all features",
+    "title": "Everything you need in one platform",
+    "subtitle": "From simple analysis to advanced reports - we provide all the tools you need to understand your account and develop your strategy",
+    "accountAnalysis": "Account Analysis",
+    "accountAnalysisDesc": "Comprehensive analysis revealing your account strengths and weaknesses",
+    "videoAnalysis": "Video Analysis",
+    "videoAnalysisDesc": "Review each video performance and understand what attracts viewers",
+    "pdfExport": "Professional PDF Export",
+    "pdfExportDesc": "Detailed report with professional design ready to share",
+    "competitorAnalysis": "Competitor Comparison",
+    "competitorAnalysisDesc": "Compare your performance with competitors and discover growth opportunities"
+  },
+  "howItWorks": {
+    "kicker": "Simple and fast",
+    "title": "How it works?",
+    "subtitle": "Three simple steps to get your report",
+    "step1Title": "Enter Username",
+    "step1Desc": "Type your TikTok username or paste profile link",
+    "step2Title": "Smart Analysis",
+    "step2Desc": "We analyze your account with AI in seconds",
+    "step3Title": "Get Report",
+    "step3Desc": "Comprehensive report with actionable recommendations"
+  },
+  "socialProof": {
+    "trustLine": "Independent analytics for creators and agencies",
+    "trust": {
+      "privacy": "Privacy by design",
+      "fresh": "Fresh data on every analysis",
+      "actionable": "Actionable recommendations",
+      "support": "Clear bilingual experience"
+    },
+    "title": "Trusted by thousands of creators",
+    "stat1Number": "50,000+",
+    "stat1Label": "Analyses performed",
+    "stat2Number": "10,000+",
+    "stat2Label": "Active users",
+    "stat3Number": "98%",
+    "stat3Label": "Satisfaction rate",
+    "stat4Number": "24/7",
+    "stat4Label": "Continuous support"
+  },
+  "pricing": {
+    "title": "Choose the right plan for you",
+    "subtitle": "Start for free and upgrade as you need",
+    "free": "Free",
+    "freePrice": "$0",
+    "freePeriod": "/month",
+    "freeFeature1": "One analysis per day",
+    "freeFeature2": "Basic account info",
+    "freeFeature3": "Simple report",
+    "pro": "Professional",
+    "proPrice": "$19",
+    "proPeriod": "/month",
+    "proFeature1": "Unlimited analyses",
+    "proFeature2": "Professional PDF export",
+    "proFeature3": "Competitor comparison",
+    "proFeature4": "Historical tracking",
+    "agency": "Agencies",
+    "agencyPrice": "$49",
+    "agencyPeriod": "/month",
+    "agencyFeature1": "All Pro features",
+    "agencyFeature2": "Full CRM access",
+    "agencyFeature3": "Bulk reports",
+    "agencyFeature4": "Multi-seat team access",
+    "cta": "Start Now",
+    "popular": "Most Popular"
+  },
+  "agencyTeaser": {
+    "title": "Agency Qualified?",
+    "subtitle": "If your account qualifies, you can join our TikTok LIVE agency network for dedicated support and additional earning opportunities.",
+    "cta": "Learn More",
+    "benefits": {
+      "revenue": "Flexible revenue model",
+      "support": "Dedicated tech support",
+      "training": "Training & development",
+      "management": "Live stream management"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "startNow": "Start Now",
+    "switchLang": "العربية"
+  },
+  "footer": {
+    "product": "Product",
+    "analyzer": "Account Analysis",
+    "pricing": "Pricing",
+    "features": "Features",
+    "company": "Company",
+    "about": "About Us",
+    "blog": "Blog",
+    "contact": "Contact Us",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "rights": "All rights reserved",
+    "madeWith": "Made with ❤️ for Arab creators"
+  },
+  "auth": {
+    "siteName": "TikTok Intelligence",
+    "loginTitle": "Login",
+    "loginSubtitle": "Welcome back! Sign in to access your account",
+    "registerTitle": "Create New Account",
+    "registerSubtitle": "Start your journey with smart TikTok analytics",
+    "forgotPassword": "Forgot password?",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "loginButton": "Sign In",
+    "registerButton": "Create Account",
+    "loggingIn": "Signing in...",
+    "registering": "Creating account...",
+    "or": "or",
+    "loginWithGoogle": "Sign in with Google",
+    "registerWithGoogle": "Sign up with Google",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "registerLink": "Create account",
+    "loginLink": "Sign in",
+    "loginError": "An error occurred during sign in",
+    "registerError": "An error occurred during registration",
+    "passwordMismatch": "Passwords do not match",
+    "resetTitle": "Reset Password",
+    "resetSubtitle": "Enter your email and we'll send you a reset link",
+    "resetButton": "Send Reset Link",
+    "resetError": "An error occurred while sending reset request",
+    "resetSuccessTitle": "Sent!",
+    "resetSuccessMessage": "Password reset link has been sent to your email",
+    "sending": "Sending...",
+    "backToLogin": "Back to Sign In"
+  },
+  "dashboard": {
+    "welcome": "Welcome back!",
+    "welcomeSubtitle": "Here's a summary of your recent accounts",
+    "analyzeNew": "Analyze New Account",
+    "totalAccounts": "Total Accounts",
+    "averageScore": "Average Score",
+    "freePlan": "Free Plan",
+    "noSubscription": "No subscription yet",
+    "reportsUsed": "reports used",
+    "recentAccounts": "Recent Accounts",
+    "viewAll": "View All",
+    "noAccounts": "No accounts analyzed yet",
+    "analyzeFirst": "Analyze your first account",
+    "recentInsights": "Recent Recommendations",
+    "noInsights": "No recommendations yet",
+    "sidebar": {
+      "siteName": "TikTok Intelligence",
+      "dashboard": "Overview",
+      "accounts": "My Accounts",
+      "compare": "Comparisons",
+      "settings": "Settings",
+      "logout": "Sign Out"
+    },
+    "accounts": {
+      "title": "My Accounts",
+      "subtitle": "List of accounts you've analyzed",
+      "addAccount": "Add Account",
+      "emptyTitle": "No Accounts",
+      "emptyDescription": "You haven't analyzed any accounts yet. Start by analyzing your first account.",
+      "analyzeFirst": "Analyze First Account",
+      "refresh": "Refresh"
+    },
+    "compare": {
+      "title": "Comparisons",
+      "subtitle": "Compare your account performance with others",
+      "selectAccounts": "Select accounts to compare",
+      "noAccounts": "No accounts available for comparison",
+      "comparison": "Comparison Table",
+      "metric": "Metric",
+      "accountStrength": "Account Strength",
+      "followers": "Followers",
+      "avgViews": "Avg Views",
+      "engagementRate": "Engagement Rate",
+      "postingConsistency": "Posting Consistency",
+      "emptyTitle": "Select accounts to compare",
+      "emptyDescription": "Choose two or three accounts from the list above to start comparing"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Manage your account and preferences",
+      "profile": "Profile",
+      "name": "Name",
+      "email": "Email",
+      "subscription": "Subscription",
+      "currentPlan": "Current Plan",
+      "upgrade": "Upgrade",
+      "notifications": "Notifications",
+      "emailNotifications": "Email Notifications",
+      "emailNotificationsDesc": "Receive notifications via email",
+      "language": "Language",
+      "preferredLanguage": "Preferred Language",
+      "preferredLanguageDesc": "Application interface language",
+      "dangerZone": "Danger Zone",
+      "deleteAccount": "Delete Account",
+      "deleteAccountDesc": "Permanently delete your account and all its data",
+      "deleteConfirm": "Are you sure you want to delete your account? This action cannot be undone.",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "saveSuccess": "Changes saved successfully",
+      "saveError": "An error occurred while saving changes",
+      "deleteError": "An error occurred while deleting account"
+    }
+  },
+  "analyze": {
+    "title": "Analyzing...",
+    "subtitle": "We're analyzing your account now, this may take a few seconds",
+    "username": "account",
+    "status": {
+      "queued": "Queued",
+      "processing": "Processing",
+      "ready": "Ready",
+      "failed": "Analysis failed"
+    },
+    "error": "An error occurred while starting the analysis",
+    "errorGeneric": "Analysis failed. Please try again.",
+    "retry": "Try Again",
+    "backToHome": "Back to Home"
+  },
+  "report": {
+    "reportLabel": "Account analysis / final report",
+    "title": "Analysis Report",
+    "loading": "Analyzing account...",
+    "error": "An error occurred while fetching the report",
+    "notFound": "Report not found",
+    "retry": "Retry",
+    "accountInfo": "Account Information",
+    "statistics": "Statistics",
+    "followers": "Followers",
+    "following": "Following",
+    "totalLikes": "Total Likes",
+    "videoCount": "Videos",
+    "avgViews": "Avg Views",
+    "avgLikes": "Avg Likes",
+    "avgComments": "Avg Comments",
+    "avgShares": "Avg Shares",
+    "liveStream": "Live Stream",
+    "lastLive": "Last Live",
+    "liveFrequency": "Live Frequency",
+    "estimated": "Estimated",
+    "verified": "Verified",
+    "notVerified": "Not Verified",
+    "personal": "Personal Account",
+    "business": "Business Account",
+    "unknown": "Unknown Type",
+    "analyzing": "Analysis in progress...",
+    "analysisPending": "Full analysis results will be available in the next phase",
+    "viewFullReport": "View Full Report",
+    "addToCompare": "Add to Compare",
+    "exportPDF": "Export PDF",
+    "accountStrength": "Account Strength",
+    "country": "Likely content country",
+    "countryConfidence": "Confidence: {confidence}%",
+    "countries": {
+      "SaudiArabia": "Saudi Arabia",
+      "Egypt": "Egypt",
+      "UAE": "United Arab Emirates",
+      "Kuwait": "Kuwait",
+      "Qatar": "Qatar",
+      "Bahrain": "Bahrain",
+      "Oman": "Oman",
+      "Jordan": "Jordan",
+      "Iraq": "Iraq",
+      "Morocco": "Morocco",
+      "Algeria": "Algeria",
+      "Tunisia": "Tunisia",
+      "Lebanon": "Lebanon",
+      "Palestine": "Palestine",
+      "Syria": "Syria"
+    },
+    "language": "Language",
+    "aiResults": "AI Analysis Results",
+    "howWeCalculated": "How did we calculate this?",
+    "scoreCard": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "average": "Average",
+      "needsImprovement": "Needs Work",
+      "howWeCalculated": "How did we calculate this?"
+    },
+    "disclaimer": {
+      "explore": "Estimated indicator for For You page reach probability, not official TikTok data",
+      "general": "All results are estimated and not official TikTok data"
+    },
+    "scores": {
+      "engagementQuality": "Engagement Quality",
+      "contentQuality": "Content Quality",
+      "postingConsistency": "Posting Consistency",
+      "explorePotential": "For You Reach Potential",
+      "livePotential": "Live Stream Potential",
+      "professionalism": "Professionalism"
+    },
+    "insights": {
+      "strengths": "Strengths",
+      "weaknesses": "Weaknesses",
+      "recommendations": "Recommendations",
+      "audience": "Audience Analysis",
+      "competitors": "Competitor Analysis"
+    },
+    "agency": {
+      "eligible": "Your account is eligible to join the agency!",
+      "scoreDescription": "Your account strength is {score}/100 — higher than many similar accounts. Join the TikTok LIVE agency network for dedicated support and additional earning opportunities.",
+      "joinCTA": "Join the Agency"
+    },
+    "application": {
+      "formTitle": "Application Form",
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "telegram": "Telegram",
+      "email": "Email",
+      "submit": "Submit Application",
+      "submitting": "Submitting...",
+      "cancel": "Cancel",
+      "success": "Your application has been submitted!",
+      "successMessage": "We will contact you soon",
+      "error": "An error occurred while submitting the application"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "switchLanguage": "Switch language",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "arabic": "العربية",
+    "english": "English",
+    "free": "Free",
+    "retry": "Retry",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "share": "Share",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "viewAll": "View All",
+    "learnMore": "Learn More"
+  },
+  "health": {
+    "status": "System is running",
+    "database": "Database",
+    "redis": "Redis",
+    "connected": "Connected",
+    "disconnected": "Disconnected"
+  },
+  "agency": {
+    "sidebar": {
+      "siteName": "TikTok Intelligence",
+      "applicants": "Applicants",
+      "logout": "Sign Out"
+    },
+    "applicants": {
+      "title": "Agency Applicants",
+      "subtitle": "Manage TikTok LIVE agency join requests",
+      "searchPlaceholder": "Search by name, email, or account username...",
+      "filters": "Filters",
+      "status": "Status",
+      "minScore": "Min Score",
+      "maxScore": "Max Score",
+      "name": "Name",
+      "account": "Account",
+      "score": "Score",
+      "followers": "Followers",
+      "country": "Country",
+      "assignee": "Assignee",
+      "date": "Date",
+      "view": "View",
+      "emptyTitle": "No applicants",
+      "emptyDescription": "No one has applied to the agency yet",
+      "all": "All",
+      "sortNewest": "Newest First",
+      "sortOldest": "Oldest First",
+      "sortScoreHigh": "Highest Score",
+      "sortScoreLow": "Lowest Score",
+      "statusNew": "New",
+      "statusReviewed": "Reviewed",
+      "statusContacted": "Contacted",
+      "statusJoined": "Joined",
+      "statusRejected": "Rejected"
+    },
+    "detail": {
+      "notFound": "Applicant not found",
+      "contactInfo": "Contact Information",
+      "protected": "Protected",
+      "notAvailable": "Not available (permission required)",
+      "notes": "Notes",
+      "addNote": "Add Note",
+      "addingNote": "Adding...",
+      "notePlaceholder": "Add a note...",
+      "noNotes": "No notes yet",
+      "reportSummary": "Report Summary",
+      "accountStrength": "Account Strength",
+      "engagementQuality": "Engagement Quality",
+      "explorePotential": "Explore Potential",
+      "strengthsAndRecommendations": "Strengths & Recommendations",
+      "statusHistory": "Status History",
+      "changeStatus": "Change Status",
+      "statusNotePlaceholder": "Note (optional)",
+      "noHistory": "No history",
+      "changedBy": "by",
+      "cancel": "Cancel"
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "siteName": "TikTok Intelligence",
+      "stats": "Statistics",
+      "users": "Users",
+      "plans": "Plans",
+      "settings": "Settings",
+      "auditLogs": "Audit Logs",
+      "roles": "Roles",
+      "logout": "Sign Out"
+    },
+    "stats": {
+      "title": "Statistics",
+      "subtitle": "Platform overview",
+      "totalUsers": "Total Users",
+      "totalReports": "Total Reports",
+      "totalApplications": "Total Applications",
+      "joined": "Joined",
+      "thisMonth": "this month",
+      "applicationFunnel": "Application Funnel",
+      "recentReports": "Recent Reports",
+      "statusNew": "New",
+      "statusReviewed": "Reviewed",
+      "statusContacted": "Contacted",
+      "statusJoined": "Joined",
+      "statusRejected": "Rejected"
+    },
+    "users": {
+      "title": "Users",
+      "subtitle": "Manage user accounts",
+      "searchPlaceholder": "Search by name or email...",
+      "name": "Name",
+      "email": "Email",
+      "plan": "Plan",
+      "roles": "Roles",
+      "accounts": "Accounts",
+      "joined": "Joined"
+    },
+    "plans": {
+      "title": "Plans",
+      "subtitle": "Manage subscription plans",
+      "active": "Active",
+      "price": "Price ($)",
+      "reportsPerDay": "Reports per day",
+      "unlimited": "Unlimited",
+      "save": "Save Changes",
+      "saving": "Saving...",
+      "saveSuccess": "Changes saved successfully"
+    },
+    "settings": {
+      "title": "Settings",
+      "subtitle": "General system settings",
+      "agencySettings": "Agency Settings",
+      "eligibilityThreshold": "Eligibility Threshold (Score)",
+      "highPriorityThreshold": "High Priority Threshold (Score)",
+      "cacheSettings": "Cache Settings",
+      "snapshotCacheTtl": "Snapshot TTL (hours)",
+      "rateLimitSettings": "Rate Limit Settings",
+      "freePlanReportsPerDay": "Free Plan Reports / Day",
+      "guestReportsPerDay": "Guest Reports / Day",
+      "save": "Save Settings",
+      "saving": "Saving...",
+      "saveSuccess": "Settings saved successfully"
+    },
+    "auditLogs": {
+      "title": "Audit Logs",
+      "subtitle": "Activity and operation logs",
+      "searchPlaceholder": "Search logs...",
+      "actor": "Actor",
+      "action": "Action",
+      "entity": "Entity",
+      "date": "Date",
+      "filterAll": "All",
+      "filterViewContact": "View Contact Info",
+      "filterChangeStatus": "Change Status",
+      "filterAssign": "Assign"
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: August 6, 2026",
+    "intro": {
+      "title": "Introduction",
+      "content": "Welcome to TikTok Intelligence ('the Platform'). We respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and protect your information when you use our services."
+    },
+    "dataCollection": {
+      "title": "Information We Collect",
+      "content": "We collect various types of information to provide and improve our services:",
+      "item1": "Account Information: Name, email, and encrypted password when you register",
+      "item2": "Payment Information: Your subscription details (processed through a secure payment provider)",
+      "item3": "Analytics Data: TikTok usernames entered for analysis and generated analysis results",
+      "item4": "Usage Information: How you interact with the platform to improve your experience"
+    },
+    "dataUsage": {
+      "title": "How We Use Your Information",
+      "content": "We use the collected information for the following purposes:",
+      "item1": "Providing and operating the requested analysis services",
+      "item2": "Improving and developing our platform and user experience",
+      "item3": "Communicating with you regarding your account or our services"
+    },
+    "dataSharing": {
+      "title": "Data Sharing",
+      "content": "We do not sell your personal data to third parties. We may share your information only in the following cases: (1) With essential service providers who help operate our platform (e.g., database hosting, payment processing), (2) When required by law or legal process, (3) With your explicit consent. Agency applicant data is not shared with any third party without documented consent."
+    },
+    "dataRetention": {
+      "title": "Data Retention",
+      "content": "We retain your data as long as your account is active or as needed to provide our services. You can request account deletion at any time, and your data will be permanently deleted within 30 days."
+    },
+    "security": {
+      "title": "Data Security",
+      "content": "We implement technical and organizational security measures to protect your data from unauthorized access, use, or disclosure. These measures include encryption, access controls, and regular security audits."
+    },
+    "rights": {
+      "title": "Your Rights",
+      "content": "You have the right to:",
+      "item1": "Access your personal data and obtain a copy of it",
+      "item2": "Correct any inaccurate data",
+      "item3": "Request deletion of your personal data"
+    },
+    "cookies": {
+      "title": "Cookies",
+      "content": "We use essential cookies required for platform operation. We do not use tracking or advertising cookies. You can control cookie settings in your browser."
+    },
+    "children": {
+      "title": "Children's Privacy",
+      "content": "Our services are not intended for individuals under 13 years of age. We do not knowingly collect personal information from children. If we learn that we have collected data from a child, we will delete it immediately."
+    },
+    "changes": {
+      "title": "Policy Changes",
+      "content": "We may update this policy from time to time. We will notify you of any material changes via email or through a notification on the platform."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "For any questions about this privacy policy, please contact us at: privacy@tiktok-intelligence.com"
+    },
+    "tiktokDisclaimer": {
+      "title": "Important Notice",
+      "content": "This platform is not officially affiliated with TikTok or ByteDance. All data and analysis provided are estimated and indicative only, and are not official data from TikTok. Results may not be 100% accurate and depend on the quality of input data."
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: August 6, 2026",
+    "acceptance": {
+      "title": "Acceptance",
+      "content": "By using TikTok Intelligence ('the Platform'), you agree to be bound by these terms and conditions. If you do not agree to any of these terms, please do not use the Platform."
+    },
+    "description": {
+      "title": "Service Description",
+      "content": "The platform provides analytics tools for TikTok accounts using artificial intelligence technologies. The results provided are estimated and indicative only, and are not official data from TikTok."
+    },
+    "accounts": {
+      "title": "User Account",
+      "content": "To use some features of the platform, you must create an account. You are responsible for:",
+      "item1": "Maintaining the confidentiality of your account credentials",
+      "item2": "All activities that occur under your account",
+      "item3": "Immediately notifying us of any unauthorized use of your account"
+    },
+    "subscriptions": {
+      "title": "Subscriptions and Payments",
+      "content": "Some features are available through a paid subscription. Payments are processed through a secure payment provider. You can cancel your subscription at any time. We do not offer refunds except in cases prescribed by applicable consumer protection laws."
+    },
+    "usage": {
+      "title": "Acceptable Use",
+      "content": "You agree not to:",
+      "item1": "Use the platform for any illegal or unauthorized purpose",
+      "item2": "Attempt unauthorized access to systems or other accounts",
+      "item3": "Use the platform to harm or exploit others",
+      "item4": "Copy, modify, or distribute platform content without permission"
+    },
+    "content": {
+      "title": "Content",
+      "content": "User-provided content (such as TikTok usernames) remains their property. We retain the right to use aggregated and anonymized data to improve our services."
+    },
+    "intellectualProperty": {
+      "title": "Intellectual Property",
+      "content": "All intellectual property rights in the platform and its content are reserved. You may not copy, modify, or distribute any part of the platform without prior permission."
+    },
+    "limitation": {
+      "title": "Limitation of Liability",
+      "content": "The platform is provided 'as is' without warranties. We are not liable for any indirect or incidental damages arising from use of the platform or inaccuracy of estimated results."
+    },
+    "termination": {
+      "title": "Service Termination",
+      "content": "We reserve the right to terminate or suspend your account at any time due to behavior that violates these terms. You may also delete your account at any time."
+    },
+    "governingLaw": {
+      "title": "Governing Law",
+      "content": "These terms are governed by the laws of the Kingdom of Saudi Arabia. Disputes are first resolved amicably, and if that fails, through the competent courts in Riyadh."
+    },
+    "changes": {
+      "title": "Changes to Terms",
+      "content": "We reserve the right to modify these terms at any time. You will be notified of material changes via email or through a notification on the platform."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "For any questions about these terms of service, please contact us at: legal@tiktok-intelligence.com"
+    },
+    "tiktokDisclaimer": {
+      "title": "Important Notice",
+      "content": "This platform is not officially affiliated with TikTok or ByteDance. Your use of this platform does not imply any association with or endorsement by TikTok. You are responsible for ensuring that your use of the platform complies with TikTok's terms of service."
+    }
+  }
+}

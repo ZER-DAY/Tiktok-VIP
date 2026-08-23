@@ -1,0 +1,17 @@
+[Unit]
+Description=TikTok Intelligence Platform - Web
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/tiktok-platform
+ExecStart=/usr/bin/docker compose -f docker-compose.prod.yml up web
+ExecStop=/usr/bin/docker compose -f docker-compose.prod.yml stop web
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

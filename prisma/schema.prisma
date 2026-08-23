@@ -1,0 +1,430 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────
+
+enum AccountType {
+  personal
+  business
+  unknown
+}
+
+enum ReportInsightType {
+  strength
+  weakness
+  recommendation
+  audience
+  competitor
+}
+
+enum ApplicationStatus {
+  new
+  reviewed
+  contacted
+  joined
+  rejected
+}
+
+enum SubscriptionStatus {
+  active
+  canceled
+  past_due
+}
+
+// ─── User ────────────────────────────────────────────────
+
+model User {
+  id             String    @id @default(uuid()) @db.Uuid
+  email          String    @unique
+  passwordHash   String?
+  name           String
+  avatarUrl      String?
+  emailVerifiedAt DateTime?
+  preferredLocale String   @default("ar")
+  planId         String    @db.Uuid
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+
+  plan                  Plan                  @relation(fields: [planId], references: [id])
+  roles                 UserRole[]
+  subscriptions         Subscription[]
+  sessions              Session[]
+  accounts              Account[]
+  ownedAccounts         AnalyzedAccount[]     @relation("Owner")
+  trackedAccounts       AnalyzedAccount[]     @relation("TrackedBy")
+  agencyApplications    AgencyApplication[]   @relation("Applicant")
+  assignedApplications  AgencyApplication[]   @relation("Assignee")
+  applicationNotes      ApplicationNote[]
+  statusChanges         ApplicationStatusHistory[]
+  auditLogs             AuditLog[]
+  notifications         Notification[]
+
+  @@index([planId])
+}
+
+// ─── RBAC ────────────────────────────────────────────────
+
+model Role {
+  id          String           @id @default(uuid()) @db.Uuid
+  name        String           @unique
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  userRoles    UserRole[]
+  permissions  RolePermission[]
+}
+
+model Permission {
+  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  rolePermissions RolePermission[]
+}
+
+model UserRole {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  roleId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+}
+
+model RolePermission {
+  id           String   @id @default(uuid()) @db.Uuid
+  roleId       String   @db.Uuid
+  permissionId String   @db.Uuid
+  createdAt    DateTime @default(now())
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}
+
+// ─── Plans & Subscriptions ───────────────────────────────
+
+model Plan {
+  id              String   @id @default(uuid()) @db.Uuid
+  name            String   @unique
+  priceCents      Int      @default(0)
+  billingInterval String?
+  reportsPerDay   Int?
+  features        Json?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  users         User[]
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                   String             @id @default(uuid()) @db.Uuid
+  userId               String             @db.Uuid
+  planId               String             @db.Uuid
+  status               SubscriptionStatus @default(active)
+  startedAt            DateTime           @default(now())
+  currentPeriodEnd     DateTime?
+  paymentProviderRef   String?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan Plan @relation(fields: [planId], references: [id])
+
+  @@index([userId])
+  @@index([planId])
+}
+
+// ─── Provider (Multi-Provider reference) ─────────────────
+
+model Provider {
+  id          String   @id @default(uuid()) @db.Uuid
+  key         String   @unique
+  displayName String
+  isActive    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  accounts AnalyzedAccount[]
+}
+
+// ─── AnalyzedAccount ─────────────────────────────────────
+
+model AnalyzedAccount {
+  id                String   @id @default(uuid()) @db.Uuid
+  providerId        String   @db.Uuid
+  externalUsername   String
+  externalId        String?
+  ownerId           String?  @db.Uuid
+  trackedByUserId   String?  @db.Uuid
+  firstAnalyzedAt   DateTime @default(now())
+  lastAnalyzedAt    DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  provider        Provider        @relation(fields: [providerId], references: [id])
+  owner           User?           @relation("Owner", fields: [ownerId], references: [id])
+  trackedBy       User?           @relation("TrackedBy", fields: [trackedByUserId], references: [id])
+  snapshots       AccountSnapshot[]
+  liveSessions    LiveSession[]
+  applications    AgencyApplication[]
+
+  @@unique([providerId, externalUsername])
+  @@index([providerId])
+  @@index([ownerId])
+  @@index([trackedByUserId])
+}
+
+// ─── AccountSnapshot (Append-only) ───────────────────────
+
+model AccountSnapshot {
+  id                      String      @id @default(uuid()) @db.Uuid
+  accountId               String      @db.Uuid
+  capturedAt              DateTime    @default(now())
+  followers               Int
+  following               Int
+  totalLikes              BigInt
+  videoCount              Int
+  avgViews                Float?
+  avgLikes                Float?
+  avgComments             Float?
+  avgShares               Float?
+  isVerified              Boolean     @default(false)
+  accountType             AccountType @default(unknown)
+  bioLanguageGuess        String?
+  countryGuess            String?
+  countryGuessConfidence  Float?
+  accountCreatedAtGuess   DateTime?   @db.Date
+  rawPayload              Json
+  createdAt               DateTime    @default(now())
+
+  account           AnalyzedAccount  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  analysisReport    AnalysisReport?
+
+  @@index([accountId, capturedAt(sort: Desc)])
+  @@index([accountId])
+}
+
+// ─── LiveSession ─────────────────────────────────────────
+
+model LiveSession {
+  id                       String    @id @default(uuid()) @db.Uuid
+  accountId                String    @db.Uuid
+  startedAt                DateTime?
+  estimatedDurationMinutes Float?
+  isEstimated              Boolean   @default(false)
+  source                   String
+  createdAt                DateTime  @default(now())
+
+  account AnalyzedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId])
+}
+
+// ─── AnalysisReport ──────────────────────────────────────
+
+model AnalysisReport {
+  id                       String   @id @default(uuid()) @db.Uuid
+  snapshotId               String   @unique @db.Uuid
+  accountStrengthScore     Int
+  contentQualityScore      Int
+  engagementQualityScore   Int
+  postingConsistencyScore  Int
+  explorePotentialPercent  Int
+  livePotentialScore       Int
+  professionalismScore     Int
+  growthRatePercent        Float?
+  scoreBreakdown           Json
+  generatedAt              DateTime @default(now())
+
+  snapshot          AccountSnapshot  @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  insights          ReportInsight[]
+
+  @@index([snapshotId])
+}
+
+// ─── ReportInsight ───────────────────────────────────────
+
+model ReportInsight {
+  id          String           @id @default(uuid()) @db.Uuid
+  reportId    String           @db.Uuid
+  type        ReportInsightType
+  title       String
+  description String
+  evidenceRef Json?
+  order       Int              @default(0)
+  createdAt   DateTime         @default(now())
+
+  report AnalysisReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@index([reportId])
+}
+
+// ─── AgencyApplication ───────────────────────────────────
+
+model AgencyApplication {
+  id               String            @id @default(uuid()) @db.Uuid
+  accountId        String            @db.Uuid
+  applicantUserId  String?           @db.Uuid
+  fullName         String
+  phone            String
+  telegram         String
+  email            String
+  status           ApplicationStatus @default(new)
+  assigneeUserId   String?           @db.Uuid
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  account         AnalyzedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  applicantUser   User?           @relation("Applicant", fields: [applicantUserId], references: [id])
+  assigneeUser    User?           @relation("Assignee", fields: [assigneeUserId], references: [id])
+  notes           ApplicationNote[]
+  statusHistory   ApplicationStatusHistory[]
+
+  @@index([status])
+  @@index([assigneeUserId])
+  @@index([accountId])
+}
+
+// ─── ApplicationNote ─────────────────────────────────────
+
+model ApplicationNote {
+  id            String   @id @default(uuid()) @db.Uuid
+  applicationId String   @db.Uuid
+  authorUserId  String   @db.Uuid
+  body          String   @db.Text
+  createdAt     DateTime @default(now())
+
+  application AgencyApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  author      User              @relation(fields: [authorUserId], references: [id])
+
+  @@index([applicationId])
+  @@index([authorUserId])
+}
+
+// ─── ApplicationStatusHistory ────────────────────────────
+
+model ApplicationStatusHistory {
+  id              String            @id @default(uuid()) @db.Uuid
+  applicationId   String            @db.Uuid
+  fromStatus      ApplicationStatus
+  toStatus        ApplicationStatus
+  changedByUserId String            @db.Uuid
+  changedAt       DateTime          @default(now())
+
+  application AgencyApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  changedBy   User              @relation(fields: [changedByUserId], references: [id])
+
+  @@index([applicationId])
+  @@index([changedByUserId])
+}
+
+// ─── Notification ────────────────────────────────────────
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  type      String
+  title     String
+  body      String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ─── Better Auth ────────────────────────────────────────
+
+model Session {
+  id        String   @id
+  userId    String   @db.Uuid
+  expiresAt DateTime
+  token     String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id                String  @id
+  userId            String  @db.Uuid
+  accountId         String
+  providerId        String
+  accessToken       String?
+  refreshToken      String?
+  accessTokenExpiresAt DateTime?
+  scope             String?
+  idToken           String?
+  password          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+}
+
+// ─── AuditLog ────────────────────────────────────────────
+
+model AuditLog {
+  id           String   @id @default(uuid()) @db.Uuid
+  actorUserId  String?  @db.Uuid
+  action       String
+  entityType   String
+  entityId     String
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  actor User? @relation(fields: [actorUserId], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([actorUserId])
+}
+
+// ─── System Settings ────────────────────────────────────
+
+model SystemSetting {
+  key         String   @id
+  value       String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
