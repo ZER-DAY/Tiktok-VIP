@@ -178,6 +178,19 @@ describe("i18n: Key Completeness", () => {
     expect(ar.report).toHaveProperty("error");
     expect(ar.report).toHaveProperty("notFound");
     expect(ar.report).toHaveProperty("followers");
+    expect(ar.report).toHaveProperty("accountAvatar");
+    expect(ar.report).toHaveProperty("countryRegistered");
+    expect(ar.report).toHaveProperty("accountCreatedAt");
+    expect(ar.report).toHaveProperty("liveCreatorLeague");
+    expect(ar.report).toHaveProperty("liveAccountLevel");
+  });
+
+  it("English has all required report keys", () => {
+    expect(en.report).toHaveProperty("accountAvatar");
+    expect(en.report).toHaveProperty("countryRegistered");
+    expect(en.report).toHaveProperty("accountCreatedAt");
+    expect(en.report).toHaveProperty("liveCreatorLeague");
+    expect(en.report).toHaveProperty("liveAccountLevel");
   });
 });
 

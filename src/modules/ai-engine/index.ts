@@ -58,6 +58,8 @@ export async function generateAnalysisReport(snapshotId: string) {
     hashtags: string[];
     createdAt: string;
     duration: number;
+    regionCode?: string | null;
+    locationCreated?: string | null;
   }>;
 
   const engagementResult = calculateEngagementQuality(snapshotInput);
@@ -134,14 +136,24 @@ export async function generateAnalysisReport(snapshotId: string) {
       ? [
           {
             type: "audience" as const,
-            title: "الدولة المستهدفة",
-            description: `يُقدر أن جمهورك الرئيسي من ${audience.countryGuess}`,
+            title:
+              audience.countrySource === "content_inference"
+                ? "الدولة المستهدفة"
+                : "دولة تسجيل الحساب",
+            description:
+              audience.countrySource === "region_code"
+                ? `سُجّل الحساب في ${audience.countryGuess} وفق region_code من TikTok`
+                : audience.countrySource === "location_created"
+                  ? `دولة تسجيل الحساب ${audience.countryGuess} وفق منطقة رفع أغلب الفيديوهات`
+                  : `يُقدر أن جمهورك الرئيسي من ${audience.countryGuess}`,
             evidenceRef: {
               country: audience.countryGuess,
+              regionCode: audience.countryRegionCode,
+              source: audience.countrySource,
               confidence: audience.countryConfidence,
               evidenceCount: audience.countryEvidenceCount,
               analyzedVideos: audience.analyzedVideos,
-              isEstimated: true,
+              isEstimated: audience.countrySource === "content_inference",
             },
             order: 25,
           },
@@ -234,6 +246,8 @@ export async function generateAnalysisReport(snapshotId: string) {
       data: {
         countryGuess: audience.countryGuess,
         countryGuessConfidence: audience.countryConfidence,
+        countryRegionCode: audience.countryRegionCode,
+        countryGuessSource: audience.countrySource,
       },
     });
   }

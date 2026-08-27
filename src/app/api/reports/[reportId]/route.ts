@@ -1,5 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getStoredCreatorLeague } from "@/modules/providers/tiktok/live-league";
+import { getStoredLiveAccountLevel } from "@/modules/providers/tiktok/live-account-level";
+
+function getSafeAvatarUrl(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.toLowerCase();
+    const isTikTokCdn =
+      /(^|\.)tiktokcdn(?:-[a-z0-9]+)?\.com$/.test(hostname) ||
+      /(^|\.)(?:ibytedtos|byteoversea)\.com$/.test(hostname);
+    return url.protocol === "https:" && isTikTokCdn ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
 
 export async function GET(
   _request: NextRequest,
@@ -41,6 +58,15 @@ export async function GET(
 
     const snapshot = report.snapshot;
     const account = snapshot.account;
+    const rawPayload = snapshot.rawPayload as Record<string, unknown>;
+    const rawProfile =
+      rawPayload.profile && typeof rawPayload.profile === "object"
+        ? (rawPayload.profile as Record<string, unknown>)
+        : null;
+    const avatarUrl = getSafeAvatarUrl(rawProfile?.avatarUrl);
+    const accountCreatedAtSource = rawProfile?.accountCreatedAtSource;
+    const creatorLeague = getStoredCreatorLeague(rawPayload);
+    const liveAccountLevel = getStoredLiveAccountLevel(rawPayload);
 
     return NextResponse.json({
       success: true,
@@ -48,16 +74,29 @@ export async function GET(
         reportId: report.id,
         account: {
           username: account.externalUsername,
+          avatarUrl,
           provider: account.provider.key,
           isVerified: snapshot.isVerified,
           accountType: snapshot.accountType,
           countryGuess: snapshot.countryGuess,
           countryGuessConfidence: snapshot.countryGuessConfidence,
+          countryRegionCode: snapshot.countryRegionCode,
+          countryGuessSource: snapshot.countryGuessSource,
           bioLanguageGuess: snapshot.bioLanguageGuess,
           accountCreatedAtGuess: snapshot.accountCreatedAtGuess,
+          liveCreatorLeague: creatorLeague?.league ?? null,
+          liveCreatorLeagueClassType: creatorLeague?.classType ?? null,
+          liveCreatorLeagueSource: creatorLeague?.source ?? null,
+          liveAccountLevel: liveAccountLevel?.level ?? null,
+          liveAccountLevelSource: liveAccountLevel?.source ?? null,
           isEstimated: {
-            country: snapshot.countryGuess !== null,
-            createdAt: snapshot.accountCreatedAtGuess !== null,
+            country:
+              snapshot.countryGuess !== null &&
+              snapshot.countryGuessSource !== "region_code" &&
+              snapshot.countryGuessSource !== "location_created",
+            createdAt:
+              snapshot.accountCreatedAtGuess !== null &&
+              accountCreatedAtSource !== "profile_create_time",
           },
         },
         statistics: {

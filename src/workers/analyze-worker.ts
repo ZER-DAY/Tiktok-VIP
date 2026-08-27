@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { TikTokProvider } from "@/modules/providers";
 import { analysisQueue } from "./analysis-queue";
 import type { AnalyzeJobData } from "./queue";
+import { ANALYSIS_DATA_VERSION, isAnalysisDataCurrent } from "./analysis-data";
+import { isLiveAccountLevelProviderConfigured } from "@/modules/providers/tiktok/live-account-level";
 
 const provider = new TikTokProvider();
 
@@ -75,7 +77,10 @@ async function processAnalyzeJob(job: Job<AnalyzeJobData>) {
     const hoursSinceLastCapture =
       (Date.now() - lastSnapshot.capturedAt.getTime()) / (1000 * 60 * 60);
 
-    if (hoursSinceLastCapture < CACHE_DURATION_HOURS) {
+    if (
+      hoursSinceLastCapture < CACHE_DURATION_HOURS &&
+      isAnalysisDataCurrent(lastSnapshot.rawPayload)
+    ) {
       await job.updateProgress(100);
       return { accountId: existingAccount.id, snapshotId: lastSnapshot.id, fromCache: true };
     }
@@ -94,7 +99,7 @@ async function processAnalyzeJob(job: Job<AnalyzeJobData>) {
   // Fetch live status
   let liveStatus = null;
   if (provider.fetchLiveStatus) {
-    liveStatus = await provider.fetchLiveStatus(username);
+    liveStatus = await provider.fetchLiveStatus(username, profile);
   }
   await job.updateProgress(70);
 
@@ -148,11 +153,13 @@ async function processAnalyzeJob(job: Job<AnalyzeJobData>) {
       bioLanguageGuess: languageGuess,
       countryGuess: null,
       countryGuessConfidence: null,
-      accountCreatedAtGuess: null,
+      accountCreatedAtGuess: profile.accountCreatedAt ? new Date(profile.accountCreatedAt) : null,
       rawPayload: JSON.parse(
         JSON.stringify({
+          pipelineVersion: ANALYSIS_DATA_VERSION,
+          liveAccountLevelEnrichmentConfigured: isLiveAccountLevelProviderConfigured(),
           profile,
-          content: content.slice(0, 10),
+          content: content.slice(0, 20),
           liveStatus,
         })
       ),

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/modules/auth";
 import { prisma } from "@/lib/prisma";
+import { getStoredCreatorLeague } from "@/modules/providers/tiktok/live-league";
+import { getStoredLiveAccountLevel } from "@/modules/providers/tiktok/live-account-level";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -44,6 +46,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
     const snapshot = account.snapshots[0];
     const report = snapshot.analysisReport!;
+    const rawPayload = snapshot.rawPayload as Record<string, unknown>;
+    const rawProfile =
+      rawPayload.profile && typeof rawPayload.profile === "object"
+        ? (rawPayload.profile as Record<string, unknown>)
+        : null;
+    const creatorLeague = getStoredCreatorLeague(rawPayload);
+    const liveAccountLevel = getStoredLiveAccountLevel(rawPayload);
 
     return NextResponse.json({
       success: true,
@@ -56,12 +65,23 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
           accountType: snapshot.accountType,
           countryGuess: snapshot.countryGuess,
           countryGuessConfidence: snapshot.countryGuessConfidence,
+          countryRegionCode: snapshot.countryRegionCode,
+          countryGuessSource: snapshot.countryGuessSource,
           bioLanguageGuess: snapshot.bioLanguageGuess,
           accountCreatedAtGuess: snapshot.accountCreatedAtGuess?.toISOString() || null,
+          liveCreatorLeague: creatorLeague?.league ?? null,
+          liveCreatorLeagueClassType: creatorLeague?.classType ?? null,
+          liveCreatorLeagueSource: creatorLeague?.source ?? null,
+          liveAccountLevel: liveAccountLevel?.level ?? null,
+          liveAccountLevelSource: liveAccountLevel?.source ?? null,
           isEstimated: {
             country:
-              snapshot.countryGuessConfidence !== null && snapshot.countryGuessConfidence < 0.8,
-            createdAt: snapshot.accountCreatedAtGuess !== null,
+              snapshot.countryGuess !== null &&
+              snapshot.countryGuessSource !== "region_code" &&
+              snapshot.countryGuessSource !== "location_created",
+            createdAt:
+              snapshot.accountCreatedAtGuess !== null &&
+              rawProfile?.accountCreatedAtSource !== "profile_create_time",
           },
         },
         statistics: {

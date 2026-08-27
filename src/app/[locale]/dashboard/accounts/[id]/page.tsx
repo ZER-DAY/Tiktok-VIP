@@ -1,11 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown, BarChart3, Zap, Target, Shield } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  BarChart3,
+  Zap,
+  Target,
+  Shield,
+  CalendarDays,
+  Trophy,
+} from "lucide-react";
 import { ScoreCard } from "@/components/report/score-card";
 import { InsightSection } from "@/components/report/insight-section";
 
@@ -20,6 +29,8 @@ interface ReportData {
     countryGuessConfidence: number | null;
     bioLanguageGuess: string | null;
     accountCreatedAtGuess: string | null;
+    liveCreatorLeague: string | null;
+    liveAccountLevel: number | null;
     isEstimated: { country: boolean; createdAt: boolean };
   };
   statistics: {
@@ -63,6 +74,7 @@ function formatNumber(num: number): string {
 export default function AccountReportPage() {
   const params = useParams();
   const t = useTranslations("report");
+  const locale = useLocale();
   const [report, setReport] = useState<ReportData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -130,6 +142,26 @@ export default function AccountReportPage() {
             </div>
             <p className="text-muted-foreground text-sm">
               {new Date(report.generatedAt).toLocaleDateString("ar-SA")}
+            </p>
+            <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <CalendarDays className="size-3.5" />
+              {t("accountCreatedAt")}:{" "}
+              {report.account.accountCreatedAtGuess
+                ? new Intl.DateTimeFormat(locale, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    timeZone: "UTC",
+                  }).format(new Date(report.account.accountCreatedAtGuess))
+                : t("accountCreatedAtUnavailable")}
+              {report.account.accountCreatedAtGuess && report.account.isEstimated.createdAt
+                ? ` (${t("estimated")})`
+                : ""}
+            </p>
+            <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Trophy className="size-3.5 text-amber-500" />
+              {t("liveAccountInfo")}: {t("liveAccountLevel")}:{" "}
+              {report.account.liveAccountLevel ?? t("liveAccountLevelUnavailable")}
             </p>
           </div>
         </div>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
-import { AlertCircle, Clock, Cpu, CheckCircle2, Loader2 } from "lucide-react";
+import { AlertCircle, Clock, Cpu, CheckCircle2, Loader2, Trophy } from "lucide-react";
 
 type JobStatus = "queued" | "processing" | "ready" | "failed";
 
@@ -23,6 +23,7 @@ export default function AnalyzePage({
 }) {
   const { locale, username } = use(params);
   const t = useTranslations("analyze");
+  const reportT = useTranslations("report");
   const router = useRouter();
   const [jobStatus, setJobStatus] = useState<JobStatus>("queued");
   const [errorMessage, setErrorMessage] = useState("");
@@ -154,8 +155,20 @@ export default function AnalyzePage({
               <span className="text-xs">({elapsed}s)</span>
             </div>
 
-            <div className="bg-card border border-border rounded-xl p-4 text-sm text-muted-foreground">
+            <div className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
               <p>{t("subtitle")}</p>
+              <div className="mt-4 flex items-center gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 p-3 text-start">
+                <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-amber-500/15">
+                  <Trophy className="size-5 text-amber-500" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold text-foreground">{reportT("liveAccountInfo")}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {reportT("liveAccountLevel")}
+                  </p>
+                </div>
+                <Loader2 className="size-4 shrink-0 animate-spin text-amber-500" />
+              </div>
             </div>
           </>
         )}

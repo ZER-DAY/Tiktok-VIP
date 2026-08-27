@@ -214,6 +214,8 @@ model AccountSnapshot {
   bioLanguageGuess        String?
   countryGuess            String?
   countryGuessConfidence  Float?
+  countryRegionCode       String?
+  countryGuessSource      String?
   accountCreatedAtGuess   DateTime?   @db.Date
   rawPayload              Json
   createdAt               DateTime    @default(now())

@@ -76,6 +76,58 @@ TikTok Intelligence Platform
 
 حقول مثل بلد المنشأ، تاريخ إنشاء الحساب، نسبة الوصول للـ Explore/For You، قوة الحساب، ونقاط الضعف هي **مؤشرات تقديرية محسوبة**، وليست بيانات رسمية من TikTok، ويجب أن تُعرض للمستخدم دائمًا مع توضيح "تقديري" (Estimated). التفاصيل الكاملة في `docs/09_AI_ANALYSIS_ENGINE.md` و`docs/10_TIKTOK_DATA_ENGINE.md`.
 
+استثناء ذلك هو دولة تسجيل الحساب عندما تكون بيانات اعتماد TikTok Research API المصرح بها
+مضبوطة عبر `TIKTOK_RESEARCH_CLIENT_KEY` و`TIKTOK_RESEARCH_CLIENT_SECRET`. عندها يستخدم النظام
+حقل الفيديو الرسمي `region_code`، ويحفظ مصدر النتيجة كي لا يعرضها كتخمين. من دون هذه الصلاحية
+يقرأ النظام `locationCreated` من صفحات الفيديو العامة ويعتمد الدولة الأكثر تكرارًا كدولة تسجيل
+الحساب. وإذا لم يتوفر الحقل أيضًا، يستخدم الاستنتاج التقديري من النص والهاشتاغات.
+
+تصنيف الحساب في بث TikTok LIVE مثل `C1` و`A3` و`S` يُقرأ من حقل Creator League
+الحقيقي في بيانات LIVE (`ClassInfo.classType` أو Gift Gallery `class_type`) ولا يُحسب من
+عدد المتابعين أو التفاعل. يدعم النظام الحمولة العامة عندما يعرضها TikTok، ويمكن ضبط مفتاح
+`TIKTOOL_API_KEY` على الخادم للحصول على Gift Gallery الحقيقية حتى عندما يكون الحساب غير متصل.
+يجب أن تدعم خطة المفتاح البيانات الحقيقية؛ يرفض النظام تلقائيًا استجابات Sandbox التجريبية
+ذات `is_sample: true` حتى لا يعرض تصنيفًا وهميًا.
+
+أما رقم الحساب الذي يظهر داخل LIVE مثل `level: 23` فهو مستوى المستخدم/الهدايا
+`pay_grade.level` (وقد يظهر مستوى المنشئ في بعض الحمولات باسم
+`webcast_anchor_level.level`). يعرضه التقرير تحت "معلومات حساب LIVE" ولا يخلطه مع Creator
+League. يستخرج النظام رقم غرفة LIVE من `SIGI_STATE`، ثم يستخدم مسار TikTok المباشر
+`/api-live/user/room` إذا لم تعرض صفحة HTML معلومات الغرفة، ثم يقرأ `pay_grade.level` من
+حمولة الغرفة العامة. TikTok يعيد `pay_grade.level: 0` للطلبات العامة في كثير من الحالات؛
+عندها يلزم مصدر موقّع أو جلسة TikTok مصرح بها لإظهار الرقم الحقيقي، ولا يقوم النظام
+بتخمينه. مفاتيح `TIKTOOL_API_KEY` و`TIKHUB_API_KEY` اختيارية لمسارات إثراء إضافية وليست
+مطلوبة للمسار المباشر.
+
 ## الاسم المؤقت للمشروع
 
 **TikTok Intelligence Platform**
+
+## تشغيل Vercel مع جهاز دائم للـ Workers
+
+يمكن نشر واجهة Next.js وواجهات `/api` على Vercel، وتشغيل عمال BullMQ على جهاز الشركة
+المتصل بالإنترنت طوال الوقت. يجب أن يشترك الطرفان في نفس PostgreSQL وRedis؛ لا تستخدم
+`localhost` في متغيرات Vercel، ولا تفتح المنفذين `5432` أو `6379` على الراوتر.
+
+التركيب الموصى به هو PostgreSQL مُدار (مثل Neon أو Supabase) وRedis مُدار (مثل Upstash)
+من Vercel Marketplace، ثم ضبط `DATABASE_URL` و`REDIS_URL` نفسيهما في Vercel وفي ملف
+`.env.worker` على جهاز الشركة. بهذه الطريقة يتصل الـ worker باتصال صادر فقط، ولا يحتاج
+Vercel إلى الوصول إلى شبكة الشركة الخاصة.
+
+على جهاز الشركة:
+
+```bash
+cp .env.example .env.worker
+# عدّل DATABASE_URL وREDIS_URL وBETTER_AUTH_SECRET وNEXT_PUBLIC_APP_URL
+docker compose -f docker-compose.worker.yml run --rm --entrypoint sh worker -lc \
+  "pnpm exec prisma migrate deploy"
+docker compose -f docker-compose.worker.yml up -d --build
+docker compose -f docker-compose.worker.yml logs -f worker
+```
+
+بعد تشغيل الـ worker، يضيف `/api/analyze` المهمة إلى Redis من Vercel، يلتقطها جهاز
+الشركة، ويحفظ النتيجة في PostgreSQL؛ مسار الحالة والتقرير يعملان من Vercel كالمعتاد.
+لا تضع أسرار قاعدة البيانات أو Redis في GitHub أو داخل `NEXT_PUBLIC_*`.
+
+الـ instrumentation يعطّل تشغيل workers تلقائيًا عندما تكون البيئة Vercel (`VERCEL=1`)،
+لذلك لا ينشأ worker مؤقت داخل Function ولا تتكرر معالجة المهمة.

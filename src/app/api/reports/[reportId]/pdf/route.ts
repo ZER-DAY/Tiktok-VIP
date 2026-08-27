@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getStoredCreatorLeague } from "@/modules/providers/tiktok/live-league";
+import { getStoredLiveAccountLevel } from "@/modules/providers/tiktok/live-account-level";
 
 export async function GET(request: Request, { params }: { params: Promise<{ reportId: string }> }) {
   try {
@@ -30,6 +32,24 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
 
     const snapshot = report.snapshot;
     const account = snapshot.account;
+    const rawPayload = snapshot.rawPayload as Record<string, unknown>;
+    const rawProfile =
+      rawPayload.profile && typeof rawPayload.profile === "object"
+        ? (rawPayload.profile as Record<string, unknown>)
+        : null;
+    const accountCreatedAt = snapshot.accountCreatedAtGuess
+      ? new Intl.DateTimeFormat("ar-SA", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          timeZone: "UTC",
+        }).format(snapshot.accountCreatedAtGuess)
+      : "غير متاح";
+    const accountCreatedAtIsEstimated =
+      snapshot.accountCreatedAtGuess !== null &&
+      rawProfile?.accountCreatedAtSource !== "profile_create_time";
+    const creatorLeague = getStoredCreatorLeague(rawPayload);
+    const liveAccountLevel = getStoredLiveAccountLevel(rawPayload);
 
     // Generate HTML content for PDF
     const htmlContent = `
@@ -304,6 +324,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
     <div class="account-details">
       <h2>@${account.externalUsername}</h2>
       <p>${account.provider.displayName} • ${snapshot.accountType === "business" ? "حساب أعمال" : "حساب شخصي"}</p>
+      <p>تاريخ إنشاء الحساب: ${accountCreatedAt}${accountCreatedAtIsEstimated ? '<span class="estimated-badge">تقديري</span>' : ""}</p>
+      <p>معلومات حساب LIVE: <strong>المستوى: ${liveAccountLevel?.level ?? "لم يظهر في بيانات LIVE"}</strong></p>
+      ${creatorLeague ? `<p>تصنيف Creator League: <strong dir="ltr">${creatorLeague.league}</strong></p>` : ""}
     </div>
   </div>
   

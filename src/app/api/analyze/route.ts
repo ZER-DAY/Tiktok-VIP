@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { analyzeQueue } from "@/workers/queue";
+import { isAnalysisDataCurrent } from "@/workers/analysis-data";
 import { prisma } from "@/lib/prisma";
 
 const analyzeSchema = z.object({
@@ -60,7 +61,11 @@ export async function POST(request: NextRequest) {
         const snapshot = existing.snapshots[0];
         const hoursSince = (Date.now() - snapshot.capturedAt.getTime()) / (1000 * 60 * 60);
 
-        if (hoursSince < 6 && snapshot.analysisReport) {
+        if (
+          hoursSince < 6 &&
+          snapshot.analysisReport &&
+          isAnalysisDataCurrent(snapshot.rawPayload)
+        ) {
           return NextResponse.json({
             success: true,
             data: {

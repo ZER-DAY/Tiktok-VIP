@@ -1,6 +1,7 @@
 "use client";
 
 import { use, useEffect, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -22,19 +23,30 @@ import {
   Send,
   CheckCircle,
   FileText,
+  MapPin,
+  CalendarDays,
+  Trophy,
 } from "lucide-react";
 
 interface ReportData {
   reportId: string;
   account: {
     username: string;
+    avatarUrl: string | null;
     provider: string;
     isVerified: boolean;
     accountType: string;
     countryGuess: string | null;
     countryGuessConfidence: number | null;
+    countryRegionCode: string | null;
+    countryGuessSource: string | null;
     bioLanguageGuess: string | null;
     accountCreatedAtGuess: string | null;
+    liveCreatorLeague: string | null;
+    liveCreatorLeagueClassType: number | null;
+    liveCreatorLeagueSource: string | null;
+    liveAccountLevel: number | null;
+    liveAccountLevelSource: string | null;
     isEstimated: { country: boolean; createdAt: boolean };
   };
   statistics: {
@@ -93,6 +105,28 @@ function formatNumber(num: number): string {
   return num.toString();
 }
 
+function formatAccountDate(value: string | null, locale: string): string | null {
+  if (!value) return null;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return null;
+
+  return new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+function regionCodeToFlag(regionCode: string | null): string | null {
+  const normalized = regionCode?.trim().toUpperCase();
+  if (!normalized || !/^[A-Z]{2}$/.test(normalized)) return null;
+
+  return String.fromCodePoint(
+    ...[...normalized].map((character) => 0x1f1e6 + character.charCodeAt(0) - 65)
+  );
+}
+
 function getScoreLevel(score: number): "high" | "medium" | "low" {
   if (score >= 70) return "high";
   if (score >= 40) return "medium";
@@ -140,6 +174,7 @@ export default function ReportPage({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [eligibilityThreshold, setEligibilityThreshold] = useState(60);
+  const [avatarFailed, setAvatarFailed] = useState(false);
 
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [isSubmittingApplication, setIsSubmittingApplication] = useState(false);
@@ -304,8 +339,21 @@ export default function ReportPage({
           >
             <div className="grid items-stretch lg:grid-cols-[1fr_1px_.52fr_1px_180px]">
               <div className="flex items-center gap-5 p-6 sm:p-8">
-                <div className="grid size-20 shrink-0 place-items-center rounded-full bg-foreground text-2xl font-black text-background ring-4 ring-muted">
-                  {report.account.username.charAt(0).toUpperCase()}
+                <div className="relative grid size-20 shrink-0 place-items-center overflow-hidden rounded-full bg-foreground text-2xl font-black text-background ring-4 ring-muted">
+                  {report.account.avatarUrl && !avatarFailed ? (
+                    <Image
+                      loader={({ src }) => src}
+                      unoptimized
+                      fill
+                      sizes="80px"
+                      src={report.account.avatarUrl}
+                      alt={`@${report.account.username}`}
+                      className="object-cover"
+                      onError={() => setAvatarFailed(true)}
+                    />
+                  ) : (
+                    report.account.username.charAt(0).toUpperCase()
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -325,6 +373,62 @@ export default function ReportPage({
                         ? t("personal")
                         : t("unknown")}
                   </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <div className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm">
+                      <MapPin className="size-4 shrink-0 text-brand" />
+                      <span className="text-muted-foreground">{t("countryRegistered")}:</span>
+                      <strong className="text-foreground">
+                        {regionCodeToFlag(report.account.countryRegionCode) && (
+                          <span className="me-1" aria-hidden="true">
+                            {regionCodeToFlag(report.account.countryRegionCode)}
+                          </span>
+                        )}
+                        {report.account.countryGuess
+                          ? COUNTRY_TRANSLATION_KEYS[report.account.countryGuess]
+                            ? t(
+                                `countries.${COUNTRY_TRANSLATION_KEYS[report.account.countryGuess]}`
+                              )
+                            : report.account.countryGuess
+                          : t("countryUnavailable")}
+                      </strong>
+                    </div>
+                    <div className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm">
+                      <CalendarDays className="size-4 shrink-0 text-brand-purple" />
+                      <span className="text-muted-foreground">{t("accountCreatedAt")}:</span>
+                      <strong className="text-foreground">
+                        {formatAccountDate(report.account.accountCreatedAtGuess, locale) ??
+                          t("accountCreatedAtUnavailable")}
+                      </strong>
+                      {report.account.accountCreatedAtGuess &&
+                        report.account.isEstimated.createdAt && (
+                          <span className="rounded-full bg-warning/10 px-2 py-0.5 text-xs text-warning">
+                            {t("estimated")}
+                          </span>
+                        )}
+                    </div>
+                    <div className="inline-flex items-center gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-2">
+                      <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-amber-500/15">
+                        <Trophy className="size-4 text-amber-500" />
+                      </div>
+                      <div>
+                        <span className="block text-[11px] font-semibold text-muted-foreground">
+                          {t("liveAccountInfo")}
+                        </span>
+                        <strong className="text-sm text-foreground">
+                          {report.account.liveAccountLevel !== null ? (
+                            <>
+                              {t("liveAccountLevel")}:{" "}
+                              <bdi className="text-base font-black text-amber-600 dark:text-amber-400">
+                                {report.account.liveAccountLevel}
+                              </bdi>
+                            </>
+                          ) : (
+                            t("liveAccountLevelUnavailable")
+                          )}
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="hidden bg-border lg:block" />
@@ -508,10 +612,55 @@ export default function ReportPage({
               {t("accountInfo")}
             </h3>
             <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">{t("liveAccountInfo")}</p>
+                <p className="flex items-center gap-2 text-foreground">
+                  <Trophy className="size-4 text-amber-500" />
+                  <strong>
+                    {report.account.liveAccountLevel !== null
+                      ? `${t("liveAccountLevel")}: ${report.account.liveAccountLevel}`
+                      : t("liveAccountLevelUnavailable")}
+                  </strong>
+                </p>
+              </div>
+              {report.account.liveCreatorLeague && (
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">{t("liveCreatorLeague")}</p>
+                  <p className="flex items-center gap-2 text-foreground">
+                    <Trophy className="size-4 text-amber-500" />
+                    <strong dir="ltr">{report.account.liveCreatorLeague}</strong>
+                  </p>
+                </div>
+              )}
+              <div>
+                <p className="text-sm text-muted-foreground mb-1">{t("accountCreatedAt")}</p>
+                <p className="flex items-center gap-2 text-foreground">
+                  <CalendarDays className="size-4 text-brand-purple" />
+                  {formatAccountDate(report.account.accountCreatedAtGuess, locale) ??
+                    t("accountCreatedAtUnavailable")}
+                  {report.account.accountCreatedAtGuess && report.account.isEstimated.createdAt && (
+                    <span className="inline-flex items-center rounded-full bg-warning/10 px-2 py-0.5 text-xs text-warning">
+                      {t("estimated")}
+                    </span>
+                  )}
+                </p>
+              </div>
               {report.account.countryGuess && (
                 <div>
-                  <p className="text-sm text-muted-foreground mb-1">{t("country")}</p>
+                  <p className="text-sm text-muted-foreground mb-1">
+                    {t(
+                      report.account.countryGuessSource === "region_code" ||
+                        report.account.countryGuessSource === "location_created"
+                        ? "countryRegistered"
+                        : "country"
+                    )}
+                  </p>
                   <p className="text-foreground flex items-center gap-2">
+                    {regionCodeToFlag(report.account.countryRegionCode) && (
+                      <span className="text-xl" aria-hidden="true">
+                        {regionCodeToFlag(report.account.countryRegionCode)}
+                      </span>
+                    )}
                     {COUNTRY_TRANSLATION_KEYS[report.account.countryGuess]
                       ? t(`countries.${COUNTRY_TRANSLATION_KEYS[report.account.countryGuess]}`)
                       : report.account.countryGuess}

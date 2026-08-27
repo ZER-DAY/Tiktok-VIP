@@ -105,6 +105,42 @@ describe("analyzeAudience", () => {
     ];
     const result = analyzeAudience(snapshot, videos);
     expect(result.countryGuess).toBeNull();
+    expect(result.countrySource).toBeNull();
+  });
+
+  it("prioritizes official TikTok region_code over text inference", () => {
+    const snapshot = makeSnapshot();
+    const result = analyzeAudience(snapshot, [
+      {
+        description: "رحلة إلى القاهرة #مصر",
+        hashtags: ["مصر", "القاهرة"],
+        createdAt: "2024-01-01T12:00:00Z",
+        regionCode: "SA",
+      },
+    ]);
+
+    expect(result.countryGuess).toBe("Saudi Arabia");
+    expect(result.countryRegionCode).toBe("SA");
+    expect(result.countrySource).toBe("region_code");
+    expect(result.countryConfidence).toBe(1);
+  });
+
+  it("uses the majority locationCreated as the account registration country", () => {
+    const snapshot = makeSnapshot();
+    const videos = ["AE", "AE", "AE", "AE", "AE", "SA"].map((locationCreated, index) => ({
+      description: "",
+      hashtags: [],
+      createdAt: `2024-01-0${index + 1}T12:00:00Z`,
+      locationCreated,
+    }));
+
+    const result = analyzeAudience(snapshot, videos);
+
+    expect(result.countryGuess).toBe("UAE");
+    expect(result.countryRegionCode).toBe("AE");
+    expect(result.countrySource).toBe("location_created");
+    expect(result.countryEvidenceCount).toBe(5);
+    expect(result.countryConfidence).toBeCloseTo(5 / 6);
   });
 
   it("calculates best posting times", () => {

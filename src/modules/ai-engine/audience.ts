@@ -4,11 +4,31 @@ export interface AudienceResult {
   countryGuess: string | null;
   countryConfidence: number;
   countryEvidenceCount: number;
+  countryRegionCode: string | null;
+  countrySource: "region_code" | "location_created" | "content_inference" | null;
   analyzedVideos: number;
   languageGuess: string | null;
   languageConfidence: number;
   bestPostingTimes: { day: string; hour: number; score: number }[];
 }
+
+const REGION_COUNTRY_NAMES: Record<string, string> = {
+  SA: "Saudi Arabia",
+  EG: "Egypt",
+  AE: "UAE",
+  KW: "Kuwait",
+  QA: "Qatar",
+  BH: "Bahrain",
+  OM: "Oman",
+  JO: "Jordan",
+  IQ: "Iraq",
+  MA: "Morocco",
+  DZ: "Algeria",
+  TN: "Tunisia",
+  LB: "Lebanon",
+  PS: "Palestine",
+  SY: "Syria",
+};
 
 const GEOGRAPHIC_SIGNALS: Record<string, string[]> = {
   "Saudi Arabia": [
@@ -53,9 +73,45 @@ function normalizeText(value: string): string {
     .trim();
 }
 
+function getCountryName(regionCode: string): string {
+  if (REGION_COUNTRY_NAMES[regionCode]) return REGION_COUNTRY_NAMES[regionCode];
+
+  try {
+    return new Intl.DisplayNames(["en"], { type: "region" }).of(regionCode) ?? regionCode;
+  } catch {
+    return regionCode;
+  }
+}
+
+function getDominantRegion(
+  videos: { regionCode?: string | null; locationCreated?: string | null }[],
+  field: "regionCode" | "locationCreated"
+) {
+  const counts = new Map<string, number>();
+  let totalEvidence = 0;
+  for (const video of videos) {
+    const regionCode = video[field]?.trim().toUpperCase();
+    if (/^[A-Z]{2}$/.test(regionCode ?? "")) {
+      counts.set(regionCode!, (counts.get(regionCode!) ?? 0) + 1);
+      totalEvidence++;
+    }
+  }
+
+  const best = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
+  return best
+    ? { regionCode: best[0], evidence: best[1], confidence: best[1] / totalEvidence }
+    : null;
+}
+
 export function analyzeAudience(
   snapshot: SnapshotInput,
-  videos: { description: string; hashtags: string[]; createdAt: string }[]
+  videos: {
+    description: string;
+    hashtags: string[];
+    createdAt: string;
+    regionCode?: string | null;
+    locationCreated?: string | null;
+  }[]
 ): AudienceResult {
   const profile = snapshot.rawPayload?.profile as Record<string, unknown> | undefined;
   const allText = [
@@ -109,6 +165,9 @@ export function analyzeAudience(
     ? Math.min(0.95, 0.3 + best.score * 0.055 + coverage * 0.2 + Math.min(0.15, margin * 0.03))
     : 0;
   const bestCountry = best && best.score >= 2 && countryConfidence >= 0.4 ? best.country : null;
+  const researchRegion = getDominantRegion(videos, "regionCode");
+  const uploadRegion = getDominantRegion(videos, "locationCreated");
+  const directRegion = researchRegion ?? uploadRegion;
 
   const hasArabic = /[\u0600-\u06FF]/.test(allText);
   const arabicRatio =
@@ -137,9 +196,25 @@ export function analyzeAudience(
     .slice(0, 5);
 
   return {
-    countryGuess: countryConfidence >= 0.4 ? bestCountry : null,
-    countryConfidence,
-    countryEvidenceCount: best?.evidence ?? 0,
+    countryGuess: directRegion
+      ? getCountryName(directRegion.regionCode)
+      : countryConfidence >= 0.4
+        ? bestCountry
+        : null,
+    countryConfidence: researchRegion
+      ? 1
+      : uploadRegion
+        ? uploadRegion.confidence
+        : countryConfidence,
+    countryEvidenceCount: directRegion?.evidence ?? best?.evidence ?? 0,
+    countryRegionCode: directRegion?.regionCode ?? null,
+    countrySource: directRegion
+      ? researchRegion
+        ? "region_code"
+        : "location_created"
+      : countryConfidence >= 0.4 && bestCountry
+        ? "content_inference"
+        : null,
     analyzedVideos: videos.length,
     languageGuess,
     languageConfidence,
