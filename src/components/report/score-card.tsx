@@ -71,15 +71,21 @@ export function ScoreCard({
   const level = getScoreLevel(score);
 
   return (
-    <div className={`rounded-2xl border border-border bg-card ${compact ? "p-4" : "p-5"}`}>
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <div className={`grid size-9 place-items-center rounded-xl ${getScoreSoftBg(level)}`}>
+    <div
+      className={`min-w-0 overflow-hidden rounded-2xl border border-border bg-card ${compact ? "p-4" : "p-5"}`}
+    >
+      <div className="mb-4 flex min-w-0 items-start justify-between gap-3">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <div
+            className={`grid size-9 shrink-0 place-items-center rounded-xl ${getScoreSoftBg(level)}`}
+          >
             <Icon className={`w-4 h-4 ${getScoreColor(level)}`} />
           </div>
-          <span className="text-sm font-bold text-foreground">{title}</span>
+          <span className="min-w-0 break-words text-sm font-bold leading-snug text-foreground">
+            {title}
+          </span>
         </div>
-        <div className="text-end">
+        <div className="shrink-0 text-end">
           <span className={`text-3xl font-black ${getScoreColor(level)}`}>{score}</span>
           <span className="ms-1 text-[10px] text-muted-foreground">/100</span>
           {showLabel && (

@@ -373,11 +373,13 @@ export default function ReportPage({
                         ? t("personal")
                         : t("unknown")}
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <div className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm">
+                  <div className="mt-3 flex max-w-full flex-wrap gap-2">
+                    <div className="flex min-w-0 max-w-full items-center gap-2 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm">
                       <MapPin className="size-4 shrink-0 text-brand" />
-                      <span className="text-muted-foreground">{t("countryRegistered")}:</span>
-                      <strong className="text-foreground">
+                      <span className="min-w-0 text-muted-foreground">
+                        {t("countryRegistered")}:
+                      </span>
+                      <strong className="min-w-0 break-words text-foreground">
                         {regionCodeToFlag(report.account.countryRegionCode) && (
                           <span className="me-1" aria-hidden="true">
                             {regionCodeToFlag(report.account.countryRegionCode)}
@@ -392,10 +394,12 @@ export default function ReportPage({
                           : t("countryUnavailable")}
                       </strong>
                     </div>
-                    <div className="inline-flex items-center gap-2 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm">
+                    <div className="flex min-w-0 max-w-full items-center gap-2 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm">
                       <CalendarDays className="size-4 shrink-0 text-brand-purple" />
-                      <span className="text-muted-foreground">{t("accountCreatedAt")}:</span>
-                      <strong className="text-foreground">
+                      <span className="min-w-0 text-muted-foreground">
+                        {t("accountCreatedAt")}:
+                      </span>
+                      <strong className="min-w-0 break-words text-foreground">
                         {formatAccountDate(report.account.accountCreatedAtGuess, locale) ??
                           t("accountCreatedAtUnavailable")}
                       </strong>
@@ -406,15 +410,15 @@ export default function ReportPage({
                           </span>
                         )}
                     </div>
-                    <div className="inline-flex items-center gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-2">
+                    <div className="flex min-w-0 max-w-full items-center gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-2">
                       <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-amber-500/15">
                         <Trophy className="size-4 text-amber-500" />
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <span className="block text-[11px] font-semibold text-muted-foreground">
                           {t("liveAccountInfo")}
                         </span>
-                        <strong className="text-sm text-foreground">
+                        <strong className="break-words text-sm text-foreground">
                           {report.account.liveAccountLevel !== null ? (
                             <>
                               {t("liveAccountLevel")}:{" "}
@@ -511,7 +515,7 @@ export default function ReportPage({
               <BarChart3 className="w-5 h-5 text-brand" />
               {t("aiResults")}
             </h3>
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {scoreKeys.slice(0, 4).map((key) => (
                 <ScoreCard
                   key={key}
@@ -522,7 +526,7 @@ export default function ReportPage({
                 />
               ))}
             </div>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {scoreKeys.slice(4).map((key) => (
                 <ScoreCard
                   key={key}
@@ -611,7 +615,7 @@ export default function ReportPage({
               <FileText className="w-5 h-5 text-muted-foreground" />
               {t("accountInfo")}
             </h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <p className="text-sm text-muted-foreground mb-1">{t("liveAccountInfo")}</p>
                 <p className="flex items-center gap-2 text-foreground">
