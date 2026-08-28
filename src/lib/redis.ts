@@ -10,7 +10,9 @@ export function getRedis(): Redis {
     globalForRedis.redis = new Redis(process.env.REDIS_URL ?? "redis://localhost:6379", {
       maxRetriesPerRequest: null,
       lazyConnect: true,
-      enableOfflineQueue: false,
+      // BullMQ workers use blocking commands and must be able to resume them
+      // after a short managed-Redis reconnect.
+      enableOfflineQueue: true,
     });
   }
   return globalForRedis.redis;

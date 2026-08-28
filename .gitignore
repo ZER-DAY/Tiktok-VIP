@@ -41,6 +41,7 @@ yarn-error.log*
 # Marketplace-installed agent instructions (local tooling only)
 .agents/
 skills-lock.json
+.admin-credentials
 
 # typescript
 *.tsbuildinfo
