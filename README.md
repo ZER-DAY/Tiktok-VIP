@@ -118,7 +118,7 @@ Vercel إلى الوصول إلى شبكة الشركة الخاصة.
 
 ```bash
 cp .env.worker.example .env.worker
-# عدّل DATABASE_URL وREDIS_URL وBETTER_AUTH_SECRET وNEXT_PUBLIC_APP_URL
+# عدّل DATABASE_URL وREDIS_URL وNEXT_PUBLIC_APP_URL
 # غيّر ALLOW_LOCAL_SERVICES إلى false عند استخدام الخدمات المُدارة
 docker compose -f docker-compose.worker.yml run --rm --entrypoint sh worker -lc \
   "./node_modules/.bin/prisma migrate deploy"

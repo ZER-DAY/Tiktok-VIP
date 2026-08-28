@@ -1,9 +1,3 @@
-const PLACEHOLDER_SECRETS = new Set([
-  "your-secret-key-change-in-production",
-  "dev-secret-key",
-  "build-placeholder",
-]);
-
 function requiredUrl(name: "DATABASE_URL" | "REDIS_URL", protocols: string[]): URL {
   const value = process.env[name];
   if (!value) throw new Error(`${name} is required`);
@@ -32,11 +26,4 @@ function requiredUrl(name: "DATABASE_URL" | "REDIS_URL", protocols: string[]): U
 export function validateWorkerEnvironment() {
   requiredUrl("DATABASE_URL", ["postgresql:", "postgres:"]);
   requiredUrl("REDIS_URL", ["redis:", "rediss:"]);
-
-  const secret = process.env.BETTER_AUTH_SECRET;
-  if (!secret || secret.length < 32 || PLACEHOLDER_SECRETS.has(secret)) {
-    throw new Error(
-      "BETTER_AUTH_SECRET must be a non-placeholder secret of at least 32 characters"
-    );
-  }
 }

@@ -1,10 +1,19 @@
 services:
   worker:
+    image: tiktok-vip-worker:latest
     build:
       context: .
       dockerfile: Dockerfile.worker
     env_file:
       - .env.worker
+    volumes:
+      # Keep the checked-out worker source in sync even when Docker Hub is
+      # temporarily unreachable and the cached image must be reused.
+      - ./src:/app/src:ro
     restart: unless-stopped
     init: true
     stop_grace_period: 2m
+    # The company machine's Docker bridge cannot reliably reach the managed
+    # TLS endpoints over IPv4. The worker exposes no ports, so host networking
+    # is safe here and uses the machine's working outbound route.
+    network_mode: host
