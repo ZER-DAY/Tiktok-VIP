@@ -2,7 +2,7 @@ import { Worker, Job } from "bullmq";
 import { getRedis } from "@/lib/redis";
 import { prisma } from "@/lib/prisma";
 import { TikTokProvider } from "@/modules/providers";
-import { analysisQueue } from "./analysis-queue";
+import { getAnalysisQueue } from "./analysis-queue";
 import type { AnalyzeJobData } from "./queue";
 import { ANALYSIS_DATA_VERSION, isAnalysisDataCurrent } from "./analysis-data";
 import { isLiveAccountLevelProviderConfigured } from "@/modules/providers/tiktok/live-account-level";
@@ -169,7 +169,7 @@ async function processAnalyzeJob(job: Job<AnalyzeJobData>) {
   await job.updateProgress(100);
 
   // Trigger analysis report generation
-  await analysisQueue.add("analyze", { snapshotId: snapshot.id });
+  await getAnalysisQueue().add("analyze", { snapshotId: snapshot.id });
 
   return { accountId, snapshotId: snapshot.id, fromCache: false };
 }

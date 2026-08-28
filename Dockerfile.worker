@@ -28,4 +28,7 @@ USER worker
 # DATABASE_URL and REDIS_URL are supplied at runtime. Migrations are run by
 # the deploy step before the worker starts; this keeps the long-lived process
 # free from schema migration races when multiple workers are deployed.
-CMD ["pnpm", "exec", "tsx", "src/workers/index.ts"]
+HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
+  CMD ["./node_modules/.bin/tsx", "src/workers/healthcheck.ts"]
+
+CMD ["./node_modules/.bin/tsx", "src/workers/index.ts"]

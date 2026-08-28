@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getRedis } from "@/lib/redis";
+import { connectRedis } from "@/lib/redis";
 
 interface ServiceStatus {
   status: string;
@@ -25,7 +25,7 @@ export async function GET() {
   // Redis check
   const redisStart = Date.now();
   try {
-    const redis = getRedis();
+    const redis = await connectRedis();
     await redis.ping();
     results.redis = { status: "connected", latencyMs: Date.now() - redisStart };
   } catch {
@@ -35,7 +35,7 @@ export async function GET() {
 
   // Queue check (optional - may not be available in all environments)
   try {
-    const queueInfo = await getRedis().info("stats");
+    const queueInfo = await (await connectRedis()).info("stats");
     const processedCommands = queueInfo.match(/total_commands_processed:(\d+)/);
     results.queue = {
       status: "connected",

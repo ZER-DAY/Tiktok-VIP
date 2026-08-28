@@ -117,12 +117,28 @@ Vercel إلى الوصول إلى شبكة الشركة الخاصة.
 على جهاز الشركة:
 
 ```bash
-cp .env.example .env.worker
+cp .env.worker.example .env.worker
 # عدّل DATABASE_URL وREDIS_URL وBETTER_AUTH_SECRET وNEXT_PUBLIC_APP_URL
+# غيّر ALLOW_LOCAL_SERVICES إلى false عند استخدام الخدمات المُدارة
 docker compose -f docker-compose.worker.yml run --rm --entrypoint sh worker -lc \
-  "pnpm exec prisma migrate deploy"
+  "./node_modules/.bin/prisma migrate deploy"
 docker compose -f docker-compose.worker.yml up -d --build
 docker compose -f docker-compose.worker.yml logs -f worker
+```
+
+يجب أن يكون `REDIS_URL` رابط Redis مباشرًا يبدأ بـ `redis://` أو `rediss://`، وليس رابط
+Upstash REST. استخدم TLS (`rediss://`) عندما يقدمه مزود الخدمة. اختر منطقة PostgreSQL وRedis
+قريبة من منطقة Vercel ومن موقع جهاز الشركة، واسمح بعنوان IP الخاص بالشركة في إعدادات المزود
+إذا كانت لديه قائمة سماح. ينفّذ الـworker فحص صحة دوريًا ويعيد التشغيل تلقائيًا عند التعطل،
+ويتوقف بشكل منظّم عند تحديث الحاوية حتى لا يقطع مهمة جارية.
+
+بعد ضبط متغيرات Vercel، نفّذ migrations مرة واحدة من جهاز الشركة ثم اختبر:
+
+```bash
+curl -fsS https://YOUR-DOMAIN/api/health
+curl -fsS -X POST https://YOUR-DOMAIN/api/analyze \
+  -H 'content-type: application/json' \
+  --data '{"provider":"tiktok","username":"tiktok"}'
 ```
 
 بعد تشغيل الـ worker، يضيف `/api/analyze` المهمة إلى Redis من Vercel، يلتقطها جهاز

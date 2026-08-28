@@ -5,7 +5,9 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  output: "standalone",
+  // Vercel creates its own deployment output. Standalone is only needed by
+  // the self-hosted Docker image.
+  output: process.env.VERCEL ? undefined : "standalone",
 };
 
 export default withNextIntl(nextConfig);

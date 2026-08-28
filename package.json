@@ -10,10 +10,13 @@
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "postinstall": "prisma generate",
     "db:seed": "pnpm exec prisma db seed",
     "db:studio": "pnpm exec prisma studio",
     "test": "vitest run",
     "test:watch": "vitest",
+    "worker:start": "tsx src/workers/index.ts",
+    "worker:check": "tsx src/workers/healthcheck.ts",
     "prepare": "husky || true"
   },
   "dependencies": {

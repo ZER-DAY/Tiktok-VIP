@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { analyzeQueue } from "@/workers/queue";
+import { getAnalyzeQueue } from "@/workers/queue";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(
@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { jobId } = await params;
-    const job = await analyzeQueue.getJob(jobId);
+    const job = await getAnalyzeQueue().getJob(jobId);
 
     if (!job) {
       return NextResponse.json(

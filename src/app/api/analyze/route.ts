@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { analyzeQueue } from "@/workers/queue";
+import { getAnalyzeQueue } from "@/workers/queue";
 import { isAnalysisDataCurrent } from "@/workers/analysis-data";
 import { prisma } from "@/lib/prisma";
 
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Add job to queue
-    const job = await analyzeQueue.add(
+    const job = await getAnalyzeQueue().add(
       "analyze",
       {
         username: cleanUsername,
