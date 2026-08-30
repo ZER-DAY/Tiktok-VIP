@@ -1,11 +1,12 @@
 {
   "siteName": "TikTok Intelligence",
   "hero": {
-    "eyebrow": "تحليلات مستقلة ومصممة للمبدعين",
+    "eyebrow": "تحليلات مستقلة للمبدعين",
     "titleLine1": "حلّل حسابك.",
     "titleLine2": "افهم نموّك.",
     "title": "تحليلات TikTok ذكية البيانات.. قرارات أقوى",
     "subtitle": "أداة متطورة بتقنية الذكاء الاصطناعي لتحليل أي حساب على TikTok. احصل على رؤى استراتيجية واضحة لتطوير حسابك والوصول لأكبر قدر ممكن من الجمهور.",
+    "subtitleShort": "منصة تحليلات مستقلة تمنحك رؤى عميقة عن محتواك وجمهورك لتنمو بسرعة وتتخذ قرارات ذكية.",
     "cta": "ابدأ التحليل الآن",
     "inputPlaceholder": "أدخل يوزر TikTok",
     "trust": "موثوق من أكثر من 10,000+ مبدع ووكالة",
@@ -33,7 +34,38 @@
     "lastThirtyDays": "آخر 30 يوماً",
     "contentSignals": "مؤشرات المحتوى",
     "reach": "فرص الوصول",
-    "consistency": "انتظام النشر"
+    "consistency": "انتظام النشر",
+    "secureHint": "لا نطلب كلمة المرور. آمن 100%.",
+    "dashboard": {
+      "creator": "صانع محتوى",
+      "last28Days": "آخر 28 يوماً",
+      "overallScore": "مؤشر الأداء الكلي",
+      "followers": "المتابعون",
+      "likes": "الإعجابات",
+      "contentSignals": "إشارات المحتوى",
+      "averageWatch": "متوسط مدة المشاهدة",
+      "completionRate": "معدل الإكمال",
+      "shareRate": "معدل المشاركة",
+      "followerGrowth": "نمو المتابعين",
+      "topVideos": "أفضل المقاطع",
+      "viewAll": "عرض الكل",
+      "menu": {
+        "overview": "نظرة عامة",
+        "content": "المحتوى",
+        "audience": "الجمهور",
+        "growth": "النمو",
+        "engagement": "التفاعل",
+        "comparisons": "المقارنات",
+        "reports": "التقارير"
+      },
+      "dates": {
+        "apr20": "20 أبريل",
+        "apr27": "27 أبريل",
+        "may4": "4 مايو",
+        "may11": "11 مايو",
+        "may18": "18 مايو"
+      }
+    }
   },
   "features": {
     "eyebrow": "مميزات مصممة للمبدعين",
@@ -48,7 +80,23 @@
     "pdfExport": "تصدير PDF احترافي",
     "pdfExportDesc": "تقرير مفصل بتصميم احترافي جاهز للمشاركة",
     "competitorAnalysis": "مقارنة بالمنافسين",
-    "competitorAnalysisDesc": "قارن أداءك بالمنافسين واكتشف فرص النمو"
+    "competitorAnalysisDesc": "قارن أداءك بالمنافسين واكتشف فرص النمو",
+    "reportsShare": {
+      "title": "تقارير جاهزة للمشاركة",
+      "description": "تقارير احترافية قابلة للتصدير وعرضها على فريقك أو شركائك."
+    },
+    "smartCompetitors": {
+      "title": "راقب منافسيك بذكاء",
+      "description": "قارن أداءك مع المنافسين واكتشف فرص النمو."
+    },
+    "discoverResults": {
+      "title": "اكتشف ما يحقق النتائج",
+      "description": "تعرّف على محتواك الأفضل وأسباب نجاحه لتكرر وتطوّر."
+    },
+    "deepAudience": {
+      "title": "افهم جمهورك بعمق",
+      "description": "تحليلات ديموغرافية وسلوكية دقيقة لتعرف من يتابعك ولماذا."
+    }
   },
   "howItWorks": {
     "kicker": "بسيط وسريع",
@@ -59,10 +107,18 @@
     "step2Title": "تحليل ذكي",
     "step2Desc": "نحلل حسابك بالذكاء الاصطناعي في ثوانٍ",
     "step3Title": "احصل على التقرير",
-    "step3Desc": "تقرير شامل مع توصيات عملية لتطوير حسابك"
+    "step3Desc": "تقرير شامل مع توصيات عملية لتطوير حسابك",
+    "compactTitle": "كيف يعمل؟ في 3 خطوات بسيطة",
+    "step1CompactTitle": "أدخل اسم المستخدم",
+    "step1CompactDesc": "أدخل اسم مستخدم حسابك على TikTok.",
+    "step2CompactTitle": "نحلل بياناتك",
+    "step2CompactDesc": "نقوم بتحليل شامل لمحتواك وجمهورك وأدائك.",
+    "step3CompactTitle": "احصل على رؤى قابلة للتنفيذ",
+    "step3CompactDesc": "توصيات مخصصة تساعدك على النمو بسرعة."
   },
   "socialProof": {
     "trustLine": "منصة تحليل مستقلة لصنّاع المحتوى والوكالات",
+    "creatorTrust": "يثق بنا آلاف المبدعين في العالم العربي",
     "trust": {
       "privacy": "خصوصية مصممة بعناية",
       "fresh": "بيانات حديثة عند التحليل",
@@ -80,6 +136,7 @@
     "stat4Label": "دعم متواصل"
   },
   "pricing": {
+    "kicker": "باقات واضحة بلا مفاجآت",
     "title": "اختر الباقة المناسبة لك",
     "subtitle": "ابدأ مجاناً واترقِ حسب احتياجك",
     "free": "المجانية",
@@ -103,9 +160,42 @@
     "agencyFeature3": "تقارير جماعية",
     "agencyFeature4": "حسابات متعددة للفريق",
     "cta": "ابدأ الآن",
-    "popular": "الأكثر شيوعاً"
+    "popular": "الأكثر شيوعاً",
+    "compactTitle": "اختر الخطة المناسبة لك",
+    "mostPopular": "الأكثر شيوعاً",
+    "annualSaving": "وفّر 20% سنوياً",
+    "basic": {
+      "name": "أساسي",
+      "price": "$0",
+      "period": "مجاناً",
+      "description": "لبداية رحلتك في التحليلات",
+      "feature1": "تحليلات أساسية محدودة",
+      "feature2": "ملخص أداء الحساب",
+      "feature3": "رؤى نمو أولية"
+    },
+    "advanced": {
+      "name": "متقدم",
+      "price": "$19",
+      "period": "شهرياً",
+      "description": "لكل صانع محتوى طموح",
+      "feature1": "تتبع حتى 3 حسابات",
+      "feature2": "تحليلات متقدمة",
+      "feature3": "تقارير PDF احترافية",
+      "feature4": "مقارنة المنافسين"
+    },
+    "professional": {
+      "name": "احترافي",
+      "price": "$49",
+      "period": "شهرياً",
+      "description": "للمنشئين الجادين والنمو السريع",
+      "feature1": "تحليلات متقدمة غير محدودة",
+      "feature2": "إدارة حسابات متعددة",
+      "feature3": "تقارير جماعية",
+      "feature4": "أولوية الدعم"
+    }
   },
   "agencyTeaser": {
+    "eyebrow": "TikTok LIVE",
     "title": "مؤهل للوكالة؟",
     "subtitle": "إذا كان حسابك مؤهلاً، يمكنك الانضمام إلى شبكة وكالات TikTok LIVE والحصول على دعم مخصص وفرص ربح إضافية.",
     "cta": "اعرف المزيد",
@@ -117,8 +207,10 @@
     }
   },
   "nav": {
+    "siteName": "TikTok Intelligence",
     "home": "الرئيسية",
     "features": "المميزات",
+    "howItWorks": "كيف يعمل",
     "pricing": "الأسعار",
     "dashboard": "لوحة التحكم",
     "login": "تسجيل الدخول",
@@ -128,6 +220,8 @@
     "switchLang": "English"
   },
   "footer": {
+    "siteName": "TikTok Intelligence",
+    "socialInstagram": "إنستغرام",
     "product": "المنتج",
     "analyzer": "تحليل الحساب",
     "pricing": "الأسعار",
@@ -178,6 +272,7 @@
     "backToLogin": "العودة لتسجيل الدخول"
   },
   "dashboard": {
+    "kicker": "لوحة تحكم TikTok Intelligence",
     "welcome": "مرحباً بعودتك!",
     "welcomeSubtitle": "إليك ملخص حساباتك الأخيرة",
     "analyzeNew": "تحليل حساب جديد",
@@ -201,6 +296,7 @@
       "logout": "تسجيل الخروج"
     },
     "accounts": {
+      "kicker": "حسابات TikTok المحلّلة",
       "title": "حساباتي",
       "subtitle": "قائمة الحسابات التي حللتها",
       "addAccount": "إضافة حساب",
@@ -210,6 +306,7 @@
       "refresh": "تحديث"
     },
     "compare": {
+      "kicker": "مقارنة الأداء",
       "title": "المقارنات",
       "subtitle": "قارن أداء حسابك مع حسابات أخرى",
       "selectAccounts": "اختر الحسابات للمقارنة",

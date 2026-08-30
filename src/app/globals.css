@@ -47,8 +47,10 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-brand: var(--brand);
+  --color-brand-pink: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-secondary: var(--brand-secondary);
+  --color-brand-purple: var(--brand-secondary);
   --color-brand-secondary-foreground: var(--brand-secondary-foreground);
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
@@ -111,10 +113,23 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply min-w-0 overflow-x-clip bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--brand) 22%, transparent);
+    color: var(--foreground);
+  }
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
 }
 
@@ -128,6 +143,14 @@
     transition-property: color, background-color, border-color, box-shadow, opacity;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 250ms;
+  }
+
+  .surface-card {
+    @apply rounded-2xl border border-border bg-card shadow-[0_18px_45px_-38px_rgba(17,24,39,.55)];
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/5 px-3 py-1.5 text-sm font-bold text-brand;
   }
 }
 

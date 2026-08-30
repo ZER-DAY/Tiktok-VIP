@@ -104,29 +104,31 @@ export default function AnalyzePage({
   const StatusIcon = statusConfig[jobStatus].icon;
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-background">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-12">
+      <div className="pointer-events-none absolute -end-20 top-16 size-64 rounded-full border-[30px] border-brand/10" />
+      <div className="pointer-events-none absolute -start-24 bottom-12 size-72 rounded-full border-[32px] border-brand-secondary/10" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center max-w-md w-full"
+        className="relative w-full max-w-md text-center"
       >
         {jobStatus === "failed" ? (
           <>
             <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
               <AlertCircle className="w-8 h-8 text-destructive" />
             </div>
-            <h1 className="text-xl font-bold text-foreground mb-2">{t("error")}</h1>
-            <p className="text-muted-foreground mb-6">{errorMessage}</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <h1 className="mb-2 text-xl font-black text-foreground">{t("error")}</h1>
+            <p className="mb-6 text-sm leading-7 text-muted-foreground">{errorMessage}</p>
+            <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <button
                 onClick={() => window.location.reload()}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all"
+                className="rounded-xl bg-brand px-6 py-3 font-bold text-brand-foreground transition hover:bg-brand/90"
               >
                 {t("retry")}
               </button>
               <Link
                 href="/"
-                className="px-6 py-3 rounded-xl border border-border text-foreground font-semibold hover:bg-muted transition-all"
+                className="rounded-xl border border-border px-6 py-3 font-bold text-foreground transition hover:bg-muted"
               >
                 {t("backToHome")}
               </Link>
@@ -134,7 +136,7 @@ export default function AnalyzePage({
           </>
         ) : (
           <>
-            <div className="relative w-20 h-20 mx-auto mb-6">
+            <div className="relative mx-auto mb-6 size-20">
               <div className="absolute inset-0 rounded-full border-4 border-border" />
               <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-brand-pink animate-spin" />
               <div
@@ -146,17 +148,17 @@ export default function AnalyzePage({
               </div>
             </div>
 
-            <h1 className="text-xl font-bold text-foreground mb-2">{t("title")}</h1>
-            <p className="text-muted-foreground text-sm mb-4">@{username.replace(/^@/, "")}</p>
+            <h1 className="mb-2 text-xl font-black text-foreground">{t("title")}</h1>
+            <p className="mb-4 text-sm text-muted-foreground">@{username.replace(/^@/, "")}</p>
 
-            <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground mb-6">
+            <div className="mb-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
               <Loader2 className="w-4 h-4 animate-spin" />
               <span>{t(`status.${jobStatus}`)}</span>
               <span className="text-xs">({elapsed}s)</span>
             </div>
 
-            <div className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-              <p>{t("subtitle")}</p>
+            <div className="surface-card p-4 text-sm text-muted-foreground">
+              <p className="leading-7">{t("subtitle")}</p>
               <div className="mt-4 flex items-center gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 p-3 text-start">
                 <div className="grid size-9 shrink-0 place-items-center rounded-lg bg-amber-500/15">
                   <Trophy className="size-5 text-amber-500" />

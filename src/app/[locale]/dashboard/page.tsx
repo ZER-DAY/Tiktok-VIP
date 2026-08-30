@@ -51,12 +51,12 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
         <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-muted rounded w-1/3" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="h-8 w-1/3 rounded-lg bg-muted" />
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-32 bg-muted/50 rounded-2xl" />
+              <div key={i} className="h-32 rounded-2xl bg-muted/50" />
             ))}
           </div>
         </div>
@@ -65,20 +65,21 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4"
+        className="flex flex-col justify-between gap-5 md:flex-row md:items-center"
       >
         <div>
-          <h1 className="text-2xl font-bold text-foreground">{t("welcome")}</h1>
-          <p className="text-muted-foreground">{t("welcomeSubtitle")}</p>
+          <p className="mb-2 text-sm font-bold text-brand">{t("kicker")}</p>
+          <h1 className="text-3xl font-black tracking-tight text-foreground">{t("welcome")}</h1>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">{t("welcomeSubtitle")}</p>
         </div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all"
+          className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(255,77,103,.85)] transition hover:-translate-y-0.5 hover:bg-brand/90"
         >
           <Plus className="w-5 h-5" />
           {t("analyzeNew")}
@@ -90,13 +91,13 @@ export default function DashboardPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
       >
         {/* Accounts Count */}
-        <div className="bg-card border border-border rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-xl bg-brand-pink/10 flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-brand-pink" />
+        <div className="surface-card p-6">
+          <div className="mb-5 flex items-center justify-between">
+            <div className="grid size-11 place-items-center rounded-xl bg-brand/10">
+              <BarChart3 className="size-5 text-brand" />
             </div>
             <span className="text-2xl font-bold text-foreground">{data?.accounts.length || 0}</span>
           </div>
@@ -104,10 +105,10 @@ export default function DashboardPage() {
         </div>
 
         {/* Average Score */}
-        <div className="bg-card border border-border rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-success" />
+        <div className="surface-card p-6">
+          <div className="mb-5 flex items-center justify-between">
+            <div className="grid size-11 place-items-center rounded-xl bg-success/10">
+              <TrendingUp className="size-5 text-success" />
             </div>
             <span className="text-2xl font-bold text-foreground">
               {data?.accounts.length
@@ -121,10 +122,10 @@ export default function DashboardPage() {
         </div>
 
         {/* Subscription */}
-        <div className="bg-card border border-border rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 rounded-xl bg-info/10 flex items-center justify-center">
-              <BarChart3 className="w-6 h-6 text-info" />
+        <div className="surface-card p-6">
+          <div className="mb-5 flex items-center justify-between">
+            <div className="grid size-11 place-items-center rounded-xl bg-info/10">
+              <BarChart3 className="size-5 text-info" />
             </div>
             <span className="text-lg font-bold text-foreground">
               {data?.subscription?.planName || t("freePlan")}
@@ -143,13 +144,13 @@ export default function DashboardPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-card border border-border rounded-2xl p-6"
+        className="surface-card p-6"
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-foreground">{t("recentAccounts")}</h2>
           <Link
             href="/dashboard/accounts"
-            className="text-brand-pink hover:text-brand-pink/80 text-sm flex items-center gap-1 transition-colors"
+            className="flex items-center gap-1 text-sm font-bold text-brand transition-colors hover:text-brand/80"
           >
             {t("viewAll")}
           </Link>
@@ -178,10 +179,10 @@ export default function DashboardPage() {
               >
                 <Link
                   href={`/dashboard/accounts/${account.id}`}
-                  className="flex items-center justify-between p-4 bg-muted/50 rounded-xl hover:bg-muted transition-colors"
+                  className="flex items-center justify-between gap-4 rounded-xl border border-border/70 bg-muted/35 p-4 transition-colors hover:border-brand/25 hover:bg-muted/60"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                    <div className="grid size-10 shrink-0 place-items-center rounded-full bg-brand/10 font-bold text-brand">
                       {account.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -221,7 +222,7 @@ export default function DashboardPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-card border border-border rounded-2xl p-6"
+        className="surface-card p-6"
       >
         <h2 className="text-lg font-semibold text-foreground mb-6">{t("recentInsights")}</h2>
 

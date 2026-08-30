@@ -1,63 +1,51 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { FileBarChart, ScanSearch, UserRoundPlus } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const steps = [
-  {
-    key: "step1",
-    icon: UserRoundPlus,
-    tone: "text-brand-secondary border-brand-secondary/25 bg-brand-secondary/5",
-  },
-  { key: "step2", icon: ScanSearch, tone: "text-brand border-brand/25 bg-brand/5" },
-  {
-    key: "step3",
-    icon: FileBarChart,
-    tone: "text-brand-secondary border-brand-secondary/25 bg-brand-secondary/5",
-  },
-];
+const steps = ["step1", "step2", "step3"] as const;
 
 export function HowItWorksSection() {
   const t = useTranslations("howItWorks");
+
   return (
-    <section id="how-it-works" className="px-5 py-20 sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-10 text-center">
-          <p className="text-sm font-bold text-muted-foreground">{t("kicker")}</p>
-          <h2 className="mt-2 text-4xl font-black tracking-tight text-foreground">{t("title")}</h2>
+    <section
+      id="how-it-works"
+      className="scroll-mt-24 rounded-[14px] border border-black/[0.07] bg-white px-5 py-5 shadow-[0_9px_24px_rgba(20,28,45,.055)] sm:px-7"
+    >
+      <h2 className="text-center text-[16px] font-bold text-[#1c2230]">{t("compactTitle")}</h2>
+
+      <div className="relative mt-6 grid gap-7 sm:grid-cols-3 sm:gap-3">
+        <div className="pointer-events-none absolute inset-x-[16%] top-[16px] hidden items-center justify-around text-[#a7abb3] sm:flex">
+          <span className="w-[30%] border-t border-dashed border-[#b9bdc5]" />
+          <ArrowLeft className="size-4" />
+          <span className="w-[30%] border-t border-dashed border-[#b9bdc5]" />
+          <ArrowLeft className="size-4" />
         </div>
-        <div className="relative grid overflow-hidden rounded-[1.75rem] border border-border bg-card md:grid-cols-3">
-          <div className="pointer-events-none absolute left-[16.66%] right-[16.66%] top-[58px] hidden border-t border-dashed border-border md:block" />
-          {steps.map((step, index) => {
-            const Icon = step.icon;
-            return (
-              <motion.article
-                key={step.key}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="relative px-7 py-9 text-center md:border-e md:border-border md:last:border-e-0"
-              >
-                <div
-                  className={`relative z-10 mx-auto grid size-14 place-items-center rounded-full border bg-card ${step.tone}`}
-                >
-                  <Icon className="size-6" />
-                  <span className="absolute -end-2 -top-2 grid size-7 place-items-center rounded-full border border-current bg-card text-xs font-black">
-                    {index + 1}
-                  </span>
-                </div>
-                <h3 className="mt-6 text-lg font-extrabold text-foreground">
-                  {t(`${step.key}Title`)}
-                </h3>
-                <p className="mx-auto mt-2 max-w-xs text-sm leading-7 text-muted-foreground">
-                  {t(`${step.key}Desc`)}
-                </p>
-              </motion.article>
-            );
-          })}
-        </div>
+
+        {steps.map((step, index) => (
+          <motion.article
+            key={step}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.3, delay: index * 0.06 }}
+            className={`relative text-center ${
+              index === 0 ? "-left-px" : index === 1 ? "-left-[5px] -top-px" : "-left-[6px] -top-px"
+            }`}
+          >
+            <span className="relative z-10 mx-auto grid size-9 place-items-center rounded-full bg-brand text-base font-black text-white shadow-[0_7px_16px_-7px_rgba(255,77,103,.8)]">
+              {index + 1}
+            </span>
+            <h3 className="mt-4 text-[13px] font-bold text-[#252b37]">
+              {t(`${step}CompactTitle`)}
+            </h3>
+            <p className="mx-auto mt-2 max-w-[150px] text-[10px] leading-[1.8] text-[#717782]">
+              {t(`${step}CompactDesc`)}
+            </p>
+          </motion.article>
+        ))}
       </div>
     </section>
   );

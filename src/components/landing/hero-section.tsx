@@ -1,213 +1,93 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
 import { motion } from "framer-motion";
-import {
-  ArrowUpLeft,
-  BarChart3,
-  CheckCircle2,
-  Eye,
-  Heart,
-  LockKeyhole,
-  Search,
-  ShieldCheck,
-  Sparkles,
-  TrendingUp,
-  Users,
-  Video,
-  Zap,
-} from "lucide-react";
+import { AtSign, CheckCircle2, TrendingUp } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
-
-const chart = [22, 31, 28, 44, 39, 58, 52, 71, 64, 82, 76, 91];
+import { useRouter } from "@/i18n/navigation";
+import { DashboardPreview } from "./dashboard-preview";
 
 export function HeroSection() {
   const t = useTranslations("hero");
+  const locale = useLocale();
   const router = useRouter();
   const [username, setUsername] = useState("");
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const clean = username.replace(/^@/, "").trim();
-    if (clean) router.push(`/analyze/${clean}`);
+    const cleanUsername = username.replace(/^@/, "").trim();
+    if (cleanUsername) router.push(`/analyze/${cleanUsername}`);
   };
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-border bg-background pb-16 pt-28 sm:pb-24 sm:pt-32">
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-70 [background-image:linear-gradient(to_right,#11182708_1px,transparent_1px),linear-gradient(to_bottom,#11182708_1px,transparent_1px)] [background-size:42px_42px]" />
-      <div className="pointer-events-none absolute -end-32 top-12 -z-10 size-96 rounded-full bg-brand/10 blur-3xl" />
-
-      <div className="mx-auto grid max-w-[1440px] items-center gap-14 px-5 sm:px-8 lg:grid-cols-[0.83fr_1.17fr] lg:px-12 xl:gap-20">
+    <section
+      id="home"
+      data-testid="landing-hero"
+      className="relative isolate scroll-mt-24 overflow-hidden px-4 pb-0 pt-[110px] sm:px-6"
+    >
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_81%_17%,rgba(255,91,97,.065),transparent_26%),radial-gradient(circle_at_16%_40%,rgba(109,93,251,.035),transparent_28%)]" />
+      <div className="mx-auto grid w-full max-w-[1275px] items-center gap-10 lg:grid-cols-[minmax(0,.78fr)_minmax(0,1.12fr)] lg:gap-[clamp(42px,3.65vw,56px)] xl:w-[83.0078125vw] xl:-translate-x-[4.5px]">
         <motion.div
-          initial={{ opacity: 0, y: 22 }}
+          data-testid="hero-copy"
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55 }}
-          className="mx-auto max-w-xl text-center lg:mx-0 lg:text-start"
+          transition={{ duration: 0.45 }}
+          className="mx-auto w-full max-w-[510px] text-center lg:mx-0 lg:translate-y-2.5 lg:text-start xl:-translate-x-[1.5px]"
         >
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/5 px-3.5 py-2 text-xs font-semibold text-brand">
-            <Sparkles className="size-4" />
+          <p className="relative inline-flex items-center gap-2 text-[15px] font-extrabold leading-6 text-[#ff5351] sm:text-base xl:-left-[22px] xl:-top-[3px] xl:origin-right xl:scale-x-[1.033] xl:text-[18px]">
+            <TrendingUp className="size-5 xl:size-6" strokeWidth={2.5} />
             {t("eyebrow")}
-          </div>
-          <h1 className="text-balance text-5xl font-black leading-[1.08] tracking-[-0.045em] text-foreground sm:text-6xl lg:text-[4.5rem]">
-            {t("titleLine1")}
-            <span className="mt-1 block text-brand">{t("titleLine2")}</span>
+          </p>
+          <h1 className="mt-[22px] text-balance text-[44px] font-black leading-[1.28] tracking-[-0.055em] text-[#101625] sm:text-[54px] lg:text-[56px] xl:text-[72px] xl:leading-[1.17]">
+            <span className="block origin-right xl:scale-x-[0.916]">{t("titleLine1")}</span>
+            <span className="block origin-right xl:scale-x-[0.849]">{t("titleLine2")}</span>
           </h1>
-          <p className="mx-auto mt-7 max-w-lg text-pretty text-base leading-8 text-muted-foreground sm:text-lg lg:mx-0">
-            {t("subtitle")}
+          <p className="mx-auto mt-0 max-w-[500px] origin-right text-pretty text-[14px] leading-7 text-[#6f7480] sm:text-[15px] lg:mx-0 xl:scale-x-[0.892]">
+            {t("subtitleShort")}
           </p>
 
           <form
             onSubmit={handleSubmit}
-            className="mt-9 rounded-2xl border border-border bg-card p-2 shadow-[0_20px_55px_-30px_rgba(17,24,39,.35)] sm:flex"
+            dir="ltr"
+            className="mx-auto mt-[29px] grid max-w-[500px] gap-2 sm:grid-cols-[minmax(0,1fr)_170px] lg:mx-0"
           >
-            <label className="relative block min-w-0 flex-1">
+            <label className="relative block min-w-0">
               <span className="sr-only">{t("inputPlaceholder")}</span>
-              <Search className="absolute start-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
+              <AtSign className="absolute left-4 top-1/2 size-[19px] -translate-y-1/2 text-[#6c727e]" />
               <input
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
                 placeholder={t("inputPlaceholder")}
-                className="h-14 w-full rounded-xl bg-transparent pe-4 ps-12 text-base text-foreground outline-none placeholder:text-muted-foreground focus:bg-muted/45"
+                dir={locale === "ar" ? "rtl" : "ltr"}
+                className="h-[58px] w-full rounded-[12px] border border-black/[0.09] bg-white pe-4 ps-11 text-sm text-[#151a26] outline-none shadow-[0_8px_22px_rgba(20,28,45,.035)] transition placeholder:text-[#9ba0a9] focus:border-brand/40 focus:ring-4 focus:ring-brand/[0.07]"
                 autoComplete="off"
                 autoCapitalize="off"
                 spellCheck={false}
               />
             </label>
-            <button className="mt-2 inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-brand px-7 font-bold text-white shadow-lg shadow-brand/20 transition hover:-translate-y-0.5 hover:bg-brand/90 sm:mt-0 sm:w-auto">
+            <button
+              type="submit"
+              dir={locale === "ar" ? "rtl" : "ltr"}
+              className="inline-flex h-[58px] items-center justify-center rounded-[12px] bg-[#fe5351] px-5 text-[15px] font-extrabold text-white shadow-[0_13px_28px_-13px_rgba(255,77,103,.75)] transition hover:-translate-y-0.5 hover:bg-[#f64b4d] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20"
+            >
               {t("cta")}
-              <ArrowUpLeft className="size-4 rtl:rotate-0 ltr:rotate-90" />
             </button>
           </form>
 
-          <div className="mt-6 grid grid-cols-3 gap-3 text-start text-xs text-muted-foreground sm:flex sm:items-center sm:gap-6">
-            <span className="flex items-center gap-1.5">
-              <Zap className="size-4 text-brand" />
-              {t("fastReport")}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="size-4 text-brand-secondary" />
-              {t("clearInsights")}
-            </span>
-            <span className="flex items-center gap-1.5">
-              <LockKeyhole className="size-4 text-success" />
-              {t("privacy")}
-            </span>
-          </div>
+          <p className="mt-4 flex items-center justify-center gap-2 text-[12px] text-[#7c818a] lg:justify-start">
+            <CheckCircle2 className="size-4 fill-[#24b777] text-white" strokeWidth={3} />
+            {t("secureHint")}
+          </p>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: -28 }}
+          data-testid="dashboard-preview"
+          initial={{ opacity: 0, x: locale === "ar" ? -18 : 18 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.65, delay: 0.12 }}
-          className="relative"
+          transition={{ duration: 0.55, delay: 0.08 }}
+          className="mx-auto w-full max-w-[716px] xl:-translate-x-[1.75px]"
         >
-          <div className="absolute -inset-4 -z-10 rounded-[2.5rem] bg-brand-secondary/5 blur-xl" />
-          <div className="overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-[0_32px_90px_-42px_rgba(17,24,39,.45)]">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border px-5 py-4 sm:px-7">
-              <div className="flex items-center gap-3">
-                <div className="grid size-11 place-items-center rounded-full bg-foreground text-sm font-black text-background">
-                  K
-                </div>
-                <div>
-                  <p className="font-bold text-foreground">{t("mockupUser")}</p>
-                  <p className="text-xs text-muted-foreground">{t("mockupCreator")}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 rounded-full bg-success/10 px-3 py-1.5 text-xs font-semibold text-success">
-                <CheckCircle2 className="size-4" />
-                {t("reportReady")}
-              </div>
-            </div>
-
-            <div className="grid gap-5 p-5 sm:p-7 md:grid-cols-[150px_1fr]">
-              <div className="rounded-2xl border border-border bg-background p-5 text-center">
-                <p className="text-xs font-medium text-muted-foreground">{t("accountScore")}</p>
-                <div className="relative mx-auto mt-3 grid size-24 place-items-center rounded-full bg-[conic-gradient(#20b486_0_87%,#e5e7eb_87%_100%)]">
-                  <div className="grid size-[76px] place-items-center rounded-full bg-card">
-                    <div>
-                      <strong className="block text-3xl text-foreground">87</strong>
-                      <span className="text-[10px] text-muted-foreground">/ 100</span>
-                    </div>
-                  </div>
-                </div>
-                <span className="mt-3 inline-block rounded-full bg-success/10 px-2.5 py-1 text-xs font-bold text-success">
-                  {t("veryGood")}
-                </span>
-              </div>
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                {[
-                  [Users, t("mockupFollowers"), t("mockupFollowersLabel")],
-                  [Heart, t("mockupLikes"), t("mockupLikesLabel")],
-                  [TrendingUp, t("mockupGrowth"), t("mockupGrowthLabel")],
-                ].map(([Icon, value, label], index) => {
-                  const MetricIcon = Icon as typeof Users;
-                  return (
-                    <div
-                      key={String(label)}
-                      className="rounded-2xl border border-border p-3 sm:p-4"
-                    >
-                      <MetricIcon
-                        className={`mb-3 size-4 ${index === 2 ? "text-success" : "text-brand-secondary"}`}
-                      />
-                      <strong className="block text-base text-foreground sm:text-xl">
-                        {String(value)}
-                      </strong>
-                      <span className="text-[10px] text-muted-foreground sm:text-xs">
-                        {String(label)}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="grid gap-5 px-5 pb-5 sm:px-7 sm:pb-7 md:grid-cols-[1.3fr_.7fr]">
-              <div className="rounded-2xl border border-border p-4">
-                <div className="mb-5 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold text-foreground">{t("performance")}</p>
-                    <p className="text-xs text-muted-foreground">{t("lastThirtyDays")}</p>
-                  </div>
-                  <BarChart3 className="size-5 text-brand-secondary" />
-                </div>
-                <div className="flex h-28 items-end gap-1.5 border-b border-border">
-                  {chart.map((height, index) => (
-                    <div
-                      key={index}
-                      className="flex-1 rounded-t-sm bg-brand-secondary/20 transition hover:bg-brand-secondary"
-                      style={{ height: `${height}%` }}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="rounded-2xl border border-border p-4">
-                <p className="text-sm font-bold text-foreground">{t("contentSignals")}</p>
-                <div className="mt-4 space-y-4">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="flex items-center gap-2 text-muted-foreground">
-                      <Eye className="size-4 text-brand" />
-                      {t("reach")}
-                    </span>
-                    <b>82%</b>
-                  </div>
-                  <div className="h-1.5 rounded-full bg-muted">
-                    <div className="h-full w-[82%] rounded-full bg-brand" />
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="flex items-center gap-2 text-muted-foreground">
-                      <Video className="size-4 text-brand-secondary" />
-                      {t("consistency")}
-                    </span>
-                    <b>74%</b>
-                  </div>
-                  <div className="h-1.5 rounded-full bg-muted">
-                    <div className="h-full w-[74%] rounded-full bg-brand-secondary" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <DashboardPreview />
         </motion.div>
       </div>
     </section>

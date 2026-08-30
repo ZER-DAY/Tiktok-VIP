@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { BrandMark } from "@/components/brand/brand-mark";
 
 export default function RegisterPage() {
   const t = useTranslations("auth");
@@ -71,26 +72,30 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-12">
+      <div className="pointer-events-none absolute -end-28 top-16 size-72 rounded-full border-[34px] border-brand/10" />
+      <div className="pointer-events-none absolute -start-24 bottom-8 size-64 rounded-full border-[28px] border-brand-secondary/10" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
-        <div className="text-center mb-8">
+        <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-brand flex items-center justify-center">
-              <span className="text-brand-foreground font-bold text-xl">T</span>
-            </div>
-            <span className="text-2xl font-bold text-foreground">{t("siteName")}</span>
+            <BrandMark />
+            <span className="text-2xl font-black tracking-tight text-foreground">
+              {t("siteName")}
+            </span>
           </Link>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl p-8">
-          <h1 className="text-2xl font-bold text-foreground mb-2 text-center">
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-[0_28px_80px_-48px_rgba(17,24,39,.65)] sm:p-8">
+          <h1 className="mb-2 text-center text-2xl font-black text-foreground">
             {t("registerTitle")}
           </h1>
-          <p className="text-muted-foreground text-sm text-center mb-6">{t("registerSubtitle")}</p>
+          <p className="mb-7 text-center text-sm leading-6 text-muted-foreground">
+            {t("registerSubtitle")}
+          </p>
 
           {error && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 mb-6">
@@ -107,7 +112,7 @@ export default function RegisterPage() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-background border border-border rounded-xl py-3 ps-10 pe-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-transparent transition-colors"
+                  className="h-12 w-full rounded-xl border border-border bg-background py-3 ps-10 pe-4 text-foreground placeholder:text-muted-foreground transition-colors focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                   placeholder={t("namePlaceholder")}
                   required
                   autoComplete="name"
@@ -123,7 +128,7 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-background border border-border rounded-xl py-3 ps-10 pe-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-transparent transition-colors"
+                  className="h-12 w-full rounded-xl border border-border bg-background py-3 ps-10 pe-4 text-foreground placeholder:text-muted-foreground transition-colors focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                   placeholder="example@email.com"
                   required
                   autoComplete="email"
@@ -141,7 +146,7 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-background border border-border rounded-xl py-3 ps-10 pe-12 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-transparent transition-colors"
+                  className="h-12 w-full rounded-xl border border-border bg-background py-3 ps-10 pe-12 text-foreground placeholder:text-muted-foreground transition-colors focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                   placeholder="••••••••"
                   required
                   minLength={8}
@@ -168,7 +173,7 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full bg-background border border-border rounded-xl py-3 ps-10 pe-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-transparent transition-colors"
+                  className="h-12 w-full rounded-xl border border-border bg-background py-3 ps-10 pe-4 text-foreground placeholder:text-muted-foreground transition-colors focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                   placeholder="••••••••"
                   required
                   minLength={8}
@@ -180,7 +185,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-xl bg-brand text-brand-foreground font-semibold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="h-12 w-full rounded-xl bg-brand font-bold text-brand-foreground transition-all hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? t("registering") : t("registerButton")}
             </button>
@@ -194,7 +199,7 @@ export default function RegisterPage() {
 
           <button
             onClick={handleGoogleRegister}
-            className="w-full py-3 rounded-xl border border-border text-foreground font-semibold hover:bg-muted transition-all flex items-center justify-center gap-3"
+            className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-border font-bold text-foreground transition-all hover:bg-muted"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path

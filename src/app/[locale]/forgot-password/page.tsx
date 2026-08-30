@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { Mail, ArrowLeft } from "lucide-react";
+import { BrandMark } from "@/components/brand/brand-mark";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("auth");
@@ -40,22 +41,24 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-background">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-12">
+      <div className="pointer-events-none absolute -end-28 top-16 size-72 rounded-full border-[34px] border-brand/10" />
+      <div className="pointer-events-none absolute -start-24 bottom-8 size-64 rounded-full border-[28px] border-brand-secondary/10" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md"
       >
-        <div className="text-center mb-8">
+        <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-brand flex items-center justify-center">
-              <span className="text-brand-foreground font-bold text-xl">T</span>
-            </div>
-            <span className="text-2xl font-bold text-foreground">{t("siteName")}</span>
+            <BrandMark />
+            <span className="text-2xl font-black tracking-tight text-foreground">
+              {t("siteName")}
+            </span>
           </Link>
         </div>
 
-        <div className="bg-card border border-border rounded-2xl p-8">
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-[0_28px_80px_-48px_rgba(17,24,39,.65)] sm:p-8">
           {isSuccess ? (
             <div className="text-center">
               <div className="w-16 h-16 rounded-full bg-success/20 flex items-center justify-center mx-auto mb-4">
@@ -93,7 +96,7 @@ export default function ForgotPasswordPage() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-background border border-border rounded-xl py-3 ps-10 pe-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-transparent transition-colors"
+                      className="h-12 w-full rounded-xl border border-border bg-background py-3 ps-10 pe-4 text-foreground placeholder:text-muted-foreground transition-colors focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                       placeholder="example@email.com"
                       required
                       autoComplete="email"
@@ -106,7 +109,7 @@ export default function ForgotPasswordPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 rounded-xl bg-brand text-brand-foreground font-semibold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="h-12 w-full rounded-xl bg-brand font-bold text-brand-foreground transition-all hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isLoading ? t("sending") : t("resetButton")}
                 </button>

@@ -25,6 +25,19 @@ data.
 | `03-creator-dashboard-ar-rtl.png` | Dashboard, Accounts, Account details, Compare, Settings, and shared AppShell                                  |
 | `04-agency-admin-ar-rtl.png`      | Agency applicants/detail and all Admin routes                                                                 |
 
+## Proposed boards — 2026-08-29
+
+These higher-fidelity boards were generated as the next implementation reference. They are
+kept separately from the original concept boards so the current production UI remains
+unchanged until each screen is approved and rebuilt in code.
+
+| Board                          | Intended implementation scope                                      |
+| ------------------------------ | ------------------------------------------------------------------ |
+| `05-landing-proposed.png`      | Landing page, marketing sections and responsive navigation         |
+| `06-report-proposed.png`       | Analysis report, score cards and mobile report layout              |
+| `07-dashboard-proposed.png`    | Creator dashboard, KPI cards, charts, tables and mobile navigation |
+| `08-agency-admin-proposed.png` | Agency CRM, admin table, detail drawer and mobile bottom sheet     |
+
 ## Implementation rules
 
 1. Inspect the relevant PNG before editing a route.

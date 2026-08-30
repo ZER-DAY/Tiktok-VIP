@@ -39,12 +39,12 @@ export default function AccountsPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
         <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-muted rounded w-1/3" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="h-8 w-1/3 rounded-lg bg-muted" />
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-40 bg-muted/50 rounded-2xl" />
+              <div key={i} className="h-40 rounded-2xl bg-muted/50" />
             ))}
           </div>
         </div>
@@ -53,20 +53,21 @@ export default function AccountsPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4"
+        className="flex flex-col justify-between gap-5 md:flex-row md:items-center"
       >
         <div>
-          <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
-          <p className="text-muted-foreground">{t("subtitle")}</p>
+          <p className="mb-2 text-sm font-bold text-brand">{t("kicker")}</p>
+          <h1 className="text-3xl font-black tracking-tight text-foreground">{t("title")}</h1>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">{t("subtitle")}</p>
         </div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all"
+          className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(255,77,103,.85)] transition hover:-translate-y-0.5 hover:bg-brand/90"
         >
           <Plus className="w-5 h-5" />
           {t("addAccount")}
@@ -78,21 +79,21 @@ export default function AccountsPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center py-20"
+          className="surface-card px-5 py-20 text-center"
         >
           <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
           <h2 className="text-xl font-bold text-foreground mb-2">{t("emptyTitle")}</h2>
           <p className="text-muted-foreground mb-6 max-w-md mx-auto">{t("emptyDescription")}</p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all"
+            className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 font-bold text-brand-foreground transition hover:bg-brand/90"
           >
             <Plus className="w-5 h-5" />
             {t("analyzeFirst")}
           </Link>
         </motion.div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {accounts.map((account, index) => (
             <motion.div
               key={account.id}
@@ -102,11 +103,11 @@ export default function AccountsPage() {
             >
               <Link
                 href={`/dashboard/accounts/${account.id}`}
-                className="block bg-card border border-border rounded-2xl p-6 hover:bg-muted transition-all"
+                className="surface-card block p-6 transition-all hover:-translate-y-1 hover:border-brand/25"
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+                    <div className="grid size-12 shrink-0 place-items-center rounded-full bg-brand/10 text-lg font-bold text-brand">
                       {account.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -143,7 +144,7 @@ export default function AccountsPage() {
                       e.preventDefault();
                       // Trigger re-analysis
                     }}
-                    className="flex items-center gap-1 text-brand-pink hover:text-brand-pink/80 transition-colors"
+                    className="flex items-center gap-1 text-sm font-bold text-brand transition-colors hover:text-brand/80"
                   >
                     <RefreshCw className="w-4 h-4" />
                     {t("refresh")}

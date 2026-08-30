@@ -252,18 +252,18 @@ export default function ReportPage({
     return (
       <>
         <Navbar />
-        <div className="min-h-screen bg-background pt-24 pb-12 px-4">
-          <div className="max-w-7xl mx-auto space-y-6">
-            <div className="h-8 bg-muted rounded w-1/3 animate-pulse" />
-            <div className="h-40 bg-muted/50 rounded-2xl animate-pulse" />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="min-h-screen bg-background px-4 pb-12 pt-28 sm:px-8">
+          <div className="mx-auto max-w-7xl space-y-6">
+            <div className="h-8 w-1/3 animate-pulse rounded-lg bg-muted" />
+            <div className="h-40 animate-pulse rounded-2xl bg-muted/50" />
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-24 bg-muted/50 rounded-xl animate-pulse" />
+                <div key={i} className="h-24 animate-pulse rounded-xl bg-muted/50" />
               ))}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="h-32 bg-muted/50 rounded-xl animate-pulse" />
+                <div key={i} className="h-32 animate-pulse rounded-xl bg-muted/50" />
               ))}
             </div>
           </div>
@@ -278,12 +278,12 @@ export default function ReportPage({
       <>
         <Navbar />
         <div className="min-h-screen flex items-center justify-center px-4">
-          <div className="text-center">
-            <h1 className="text-xl font-bold text-foreground mb-2">{t("error")}</h1>
-            <p className="text-muted-foreground mb-6">{error || t("notFound")}</p>
+          <div className="surface-card max-w-md p-8 text-center">
+            <h1 className="mb-2 text-xl font-black text-foreground">{t("error")}</h1>
+            <p className="mb-6 text-sm leading-7 text-muted-foreground">{error || t("notFound")}</p>
             <button
               onClick={() => router.refresh()}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all"
+              className="rounded-xl bg-brand px-6 py-3 font-bold text-brand-foreground transition hover:bg-brand/90"
             >
               {t("retry")}
             </button>
@@ -305,7 +305,7 @@ export default function ReportPage({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
+            className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
           >
             <div>
               <div className="mb-2 flex items-center gap-2 text-xs font-bold text-brand">
@@ -482,7 +482,7 @@ export default function ReportPage({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
+              className="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-4"
             >
               {[
                 { label: t("avgViews"), value: report.statistics.avgViews },
@@ -492,10 +492,7 @@ export default function ReportPage({
               ]
                 .filter((s) => s.value !== null)
                 .map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="bg-card border border-border rounded-xl p-4 text-center"
-                  >
+                  <div key={stat.label} className="surface-card p-4 text-center">
                     <p className="text-lg font-bold text-foreground">
                       {stat.value ? formatNumber(stat.value) : "-"}
                     </p>
@@ -544,7 +541,7 @@ export default function ReportPage({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="bg-warning/10 border border-warning/20 rounded-xl p-4 mb-6"
+            className="mb-6 rounded-2xl border border-warning/20 bg-warning/10 p-4"
           >
             <p className="text-sm text-warning">{t("disclaimer.explore")}</p>
           </motion.div>
@@ -609,7 +606,7 @@ export default function ReportPage({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45 }}
-            className="bg-card border border-border rounded-2xl p-6 mb-6"
+            className="surface-card mb-6 p-6"
           >
             <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
               <FileText className="w-5 h-5 text-muted-foreground" />
@@ -697,22 +694,22 @@ export default function ReportPage({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="bg-gradient-to-r from-pink-500/10 to-purple-500/10 border border-border rounded-2xl p-6"
+              className="mb-6 rounded-2xl border border-brand/20 bg-brand/5 p-6"
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
-                  <Users className="w-5 h-5 text-white" />
+              <div className="mb-3 flex items-center gap-3">
+                <div className="grid size-10 place-items-center rounded-xl bg-brand text-brand-foreground">
+                  <Users className="size-5" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground">{t("agency.eligible")}</h3>
               </div>
-              <p className="text-muted-foreground mb-4">
+              <p className="mb-4 text-sm leading-7 text-muted-foreground">
                 {t("agency.scoreDescription", { score: report.scores.accountStrength })}
               </p>
 
               {!showApplicationForm ? (
                 <button
                   onClick={() => setShowApplicationForm(true)}
-                  className="px-6 py-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all"
+                  className="rounded-xl bg-brand px-6 py-2.5 font-bold text-brand-foreground transition hover:bg-brand/90"
                 >
                   {t("agency.joinCTA")}
                 </button>
@@ -720,7 +717,7 @@ export default function ReportPage({
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="bg-card border border-border rounded-xl p-6 mt-4"
+                  className="mt-4 rounded-2xl border border-border bg-card p-6"
                 >
                   <h4 className="text-foreground font-semibold mb-4">
                     {t("application.formTitle")}
@@ -749,7 +746,7 @@ export default function ReportPage({
                             onChange={(e) =>
                               setApplicationForm({ ...applicationForm, fullName: e.target.value })
                             }
-                            className="w-full bg-background border border-border rounded-xl py-2 px-3 text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-transparent"
+                            className="h-11 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                             required
                           />
                         </div>
@@ -763,7 +760,7 @@ export default function ReportPage({
                             onChange={(e) =>
                               setApplicationForm({ ...applicationForm, phone: e.target.value })
                             }
-                            className="w-full bg-background border border-border rounded-xl py-2 px-3 text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-transparent"
+                            className="h-11 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                             required
                           />
                         </div>
@@ -777,7 +774,7 @@ export default function ReportPage({
                             onChange={(e) =>
                               setApplicationForm({ ...applicationForm, telegram: e.target.value })
                             }
-                            className="w-full bg-background border border-border rounded-xl py-2 px-3 text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-transparent"
+                            className="h-11 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                             placeholder="@username"
                             required
                           />
@@ -792,7 +789,7 @@ export default function ReportPage({
                             onChange={(e) =>
                               setApplicationForm({ ...applicationForm, email: e.target.value })
                             }
-                            className="w-full bg-background border border-border rounded-xl py-2 px-3 text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-transparent"
+                            className="h-11 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none focus:ring-4 focus:ring-brand/10"
                             required
                           />
                         </div>
@@ -801,7 +798,7 @@ export default function ReportPage({
                         <button
                           type="submit"
                           disabled={isSubmittingApplication}
-                          className="px-6 py-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all disabled:opacity-50 flex items-center gap-2"
+                          className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-2.5 font-bold text-brand-foreground transition hover:bg-brand/90 disabled:opacity-50"
                         >
                           <Send className="w-4 h-4" />
                           {isSubmittingApplication

@@ -50,21 +50,22 @@ export default function ComparePage() {
 
   if (isLoading) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
         <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-muted rounded w-1/3" />
-          <div className="h-64 bg-muted/50 rounded-2xl" />
+          <div className="h-8 w-1/3 rounded-lg bg-muted" />
+          <div className="h-64 rounded-2xl bg-muted/50" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
-        <p className="text-muted-foreground">{t("subtitle")}</p>
+        <p className="mb-2 text-sm font-bold text-brand">{t("kicker")}</p>
+        <h1 className="text-3xl font-black tracking-tight text-foreground">{t("title")}</h1>
+        <p className="mt-1 text-sm leading-6 text-muted-foreground">{t("subtitle")}</p>
       </motion.div>
 
       {/* Account Selector */}
@@ -72,13 +73,13 @@ export default function ComparePage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-card border border-border rounded-2xl p-6"
+        className="surface-card p-6"
       >
-        <h2 className="text-lg font-semibold text-foreground mb-4">{t("selectAccounts")}</h2>
+        <h2 className="mb-5 text-lg font-black text-foreground">{t("selectAccounts")}</h2>
         {accounts.length === 0 ? (
           <p className="text-muted-foreground text-center py-8">{t("noAccounts")}</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {accounts.map((account) => {
               const isSelected = !!selectedAccounts.find((a) => a.id === account.id);
               return (
@@ -86,15 +87,15 @@ export default function ComparePage() {
                   key={account.id}
                   onClick={() => addToCompare(account)}
                   disabled={isSelected || selectedAccounts.length >= 3}
-                  className={`p-4 rounded-xl border text-start transition-all ${
+                  className={`rounded-2xl border p-4 text-start transition-all ${
                     isSelected
                       ? "bg-brand-pink/10 border-brand-pink/20"
-                      : "bg-muted/50 border-border hover:bg-muted"
+                      : "border-border bg-muted/50 hover:border-brand/25 hover:bg-muted"
                   } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white font-bold">
+                      <div className="grid size-10 shrink-0 place-items-center rounded-full bg-brand/10 font-bold text-brand">
                         {account.username.charAt(0).toUpperCase()}
                       </div>
                       <div className="text-start">
@@ -121,21 +122,21 @@ export default function ComparePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-card border border-border rounded-2xl p-6"
+          className="surface-card p-6"
         >
-          <h2 className="text-lg font-semibold text-foreground mb-6">{t("comparison")}</h2>
+          <h2 className="mb-6 text-lg font-black text-foreground">{t("comparison")}</h2>
 
           {/* Selected Accounts */}
           <div className="flex flex-wrap gap-2 mb-6">
             {selectedAccounts.map((account) => (
               <div
                 key={account.id}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-muted text-foreground"
+                className="flex items-center gap-2 rounded-full border border-border bg-muted px-4 py-2 text-foreground"
               >
                 <span>@{account.username}</span>
                 <button
                   onClick={() => removeFromCompare(account.id)}
-                  className="text-muted-foreground hover:text-foreground"
+                  className="rounded-full p-1 text-muted-foreground transition hover:bg-background hover:text-foreground"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -145,7 +146,7 @@ export default function ComparePage() {
 
           {/* Comparison Table */}
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[34rem]">
               <thead>
                 <tr className="border-b border-border">
                   <th className="text-start py-3 px-4 text-muted-foreground font-medium">
@@ -216,7 +217,7 @@ export default function ComparePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-center py-12"
+          className="surface-card px-5 py-14 text-center"
         >
           <BarChart3 className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
           <h2 className="text-xl font-bold text-foreground mb-2">{t("emptyTitle")}</h2>

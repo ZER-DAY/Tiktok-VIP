@@ -1,11 +1,12 @@
 {
   "siteName": "TikTok Intelligence",
   "hero": {
-    "eyebrow": "Independent analytics built for creators",
+    "eyebrow": "Independent analytics for creators",
     "titleLine1": "Analyze your account.",
     "titleLine2": "Understand your growth.",
     "title": "Smart TikTok Analytics.. Smarter Decisions",
     "subtitle": "Advanced AI-powered tool to analyze any TikTok account. Get clear strategic insights to grow your account and reach maximum audience.",
+    "subtitleShort": "Independent analytics that gives you deep insight into your content and audience, so you can grow faster and make smarter decisions.",
     "cta": "Start Analysis Now",
     "inputPlaceholder": "Enter TikTok username",
     "trust": "Trusted by 10,000+ creators and agencies",
@@ -33,7 +34,38 @@
     "lastThirtyDays": "Last 30 days",
     "contentSignals": "Content signals",
     "reach": "Reach potential",
-    "consistency": "Posting consistency"
+    "consistency": "Posting consistency",
+    "secureHint": "No password required. 100% secure.",
+    "dashboard": {
+      "creator": "Content creator",
+      "last28Days": "Last 28 days",
+      "overallScore": "Overall performance",
+      "followers": "Followers",
+      "likes": "Likes",
+      "contentSignals": "Content signals",
+      "averageWatch": "Average watch time",
+      "completionRate": "Completion rate",
+      "shareRate": "Share rate",
+      "followerGrowth": "Follower growth",
+      "topVideos": "Top videos",
+      "viewAll": "View all",
+      "menu": {
+        "overview": "Overview",
+        "content": "Content",
+        "audience": "Audience",
+        "growth": "Growth",
+        "engagement": "Engagement",
+        "comparisons": "Comparisons",
+        "reports": "Reports"
+      },
+      "dates": {
+        "apr20": "Apr 20",
+        "apr27": "Apr 27",
+        "may4": "May 4",
+        "may11": "May 11",
+        "may18": "May 18"
+      }
+    }
   },
   "features": {
     "eyebrow": "Features built for creators",
@@ -48,7 +80,23 @@
     "pdfExport": "Professional PDF Export",
     "pdfExportDesc": "Detailed report with professional design ready to share",
     "competitorAnalysis": "Competitor Comparison",
-    "competitorAnalysisDesc": "Compare your performance with competitors and discover growth opportunities"
+    "competitorAnalysisDesc": "Compare your performance with competitors and discover growth opportunities",
+    "reportsShare": {
+      "title": "Share-ready reports",
+      "description": "Professional exportable reports for your team or partners."
+    },
+    "smartCompetitors": {
+      "title": "Track competitors smartly",
+      "description": "Compare performance and uncover your next growth opportunities."
+    },
+    "discoverResults": {
+      "title": "Discover what performs",
+      "description": "Find your strongest content and learn why it succeeds."
+    },
+    "deepAudience": {
+      "title": "Understand your audience",
+      "description": "Clear demographic and behavioral insights into your followers."
+    }
   },
   "howItWorks": {
     "kicker": "Simple and fast",
@@ -59,10 +107,18 @@
     "step2Title": "Smart Analysis",
     "step2Desc": "We analyze your account with AI in seconds",
     "step3Title": "Get Report",
-    "step3Desc": "Comprehensive report with actionable recommendations"
+    "step3Desc": "Comprehensive report with actionable recommendations",
+    "compactTitle": "How it works in 3 simple steps",
+    "step1CompactTitle": "Enter a username",
+    "step1CompactDesc": "Enter the username of a TikTok account.",
+    "step2CompactTitle": "We analyze the data",
+    "step2CompactDesc": "We analyze the account's content, audience and performance.",
+    "step3CompactTitle": "Get actionable insights",
+    "step3CompactDesc": "Personalized recommendations that help you grow faster."
   },
   "socialProof": {
     "trustLine": "Independent analytics for creators and agencies",
+    "creatorTrust": "Trusted by thousands of creators across the Arab world",
     "trust": {
       "privacy": "Privacy by design",
       "fresh": "Fresh data on every analysis",
@@ -80,6 +136,7 @@
     "stat4Label": "Continuous support"
   },
   "pricing": {
+    "kicker": "Simple plans, no surprises",
     "title": "Choose the right plan for you",
     "subtitle": "Start for free and upgrade as you need",
     "free": "Free",
@@ -103,9 +160,42 @@
     "agencyFeature3": "Bulk reports",
     "agencyFeature4": "Multi-seat team access",
     "cta": "Start Now",
-    "popular": "Most Popular"
+    "popular": "Most Popular",
+    "compactTitle": "Choose the plan that works for you",
+    "mostPopular": "Most popular",
+    "annualSaving": "Save 20% annually",
+    "basic": {
+      "name": "Basic",
+      "price": "$0",
+      "period": "Free",
+      "description": "A simple start with analytics",
+      "feature1": "Limited basic analytics",
+      "feature2": "Account performance summary",
+      "feature3": "Starter growth insights"
+    },
+    "advanced": {
+      "name": "Advanced",
+      "price": "$19",
+      "period": "Monthly",
+      "description": "For every ambitious creator",
+      "feature1": "Track up to 3 accounts",
+      "feature2": "Advanced analytics",
+      "feature3": "Professional PDF reports",
+      "feature4": "Competitor comparison"
+    },
+    "professional": {
+      "name": "Professional",
+      "price": "$49",
+      "period": "Monthly",
+      "description": "For serious creators and fast growth",
+      "feature1": "Unlimited advanced analytics",
+      "feature2": "Multiple account management",
+      "feature3": "Bulk reports",
+      "feature4": "Priority support"
+    }
   },
   "agencyTeaser": {
+    "eyebrow": "TikTok LIVE",
     "title": "Agency Qualified?",
     "subtitle": "If your account qualifies, you can join our TikTok LIVE agency network for dedicated support and additional earning opportunities.",
     "cta": "Learn More",
@@ -117,8 +207,10 @@
     }
   },
   "nav": {
+    "siteName": "TikTok Intelligence",
     "home": "Home",
     "features": "Features",
+    "howItWorks": "How it works",
     "pricing": "Pricing",
     "dashboard": "Dashboard",
     "login": "Login",
@@ -128,6 +220,8 @@
     "switchLang": "العربية"
   },
   "footer": {
+    "siteName": "TikTok Intelligence",
+    "socialInstagram": "Instagram",
     "product": "Product",
     "analyzer": "Account Analysis",
     "pricing": "Pricing",
@@ -178,6 +272,7 @@
     "backToLogin": "Back to Sign In"
   },
   "dashboard": {
+    "kicker": "TikTok Intelligence dashboard",
     "welcome": "Welcome back!",
     "welcomeSubtitle": "Here's a summary of your recent accounts",
     "analyzeNew": "Analyze New Account",
@@ -201,6 +296,7 @@
       "logout": "Sign Out"
     },
     "accounts": {
+      "kicker": "Analyzed TikTok accounts",
       "title": "My Accounts",
       "subtitle": "List of accounts you've analyzed",
       "addAccount": "Add Account",
@@ -210,6 +306,7 @@
       "refresh": "Refresh"
     },
     "compare": {
+      "kicker": "Performance comparison",
       "title": "Comparisons",
       "subtitle": "Compare your account performance with others",
       "selectAccounts": "Select accounts to compare",

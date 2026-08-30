@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
-import { DollarSign, Headphones, GraduationCap, Radio } from "lucide-react";
+import { ArrowUpLeft, DollarSign, Headphones, GraduationCap, Radio } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
 const benefits = [
   { key: "revenue", icon: DollarSign, color: "brand" },
@@ -45,25 +46,34 @@ export function AgencyTeaserSection() {
   const t = useTranslations("agencyTeaser");
 
   return (
-    <section className="py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <section className="px-5 py-24 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-brand/5 border border-border rounded-3xl p-8 md:p-12"
+          className="overflow-hidden rounded-[1.75rem] border border-brand/20 bg-brand/5 p-7 md:p-12"
         >
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid items-center gap-10 md:grid-cols-[.9fr_1.1fr] md:gap-14">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">{t("title")}</h2>
-              <p className="text-muted-foreground mb-8">{t("subtitle")}</p>
-              <button className="px-6 py-3 rounded-full bg-brand text-brand-foreground font-semibold hover:opacity-90 transition-all hover:scale-105">
+              <p className="text-sm font-bold text-brand">{t("eyebrow")}</p>
+              <h2 className="mb-4 mt-2 text-3xl font-black text-foreground md:text-4xl">
+                {t("title")}
+              </h2>
+              <p className="mb-8 max-w-xl text-sm leading-8 text-muted-foreground">
+                {t("subtitle")}
+              </p>
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(255,77,103,.9)] transition hover:-translate-y-0.5 hover:bg-brand/90"
+              >
                 {t("cta")}
-              </button>
+                <ArrowUpLeft className="size-4 rtl:rotate-0 ltr:rotate-90" />
+              </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
               {benefits.map((benefit, index) => {
                 const Icon = benefit.icon;
                 return (
@@ -73,14 +83,14 @@ export function AgencyTeaserSection() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="bg-card border border-border rounded-xl p-4 flex items-center gap-3"
+                    className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[0_12px_34px_-30px_rgba(17,24,39,.7)] sm:p-5"
                   >
                     <div
                       className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${getIconBgClass(benefit.color)}`}
                     >
                       <Icon className={`w-5 h-5 ${getIconColorClass(benefit.color)}`} />
                     </div>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm font-semibold leading-6 text-muted-foreground">
                       {t(`benefits.${benefit.key}`)}
                     </span>
                   </motion.div>

@@ -8,6 +8,7 @@ import { useRouter } from "@/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogOut, Menu, X, ChevronLeft, ChevronRight, Globe, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { BrandMark } from "@/components/brand/brand-mark";
 
 export interface SidebarItem {
   key: string;
@@ -64,25 +65,25 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
       {/* Desktop Sidebar */}
       <aside
         className={cn(
-          "hidden lg:flex flex-col bg-card border-border transition-all duration-300 ease-in-out relative",
+          "relative hidden flex-col border-border bg-card/80 transition-all duration-300 ease-in-out lg:flex",
           sidebarWidth,
           isRtl ? "border-l" : "border-r"
         )}
       >
         {/* Logo */}
-        <div className={cn("p-4 border-b border-border", isCollapsed && "px-3")}>
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center flex-shrink-0">
-              <span className="text-primary-foreground font-bold text-lg">{isRtl ? "ذ" : "T"}</span>
-            </div>
+        <div className={cn("border-b border-border p-4", isCollapsed && "px-3")}>
+          <Link href="/" className="flex items-center gap-3" aria-label={t("siteName")}>
+            <BrandMark className="size-10 rounded-xl" />
             {!isCollapsed && (
-              <span className="text-lg font-bold text-foreground truncate">{t("siteName")}</span>
+              <span className="truncate text-lg font-black tracking-tight text-foreground">
+                {t("siteName")}
+              </span>
             )}
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-3 space-y-1">
+        <nav className="flex-1 space-y-1 p-3">
           {sidebarItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
@@ -91,9 +92,9 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
                 key={item.key}
                 href={`/${locale}${item.href}`}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-smooth relative group",
+                  "group relative flex items-center gap-3 rounded-xl px-3 py-3 transition-smooth",
                   active
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                    ? "bg-sidebar-accent font-bold text-sidebar-accent-foreground shadow-sm"
                     : "text-sidebar-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
@@ -118,10 +119,10 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
         </nav>
 
         {/* Actions */}
-        <div className="p-3 border-t border-border space-y-1">
+        <div className="space-y-1 border-t border-border p-3">
           <button
             onClick={switchLanguage}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-foreground hover:bg-muted hover:text-foreground transition-smooth w-full"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sidebar-foreground transition-smooth hover:bg-muted hover:text-foreground"
           >
             <Globe className="w-5 h-5 flex-shrink-0 text-muted-foreground" />
             {!isCollapsed && (
@@ -132,7 +133,7 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
           </button>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-foreground hover:bg-muted hover:text-foreground transition-smooth w-full"
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sidebar-foreground transition-smooth hover:bg-muted hover:text-foreground"
           >
             <LogOut className="w-5 h-5 flex-shrink-0 text-muted-foreground" />
             {!isCollapsed && <span className="truncate">{t("logout")}</span>}
@@ -143,7 +144,7 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className={cn(
-            "absolute top-20 w-6 h-6 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-smooth z-10",
+            "absolute top-20 z-10 flex size-6 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground",
             isRtl ? "-right-3" : "-left-3"
           )}
           aria-label={isCollapsed ? tCommon("expandSidebar") : tCommon("collapseSidebar")}
@@ -163,24 +164,22 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
       </aside>
 
       {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 inset-x-0 z-50 bg-card border-b border-border px-4 py-3 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">{isRtl ? "ذ" : "T"}</span>
-          </div>
-          <span className="text-lg font-bold text-foreground">{t("siteName")}</span>
+      <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-border bg-card/95 px-4 py-3 backdrop-blur-xl lg:hidden">
+        <Link href="/" className="flex min-w-0 items-center gap-2" aria-label={t("siteName")}>
+          <BrandMark className="size-8 rounded-lg" iconClassName="size-4" />
+          <span className="truncate text-base font-black text-foreground">{t("siteName")}</span>
         </Link>
         <div className="flex items-center gap-1">
           <button
             onClick={switchLanguage}
-            className="text-muted-foreground hover:text-foreground p-2 rounded-lg hover:bg-muted transition-smooth"
+            className="rounded-lg p-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
             aria-label={tCommon("switchLanguage")}
           >
             <Globe className="w-5 h-5" />
           </button>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="text-muted-foreground hover:text-foreground p-2 rounded-lg hover:bg-muted transition-smooth"
+            className="rounded-lg p-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
             aria-label={isMobileMenuOpen ? tCommon("closeMenu") : tCommon("openMenu")}
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -220,9 +219,9 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
                         href={`/${locale}${item.href}`}
                         onClick={() => setIsMobileMenuOpen(false)}
                         className={cn(
-                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-smooth relative",
+                          "relative flex items-center gap-3 rounded-xl px-3 py-3 transition-smooth",
                           active
-                            ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                            ? "bg-sidebar-accent font-bold text-sidebar-accent-foreground shadow-sm"
                             : "text-sidebar-foreground hover:bg-muted hover:text-foreground"
                         )}
                       >
