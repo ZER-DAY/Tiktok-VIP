@@ -2,6 +2,20 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getStoredCreatorLeague } from "@/modules/providers/tiktok/live-league";
 import { getStoredLiveAccountLevel } from "@/modules/providers/tiktok/live-account-level";
+import { getStoredProfileDisplayName } from "@/modules/providers/stored-profile";
+
+function escapeHtml(value: string): string {
+  return value.replace(/[&<>'"]/g, (character) => {
+    const entities: Record<string, string> = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#39;",
+      '"': "&quot;",
+    };
+    return entities[character];
+  });
+}
 
 export async function GET(request: Request, { params }: { params: Promise<{ reportId: string }> }) {
   try {
@@ -50,6 +64,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
       rawProfile?.accountCreatedAtSource !== "profile_create_time";
     const creatorLeague = getStoredCreatorLeague(rawPayload);
     const liveAccountLevel = getStoredLiveAccountLevel(rawPayload);
+    const displayName = getStoredProfileDisplayName(rawPayload);
+    const safeUsername = escapeHtml(account.externalUsername);
+    const safeDisplayName = displayName ? escapeHtml(displayName) : null;
 
     // Generate HTML content for PDF
     const htmlContent = `
@@ -58,7 +75,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تقرير تحليل ${account.externalUsername}</title>
+  <title>تقرير تحليل ${safeDisplayName ?? safeUsername}</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
     
@@ -320,9 +337,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
   </div>
   
   <div class="account-info">
-    <div class="avatar">${account.externalUsername.charAt(0).toUpperCase()}</div>
+    <div class="avatar">${(safeDisplayName ?? safeUsername).charAt(0).toUpperCase()}</div>
     <div class="account-details">
-      <h2>@${account.externalUsername}</h2>
+      <h2>${safeDisplayName ?? `@${safeUsername}`}</h2>
+      ${safeDisplayName ? `<p dir="ltr">@${safeUsername}</p>` : ""}
       <p>${account.provider.displayName} • ${snapshot.accountType === "business" ? "حساب أعمال" : "حساب شخصي"}</p>
       <p>تاريخ إنشاء الحساب: ${accountCreatedAt}${accountCreatedAtIsEstimated ? '<span class="estimated-badge">تقديري</span>' : ""}</p>
       <p>معلومات حساب LIVE: <strong>المستوى: ${liveAccountLevel?.level ?? "لم يظهر في بيانات LIVE"}</strong></p>

@@ -32,6 +32,7 @@ interface ReportData {
   reportId: string;
   account: {
     username: string;
+    displayName: string | null;
     avatarUrl: string | null;
     provider: string;
     isVerified: boolean;
@@ -317,7 +318,7 @@ export default function ReportPage({
                 {new Date(report.generatedAt).toLocaleDateString(
                   locale === "ar" ? "ar-SA" : "en-US"
                 )}{" "}
-                • @{report.account.username}
+                • {report.account.displayName ?? `@${report.account.username}`}
               </p>
             </div>
             <a
@@ -352,13 +353,13 @@ export default function ReportPage({
                       onError={() => setAvatarFailed(true)}
                     />
                   ) : (
-                    report.account.username.charAt(0).toUpperCase()
+                    (report.account.displayName ?? report.account.username).charAt(0).toUpperCase()
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h2 className="truncate text-2xl font-black text-foreground">
-                      @{report.account.username}
+                      {report.account.displayName ?? `@${report.account.username}`}
                     </h2>
                     {report.account.isVerified && (
                       <span className="shrink-0 rounded-full bg-info/10 px-2 py-0.5 text-xs font-bold text-info">
@@ -366,6 +367,11 @@ export default function ReportPage({
                       </span>
                     )}
                   </div>
+                  {report.account.displayName && (
+                    <p className="truncate text-sm font-medium text-muted-foreground" dir="ltr">
+                      @{report.account.username}
+                    </p>
+                  )}
                   <p className="text-muted-foreground text-sm">
                     {report.account.accountType === "business"
                       ? t("business")

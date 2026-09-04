@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getStoredCreatorLeague } from "@/modules/providers/tiktok/live-league";
 import { getStoredLiveAccountLevel } from "@/modules/providers/tiktok/live-account-level";
+import { getStoredProfileDisplayName } from "@/modules/providers/stored-profile";
 
 function getSafeAvatarUrl(value: unknown): string | null {
   if (typeof value !== "string") return null;
@@ -67,6 +68,7 @@ export async function GET(
     const accountCreatedAtSource = rawProfile?.accountCreatedAtSource;
     const creatorLeague = getStoredCreatorLeague(rawPayload);
     const liveAccountLevel = getStoredLiveAccountLevel(rawPayload);
+    const displayName = getStoredProfileDisplayName(rawPayload);
 
     return NextResponse.json({
       success: true,
@@ -74,6 +76,7 @@ export async function GET(
         reportId: report.id,
         account: {
           username: account.externalUsername,
+          displayName,
           avatarUrl,
           provider: account.provider.key,
           isVerified: snapshot.isVerified,
