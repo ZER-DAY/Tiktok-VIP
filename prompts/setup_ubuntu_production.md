@@ -50,17 +50,18 @@
 
 4. افحص الاتصال بالخدمات من خلال أدوات المشروع، من دون إظهار الروابط السرية.
 
-5. طبّق migrations على قاعدة الإنتاج المشتركة، وخصوصًا migration الخاصة بـ Better Auth:
+5. ابنِ صورة الـworker من آخر commit أولًا، ثم طبّق migrations على قاعدة الإنتاج المشتركة، وخصوصًا migration الخاصة بـ Better Auth:
 
    ```bash
+   docker compose -f docker-compose.worker.yml build worker
    docker compose -f docker-compose.worker.yml run --rm --entrypoint sh worker -lc \
      "./node_modules/.bin/prisma migrate deploy"
    ```
 
-6. ابنِ وشغّل الـworker:
+6. شغّل الـworker:
 
    ```bash
-   docker compose -f docker-compose.worker.yml up -d --build
+   docker compose -f docker-compose.worker.yml up -d worker
    docker compose -f docker-compose.worker.yml ps
    docker compose -f docker-compose.worker.yml logs --tail=150 worker
    ```
