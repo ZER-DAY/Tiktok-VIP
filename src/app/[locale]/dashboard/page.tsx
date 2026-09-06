@@ -23,8 +23,10 @@ interface DashboardData {
   subscription: {
     planName: string;
     reportsUsed: number;
-    reportsLimit: number;
-  } | null;
+    reportsLimit: number | null;
+    remaining: number | null;
+    isUnlimited: boolean;
+  };
 }
 
 export default function DashboardPage() {
@@ -128,12 +130,14 @@ export default function DashboardPage() {
               <BarChart3 className="size-5 text-info" />
             </div>
             <span className="text-lg font-bold text-foreground">
-              {data?.subscription?.planName || t("freePlan")}
+              {data?.subscription ? t(`planNames.${data.subscription.planName}`) : t("freePlan")}
             </span>
           </div>
           <p className="text-muted-foreground text-sm">
             {data?.subscription
-              ? `${data.subscription.reportsUsed}/${data.subscription.reportsLimit} ${t("reportsUsed")}`
+              ? `${data.subscription.reportsUsed}/${
+                  data.subscription.isUnlimited ? t("unlimited") : data.subscription.reportsLimit
+                } ${t("reportsUsed")}`
               : t("noSubscription")}
           </p>
         </div>

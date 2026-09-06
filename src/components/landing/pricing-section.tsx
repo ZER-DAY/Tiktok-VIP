@@ -6,9 +6,10 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 const plans = [
-  { key: "basic", popular: false, featureCount: 3 },
-  { key: "advanced", popular: true, featureCount: 4 },
-  { key: "professional", popular: false, featureCount: 4 },
+  { key: "trial", popular: false, featureCount: 3 },
+  { key: "individual", popular: true, featureCount: 3 },
+  { key: "saver", popular: false, featureCount: 3 },
+  { key: "agents", popular: false, featureCount: 4 },
 ] as const;
 
 export function PricingSection() {
@@ -21,7 +22,7 @@ export function PricingSection() {
     >
       <h2 className="mb-5 text-center text-[14px] font-bold text-[#1c2230]">{t("compactTitle")}</h2>
 
-      <div className="grid gap-3 sm:grid-cols-3 xl:grid-cols-[200px_219px_215px] xl:gap-4">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-2 xl:gap-4">
         {plans.map((plan, index) => (
           <motion.article
             key={plan.key}
@@ -29,7 +30,7 @@ export function PricingSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
-            className={`relative flex min-h-[250px] flex-col rounded-[13px] border bg-white px-4 pb-4 pt-[18px] text-center ${
+            className={`relative flex min-h-[240px] flex-col rounded-[13px] border bg-white px-4 pb-4 pt-[18px] text-center ${
               plan.popular
                 ? "border-brand/65 shadow-[0_13px_28px_-18px_rgba(255,77,103,.65)]"
                 : "border-black/[0.07]"
@@ -39,9 +40,6 @@ export function PricingSection() {
               <>
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#fff0f0] px-3 py-1 text-[9px] font-black text-brand">
                   {t("mostPopular")}
-                </span>
-                <span className="absolute -top-3 right-[78%] hidden whitespace-nowrap rounded-full bg-[#fff0f0] px-2 py-1 text-[8px] font-bold text-brand xl:block">
-                  {t("annualSaving")}
                 </span>
               </>
             )}
@@ -70,7 +68,11 @@ export function PricingSection() {
             </ul>
 
             <Link
-              href="/register"
+              href={
+                plan.key === "trial"
+                  ? "/register"
+                  : `/dashboard/billing?plan=${plan.key === "agents" ? "agency" : plan.key}`
+              }
               className={`mt-4 inline-flex h-9 items-center justify-center rounded-[9px] text-[11px] font-bold transition ${
                 plan.popular
                   ? "bg-brand text-white hover:bg-[#f33f5b]"

@@ -167,32 +167,9 @@ export default function AdminSettingsPage() {
         className="bg-card border border-border rounded-2xl p-6"
       >
         <h2 className="text-lg font-semibold text-foreground mb-6">{t("rateLimitSettings")}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block text-sm text-muted-foreground mb-2">
-              {t("freePlanReportsPerDay")}
-            </label>
-            <input
-              type="number"
-              value={getSetting("rateLimit.freePlan.reportsPerDay")}
-              onChange={(e) => updateSetting("rateLimit.freePlan.reportsPerDay", e.target.value)}
-              min="0"
-              className="w-full bg-muted/50 border border-border rounded-xl py-3 px-4 text-foreground focus:outline-none focus:border-brand-pink/50 transition-colors"
-            />
-          </div>
-          <div>
-            <label className="block text-sm text-muted-foreground mb-2">
-              {t("guestReportsPerDay")}
-            </label>
-            <input
-              type="number"
-              value={getSetting("rateLimit.guest.reportsPerDay")}
-              onChange={(e) => updateSetting("rateLimit.guest.reportsPerDay", e.target.value)}
-              min="0"
-              className="w-full bg-muted/50 border border-border rounded-xl py-3 px-4 text-foreground focus:outline-none focus:border-brand-pink/50 transition-colors"
-            />
-          </div>
-        </div>
+        <p className="rounded-xl border border-border bg-muted/40 p-4 text-sm leading-6 text-muted-foreground">
+          {t("quotaManagedInPlans")}
+        </p>
       </motion.div>
 
       <motion.div

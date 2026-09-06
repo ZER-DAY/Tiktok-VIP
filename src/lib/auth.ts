@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 
 const globalForAuth = globalThis as unknown as {
@@ -8,6 +9,7 @@ const globalForAuth = globalThis as unknown as {
 
 function createAuth() {
   return betterAuth({
+    baseURL: process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL,
     database: prismaAdapter(prisma, {
       provider: "postgresql",
     }),
@@ -37,17 +39,41 @@ function createAuth() {
       expiresIn: 60 * 60 * 24 * 30, // 30 days
       updateAge: 60 * 60 * 24, // 1 day
     },
+    advanced: {
+      database: {
+        generateId: () => randomUUID(),
+      },
+    },
+    databaseHooks: {
+      user: {
+        create: {
+          before: async (user) => {
+            if (user.planId) return;
+
+            const freePlan = await prisma.plan.findUnique({
+              where: { name: "free" },
+              select: { id: true },
+            });
+            if (!freePlan) {
+              throw new Error("FREE_PLAN_NOT_CONFIGURED");
+            }
+
+            return {
+              data: {
+                ...user,
+                planId: freePlan.id,
+              },
+            };
+          },
+        },
+      },
+    },
     user: {
+      fields: {
+        image: "avatarUrl",
+      },
       additionalFields: {
         passwordHash: {
-          type: "string",
-          required: false,
-        },
-        name: {
-          type: "string",
-          required: false,
-        },
-        avatarUrl: {
           type: "string",
           required: false,
         },

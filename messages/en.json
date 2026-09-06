@@ -138,22 +138,22 @@
   "pricing": {
     "kicker": "Simple plans, no surprises",
     "title": "Choose the right plan for you",
-    "subtitle": "Start for free and upgrade as you need",
+    "subtitle": "Try one account analysis, then choose your monthly subscription",
     "free": "Free",
     "freePrice": "$0",
-    "freePeriod": "/month",
-    "freeFeature1": "One analysis per day",
+    "freePeriod": "trial",
+    "freeFeature1": "One account analysis only",
     "freeFeature2": "Basic account info",
     "freeFeature3": "Simple report",
-    "pro": "Professional",
-    "proPrice": "$19",
+    "pro": "Individuals",
+    "proPrice": "$20",
     "proPeriod": "/month",
-    "proFeature1": "Unlimited analyses",
+    "proFeature1": "100 accounts per month",
     "proFeature2": "Professional PDF export",
     "proFeature3": "Competitor comparison",
     "proFeature4": "Historical tracking",
     "agency": "Agencies",
-    "agencyPrice": "$49",
+    "agencyPrice": "$50",
     "agencyPeriod": "/month",
     "agencyFeature1": "All Pro features",
     "agencyFeature2": "Full CRM access",
@@ -163,34 +163,42 @@
     "popular": "Most Popular",
     "compactTitle": "Choose the plan that works for you",
     "mostPopular": "Most popular",
-    "annualSaving": "Save 20% annually",
-    "basic": {
-      "name": "Basic",
+    "annualSaving": "Best start for individuals",
+    "trial": {
+      "name": "Free Trial",
       "price": "$0",
       "period": "Free",
-      "description": "A simple start with analytics",
-      "feature1": "Limited basic analytics",
-      "feature2": "Account performance summary",
-      "feature3": "Starter growth insights"
+      "description": "Experience the platform before subscribing",
+      "feature1": "One account analysis only",
+      "feature2": "Full trial report",
+      "feature3": "The trial does not renew"
     },
-    "advanced": {
-      "name": "Advanced",
-      "price": "$19",
+    "individual": {
+      "name": "Individuals",
+      "price": "$20",
       "period": "Monthly",
-      "description": "For every ambitious creator",
-      "feature1": "Track up to 3 accounts",
-      "feature2": "Advanced analytics",
-      "feature3": "Professional PDF reports",
-      "feature4": "Competitor comparison"
+      "description": "For creators and individual users",
+      "feature1": "Analyze 100 accounts each month",
+      "feature2": "Advanced reports and analytics",
+      "feature3": "PDF export and competitor comparison"
     },
-    "professional": {
-      "name": "Professional",
-      "price": "$49",
+    "saver": {
+      "name": "Saver",
+      "price": "$30",
       "period": "Monthly",
-      "description": "For serious creators and fast growth",
-      "feature1": "Unlimited advanced analytics",
+      "description": "More value for frequent analysis",
+      "feature1": "Analyze 200 accounts each month",
+      "feature2": "Everything in Individuals",
+      "feature3": "Lower cost per analysis"
+    },
+    "agents": {
+      "name": "Agents",
+      "price": "$50",
+      "period": "Monthly",
+      "description": "For agencies and professional teams",
+      "feature1": "Unlimited analyses",
       "feature2": "Multiple account management",
-      "feature3": "Bulk reports",
+      "feature3": "Bulk reports and CRM",
       "feature4": "Priority support"
     }
   },
@@ -281,6 +289,14 @@
     "freePlan": "Free Plan",
     "noSubscription": "No subscription yet",
     "reportsUsed": "reports used",
+    "unlimited": "Unlimited",
+    "planNames": {
+      "free": "Free Trial",
+      "individual": "Individuals",
+      "pro": "Individuals",
+      "saver": "Saver",
+      "agency": "Agents"
+    },
     "recentAccounts": "Recent Accounts",
     "viewAll": "View All",
     "noAccounts": "No accounts analyzed yet",
@@ -292,6 +308,7 @@
       "dashboard": "Overview",
       "accounts": "My Accounts",
       "compare": "Comparisons",
+      "billing": "Subscription & Billing",
       "settings": "Settings",
       "logout": "Sign Out"
     },
@@ -347,6 +364,91 @@
       "deleteError": "An error occurred while deleting account"
     }
   },
+  "billing": {
+    "kicker": "Clear subscription, secure payment",
+    "title": "Choose your plan and payment method",
+    "subtitle": "Activate your plan by card or mobile wallet through the payment gateway, or submit an InstaPay transfer for review.",
+    "loadError": "Billing information could not be loaded. Please try again.",
+    "checkoutError": "Checkout could not be started. Check your details and try again.",
+    "methodUnavailable": "This method is not connected to a merchant account yet. An administrator can enable it in the server configuration.",
+    "manualSubmitted": "Your transfer was submitted and the subscription will appear after review.",
+    "accountCopied": "Transfer number copied.",
+    "currentPlan": "Current plan",
+    "stepOne": "Step one",
+    "stepTwo": "Step two",
+    "choosePlan": "Choose the right plan",
+    "chooseMethod": "Choose a payment method",
+    "chooseMethodHint": "Pay automatically with Paymob or submit a direct transfer for review",
+    "monthlySubscription": "Monthly subscription",
+    "mostPopular": "Most popular",
+    "month": "month",
+    "wallet": "Wallet",
+    "phone": "Phone number used for payment",
+    "supportedWallets": "Supported mobile wallets",
+    "automatic": "Automatic payment",
+    "walletRedirectHint": "Paymob detects the wallet network from the phone number, then lets you complete payment securely.",
+    "transferToNumber": "Transfer to this number",
+    "depositSteps": "How to complete the transfer",
+    "depositStep1": "Transfer the required amount to the number shown above.",
+    "depositStep2": "Enter your wallet number and the transfer transaction reference.",
+    "depositStep3": "Submit the request; your subscription is activated after review.",
+    "transferReference": "Transfer reference",
+    "transferReferencePlaceholder": "Transaction number or reference digits",
+    "manualInstructions": "Transfer the amount shown in the summary, then enter the transaction reference. The plan is not activated until an administrator reviews it.",
+    "copyAccount": "Copy transfer number",
+    "processing": "Creating checkout...",
+    "submitManual": "Submit transfer for review",
+    "continueToPayment": "Continue to secure payment",
+    "payNow": "Pay now",
+    "securePaymentHint": "Encrypted, secure payment; sensitive payment data is never stored",
+    "summary": "Order summary",
+    "selectedPlan": "Selected plan",
+    "paymentMethod": "Payment method",
+    "includedFeatures": "Included features",
+    "plan": "Plan",
+    "monthlyPrice": "Monthly price",
+    "chargedAmount": "Amount charged in EGP",
+    "afterConfiguration": "Shown after setup",
+    "secureTitle": "Card details never pass through our site",
+    "secureDescription": "Payment details are entered on the gateway's secure page. A return-page redirect alone never activates a subscription.",
+    "otherMethods": "Other methods in HEVO's model",
+    "comingSoon": "Requires a separate provider",
+    "paymentHistory": "Payment history",
+    "operations": "operations",
+    "noPayments": "No payments yet",
+    "plans": {
+      "free": { "name": "Free Trial" },
+      "pro": { "name": "Individuals" },
+      "individual": { "name": "Individuals" },
+      "saver": { "name": "Saver" },
+      "agency": { "name": "Agents" }
+    },
+    "features": {
+      "100": "Analyze 100 accounts monthly",
+      "200": "Analyze 200 accounts monthly",
+      "unlimited": "Unlimited account analyses",
+      "pdf": "Professional PDF export",
+      "comparison": "Competitor comparison",
+      "crm": "Bulk reports and CRM",
+      "priority": "Priority support"
+    },
+    "methods": {
+      "card": { "title": "Cards", "subtitle": "Visa, Mastercard and Meeza" },
+      "mobile_wallet": { "title": "Mobile wallets", "subtitle": "Supported Egyptian wallets" },
+      "manual_transfer": {
+        "title": "Direct transfer",
+        "subtitle": "InstaPay or wallet with review"
+      }
+    },
+    "statuses": {
+      "pending": "Pending",
+      "processing": "Awaiting gateway confirmation",
+      "manual_review": "Under review",
+      "paid": "Paid and active",
+      "failed": "Failed or rejected",
+      "canceled": "Canceled"
+    }
+  },
   "analyze": {
     "title": "Analyzing...",
     "subtitle": "We're analyzing your account now, this may take a few seconds",
@@ -360,7 +462,28 @@
     "error": "An error occurred while starting the analysis",
     "errorGeneric": "Analysis failed. Please try again.",
     "retry": "Try Again",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "trialEndedTitle": "Your free trial has ended",
+    "trialEndedDescription": "The free trial includes one account analysis only. Choose a plan to continue analyzing accounts.",
+    "chooseSubscription": "Choose a subscription",
+    "signIn": "Sign in",
+    "paywallPlans": {
+      "individual": {
+        "name": "Individuals",
+        "price": "$20 / month",
+        "limit": "100 accounts monthly"
+      },
+      "saver": {
+        "name": "Saver",
+        "price": "$30 / month",
+        "limit": "200 accounts monthly"
+      },
+      "agency": {
+        "name": "Agents",
+        "price": "$50 / month",
+        "limit": "Unlimited accounts"
+      }
+    }
   },
   "report": {
     "reportLabel": "Account analysis / final report",
@@ -569,6 +692,7 @@
       "stats": "Statistics",
       "users": "Users",
       "plans": "Plans",
+      "payments": "Payments",
       "settings": "Settings",
       "auditLogs": "Audit Logs",
       "roles": "Roles",
@@ -607,10 +731,29 @@
       "active": "Active",
       "price": "Price ($)",
       "reportsPerDay": "Reports per day",
+      "reportsPerMonth": "Accounts per month",
       "unlimited": "Unlimited",
       "save": "Save Changes",
       "saving": "Saving...",
       "saveSuccess": "Changes saved successfully"
+    },
+    "payments": {
+      "title": "Payments",
+      "subtitle": "Monitor gateway payments and review direct transfers",
+      "refresh": "Refresh",
+      "loadError": "Payments could not be loaded",
+      "reviewError": "The review decision could not be saved",
+      "empty": "No payment orders",
+      "customer": "Customer",
+      "plan": "Plan",
+      "method": "Method",
+      "amount": "Amount",
+      "reference": "Reference",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions",
+      "approve": "Approve and activate subscription",
+      "reject": "Reject transfer"
     },
     "settings": {
       "title": "Settings",
@@ -623,6 +766,7 @@
       "rateLimitSettings": "Rate Limit Settings",
       "freePlanReportsPerDay": "Free Plan Reports / Day",
       "guestReportsPerDay": "Guest Reports / Day",
+      "quotaManagedInPlans": "Free-trial and monthly account limits are managed from Plans. The trial allows one analysis only, while Agents is unlimited.",
       "save": "Save Settings",
       "saving": "Saving...",
       "saveSuccess": "Settings saved successfully"

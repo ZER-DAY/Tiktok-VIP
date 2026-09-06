@@ -37,34 +37,52 @@ enum SubscriptionStatus {
   past_due
 }
 
+enum PaymentOrderStatus {
+  pending
+  processing
+  manual_review
+  paid
+  failed
+  canceled
+}
+
+enum PaymentMethod {
+  card
+  mobile_wallet
+  manual_transfer
+}
+
 // ─── User ────────────────────────────────────────────────
 
 model User {
-  id             String    @id @default(uuid()) @db.Uuid
-  email          String    @unique
-  passwordHash   String?
-  name           String
-  avatarUrl      String?
+  id              String    @id @default(uuid()) @db.Uuid
+  email           String    @unique
+  passwordHash    String?
+  name            String
+  avatarUrl       String?
+  emailVerified   Boolean   @default(false)
   emailVerifiedAt DateTime?
-  preferredLocale String   @default("ar")
-  planId         String    @db.Uuid
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  deletedAt      DateTime?
+  preferredLocale String    @default("ar")
+  planId          String    @db.Uuid
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
 
-  plan                  Plan                  @relation(fields: [planId], references: [id])
-  roles                 UserRole[]
-  subscriptions         Subscription[]
-  sessions              Session[]
-  accounts              Account[]
-  ownedAccounts         AnalyzedAccount[]     @relation("Owner")
-  trackedAccounts       AnalyzedAccount[]     @relation("TrackedBy")
-  agencyApplications    AgencyApplication[]   @relation("Applicant")
-  assignedApplications  AgencyApplication[]   @relation("Assignee")
-  applicationNotes      ApplicationNote[]
-  statusChanges         ApplicationStatusHistory[]
-  auditLogs             AuditLog[]
-  notifications         Notification[]
+  plan                 Plan                       @relation(fields: [planId], references: [id])
+  roles                UserRole[]
+  subscriptions        Subscription[]
+  sessions             Session[]
+  accounts             Account[]
+  ownedAccounts        AnalyzedAccount[]          @relation("Owner")
+  trackedAccounts      AnalyzedAccount[]          @relation("TrackedBy")
+  agencyApplications   AgencyApplication[]        @relation("Applicant")
+  assignedApplications AgencyApplication[]        @relation("Assignee")
+  applicationNotes     ApplicationNote[]
+  statusChanges        ApplicationStatusHistory[]
+  auditLogs            AuditLog[]
+  notifications        Notification[]
+  analysisUsages       AnalysisUsage[]
+  paymentOrders        PaymentOrder[]
 
   @@index([planId])
 }
@@ -72,14 +90,14 @@ model User {
 // ─── RBAC ────────────────────────────────────────────────
 
 model Role {
-  id          String           @id @default(uuid()) @db.Uuid
-  name        String           @unique
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
   description String?
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  userRoles    UserRole[]
-  permissions  RolePermission[]
+  userRoles   UserRole[]
+  permissions RolePermission[]
 }
 
 model Permission {
@@ -128,6 +146,7 @@ model Plan {
   priceCents      Int      @default(0)
   billingInterval String?
   reportsPerDay   Int?
+  reportsPerMonth Int?
   features        Json?
   isActive        Boolean  @default(true)
   createdAt       DateTime @default(now())
@@ -135,23 +154,87 @@ model Plan {
 
   users         User[]
   subscriptions Subscription[]
+  paymentOrders PaymentOrder[]
+}
+
+// ─── Analysis usage & quota enforcement ───────────────────────
+
+model AnalysisUsageCounter {
+  subjectKey String
+  periodKey  String
+  used       Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@id([subjectKey, periodKey])
+}
+
+model AnalysisUsage {
+  id               String   @id @default(uuid()) @db.Uuid
+  requestId        String   @unique @db.Uuid
+  userId           String?  @db.Uuid
+  guestTokenHash   String?
+  subjectKey       String
+  periodKey        String
+  planName         String
+  provider         String
+  externalUsername String
+  createdAt        DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([guestTokenHash, createdAt])
+  @@index([subjectKey, periodKey])
 }
 
 model Subscription {
-  id                   String             @id @default(uuid()) @db.Uuid
-  userId               String             @db.Uuid
-  planId               String             @db.Uuid
-  status               SubscriptionStatus @default(active)
-  startedAt            DateTime           @default(now())
-  currentPeriodEnd     DateTime?
-  paymentProviderRef   String?
-  createdAt            DateTime           @default(now())
-  updatedAt            DateTime           @updatedAt
+  id                 String             @id @default(uuid()) @db.Uuid
+  userId             String             @db.Uuid
+  planId             String             @db.Uuid
+  status             SubscriptionStatus @default(active)
+  startedAt          DateTime           @default(now())
+  currentPeriodEnd   DateTime?
+  paymentProviderRef String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   plan Plan @relation(fields: [planId], references: [id])
 
   @@index([userId])
+  @@index([planId])
+}
+
+// A local source of truth for every checkout attempt. Provider callbacks only
+// activate subscriptions after the signed amount and currency are verified.
+model PaymentOrder {
+  id                    String             @id @default(uuid()) @db.Uuid
+  userId                String             @db.Uuid
+  planId                String             @db.Uuid
+  method                PaymentMethod
+  status                PaymentOrderStatus @default(pending)
+  provider              String
+  planPriceCents        Int
+  planPriceCurrency     String             @default("USD")
+  paymentAmountCents    Int
+  paymentCurrency       String
+  providerIntentionId   String?            @unique
+  providerTransactionId String?            @unique
+  customerPhone         String?
+  transferReference     String?
+  failureReason         String?
+  paidAt                DateTime?
+  reviewedAt            DateTime?
+  expiresAt             DateTime?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan Plan @relation(fields: [planId], references: [id])
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([status, createdAt(sort: Desc)])
   @@index([planId])
 }
 
@@ -171,23 +254,23 @@ model Provider {
 // ─── AnalyzedAccount ─────────────────────────────────────
 
 model AnalyzedAccount {
-  id                String   @id @default(uuid()) @db.Uuid
-  providerId        String   @db.Uuid
-  externalUsername   String
-  externalId        String?
-  ownerId           String?  @db.Uuid
-  trackedByUserId   String?  @db.Uuid
-  firstAnalyzedAt   DateTime @default(now())
-  lastAnalyzedAt    DateTime @default(now())
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id               String   @id @default(uuid()) @db.Uuid
+  providerId       String   @db.Uuid
+  externalUsername String
+  externalId       String?
+  ownerId          String?  @db.Uuid
+  trackedByUserId  String?  @db.Uuid
+  firstAnalyzedAt  DateTime @default(now())
+  lastAnalyzedAt   DateTime @default(now())
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  provider        Provider        @relation(fields: [providerId], references: [id])
-  owner           User?           @relation("Owner", fields: [ownerId], references: [id])
-  trackedBy       User?           @relation("TrackedBy", fields: [trackedByUserId], references: [id])
-  snapshots       AccountSnapshot[]
-  liveSessions    LiveSession[]
-  applications    AgencyApplication[]
+  provider     Provider            @relation(fields: [providerId], references: [id])
+  owner        User?               @relation("Owner", fields: [ownerId], references: [id])
+  trackedBy    User?               @relation("TrackedBy", fields: [trackedByUserId], references: [id])
+  snapshots    AccountSnapshot[]
+  liveSessions LiveSession[]
+  applications AgencyApplication[]
 
   @@unique([providerId, externalUsername])
   @@index([providerId])
@@ -198,30 +281,30 @@ model AnalyzedAccount {
 // ─── AccountSnapshot (Append-only) ───────────────────────
 
 model AccountSnapshot {
-  id                      String      @id @default(uuid()) @db.Uuid
-  accountId               String      @db.Uuid
-  capturedAt              DateTime    @default(now())
-  followers               Int
-  following               Int
-  totalLikes              BigInt
-  videoCount              Int
-  avgViews                Float?
-  avgLikes                Float?
-  avgComments             Float?
-  avgShares               Float?
-  isVerified              Boolean     @default(false)
-  accountType             AccountType @default(unknown)
-  bioLanguageGuess        String?
-  countryGuess            String?
-  countryGuessConfidence  Float?
-  countryRegionCode       String?
-  countryGuessSource      String?
-  accountCreatedAtGuess   DateTime?   @db.Date
-  rawPayload              Json
-  createdAt               DateTime    @default(now())
+  id                     String      @id @default(uuid()) @db.Uuid
+  accountId              String      @db.Uuid
+  capturedAt             DateTime    @default(now())
+  followers              Int
+  following              Int
+  totalLikes             BigInt
+  videoCount             Int
+  avgViews               Float?
+  avgLikes               Float?
+  avgComments            Float?
+  avgShares              Float?
+  isVerified             Boolean     @default(false)
+  accountType            AccountType @default(unknown)
+  bioLanguageGuess       String?
+  countryGuess           String?
+  countryGuessConfidence Float?
+  countryRegionCode      String?
+  countryGuessSource     String?
+  accountCreatedAtGuess  DateTime?   @db.Date
+  rawPayload             Json
+  createdAt              DateTime    @default(now())
 
-  account           AnalyzedAccount  @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  analysisReport    AnalysisReport?
+  account        AnalyzedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  analysisReport AnalysisReport?
 
   @@index([accountId, capturedAt(sort: Desc)])
   @@index([accountId])
@@ -246,21 +329,21 @@ model LiveSession {
 // ─── AnalysisReport ──────────────────────────────────────
 
 model AnalysisReport {
-  id                       String   @id @default(uuid()) @db.Uuid
-  snapshotId               String   @unique @db.Uuid
-  accountStrengthScore     Int
-  contentQualityScore      Int
-  engagementQualityScore   Int
-  postingConsistencyScore  Int
-  explorePotentialPercent  Int
-  livePotentialScore       Int
-  professionalismScore     Int
-  growthRatePercent        Float?
-  scoreBreakdown           Json
-  generatedAt              DateTime @default(now())
+  id                      String   @id @default(uuid()) @db.Uuid
+  snapshotId              String   @unique @db.Uuid
+  accountStrengthScore    Int
+  contentQualityScore     Int
+  engagementQualityScore  Int
+  postingConsistencyScore Int
+  explorePotentialPercent Int
+  livePotentialScore      Int
+  professionalismScore    Int
+  growthRatePercent       Float?
+  scoreBreakdown          Json
+  generatedAt             DateTime @default(now())
 
-  snapshot          AccountSnapshot  @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
-  insights          ReportInsight[]
+  snapshot AccountSnapshot @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  insights ReportInsight[]
 
   @@index([snapshotId])
 }
@@ -268,14 +351,14 @@ model AnalysisReport {
 // ─── ReportInsight ───────────────────────────────────────
 
 model ReportInsight {
-  id          String           @id @default(uuid()) @db.Uuid
-  reportId    String           @db.Uuid
+  id          String            @id @default(uuid()) @db.Uuid
+  reportId    String            @db.Uuid
   type        ReportInsightType
   title       String
   description String
   evidenceRef Json?
-  order       Int              @default(0)
-  createdAt   DateTime         @default(now())
+  order       Int               @default(0)
+  createdAt   DateTime          @default(now())
 
   report AnalysisReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
 
@@ -285,23 +368,23 @@ model ReportInsight {
 // ─── AgencyApplication ───────────────────────────────────
 
 model AgencyApplication {
-  id               String            @id @default(uuid()) @db.Uuid
-  accountId        String            @db.Uuid
-  applicantUserId  String?           @db.Uuid
-  fullName         String
-  phone            String
-  telegram         String
-  email            String
-  status           ApplicationStatus @default(new)
-  assigneeUserId   String?           @db.Uuid
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  id              String            @id @default(uuid()) @db.Uuid
+  accountId       String            @db.Uuid
+  applicantUserId String?           @db.Uuid
+  fullName        String
+  phone           String
+  telegram        String
+  email           String
+  status          ApplicationStatus @default(new)
+  assigneeUserId  String?           @db.Uuid
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 
-  account         AnalyzedAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
-  applicantUser   User?           @relation("Applicant", fields: [applicantUserId], references: [id])
-  assigneeUser    User?           @relation("Assignee", fields: [assigneeUserId], references: [id])
-  notes           ApplicationNote[]
-  statusHistory   ApplicationStatusHistory[]
+  account       AnalyzedAccount            @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  applicantUser User?                      @relation("Applicant", fields: [applicantUserId], references: [id])
+  assigneeUser  User?                      @relation("Assignee", fields: [assigneeUserId], references: [id])
+  notes         ApplicationNote[]
+  statusHistory ApplicationStatusHistory[]
 
   @@index([status])
   @@index([assigneeUserId])
@@ -363,7 +446,7 @@ model Session {
   id        String   @id
   userId    String   @db.Uuid
   expiresAt DateTime
-  token     String?
+  token     String   @unique
   ipAddress String?
   userAgent String?
   createdAt DateTime @default(now())
@@ -375,18 +458,19 @@ model Session {
 }
 
 model Account {
-  id                String  @id
-  userId            String  @db.Uuid
-  accountId         String
-  providerId        String
-  accessToken       String?
-  refreshToken      String?
-  accessTokenExpiresAt DateTime?
-  scope             String?
-  idToken           String?
-  password          String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id                    String    @id
+  userId                String    @db.Uuid
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -408,13 +492,13 @@ model Verification {
 // ─── AuditLog ────────────────────────────────────────────
 
 model AuditLog {
-  id           String   @id @default(uuid()) @db.Uuid
-  actorUserId  String?  @db.Uuid
-  action       String
-  entityType   String
-  entityId     String
-  metadata     Json?
-  createdAt    DateTime @default(now())
+  id          String   @id @default(uuid()) @db.Uuid
+  actorUserId String?  @db.Uuid
+  action      String
+  entityType  String
+  entityId    String
+  metadata    Json?
+  createdAt   DateTime @default(now())
 
   actor User? @relation(fields: [actorUserId], references: [id])
 
@@ -425,8 +509,8 @@ model AuditLog {
 // ─── System Settings ────────────────────────────────────
 
 model SystemSetting {
-  key         String   @id
-  value       String   @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  key       String   @id
+  value     String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

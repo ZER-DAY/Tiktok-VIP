@@ -1,16 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { BrandMark } from "@/components/brand/brand-mark";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const t = useTranslations("auth");
+  const locale = useLocale();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const requestedCallback = searchParams.get("callbackUrl");
+  const callbackUrl =
+    requestedCallback?.startsWith("/") && !requestedCallback.startsWith("//")
+      ? requestedCallback
+      : `/${locale}/dashboard`;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -41,7 +48,7 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (response.ok) {
-        router.push("/dashboard");
+        router.push(callbackUrl);
         router.refresh();
       } else {
         setError(data.message || t("registerError"));
@@ -224,12 +231,29 @@ export default function RegisterPage() {
 
           <p className="text-center text-muted-foreground text-sm mt-6">
             {t("hasAccount")}{" "}
-            <Link href="/login" className="text-brand hover:text-brand/80 transition-colors">
+            <Link
+              href={`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+              className="text-brand hover:text-brand/80 transition-colors"
+            >
               {t("loginLink")}
             </Link>
           </p>
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="text-muted-foreground">Loading...</div>
+        </div>
+      }
+    >
+      <RegisterForm />
+    </Suspense>
   );
 }

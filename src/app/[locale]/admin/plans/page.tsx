@@ -9,7 +9,7 @@ interface Plan {
   id: string;
   name: string;
   priceCents: number;
-  reportsPerDay: number | null;
+  reportsPerMonth: number | null;
   features: Record<string, boolean> | null;
   isActive: boolean;
 }
@@ -141,15 +141,15 @@ export default function AdminPlansPage() {
               </div>
               <div>
                 <label className="block text-sm text-muted-foreground mb-2">
-                  {t("reportsPerDay")}
+                  {t("reportsPerMonth")}
                 </label>
                 <input
                   type="number"
-                  value={plan.reportsPerDay || ""}
+                  value={plan.reportsPerMonth ?? ""}
                   onChange={(e) =>
                     updatePlan(
                       plan.id,
-                      "reportsPerDay",
+                      "reportsPerMonth",
                       e.target.value ? parseInt(e.target.value) : null
                     )
                   }

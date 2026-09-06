@@ -1,12 +1,13 @@
 "use client";
 
-import { LayoutDashboard, BarChart3, GitCompareArrows, Settings } from "lucide-react";
+import { LayoutDashboard, BarChart3, GitCompareArrows, Settings, WalletCards } from "lucide-react";
 import { AppShell } from "@/components/layout/app-shell";
 
 const sidebarItems = [
   { key: "dashboard", icon: LayoutDashboard, href: "/dashboard" },
   { key: "accounts", icon: BarChart3, href: "/dashboard/accounts" },
   { key: "compare", icon: GitCompareArrows, href: "/dashboard/compare" },
+  { key: "billing", icon: WalletCards, href: "/dashboard/billing" },
   { key: "settings", icon: Settings, href: "/dashboard/settings" },
 ];
 

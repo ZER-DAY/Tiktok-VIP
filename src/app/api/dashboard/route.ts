@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/modules/auth";
 import { prisma } from "@/lib/prisma";
+import { getUserAnalysisQuota } from "@/modules/billing/analysis-quota";
 
 export async function GET() {
   try {
@@ -83,24 +84,20 @@ export async function GET() {
         type: insight.type,
       }));
 
-    // Get subscription info
-    const subscription = await prisma.subscription.findFirst({
-      where: { userId: user.id, status: "active" },
-      include: { plan: true },
-    });
+    const quota = await getUserAnalysisQuota(user.id);
 
     return NextResponse.json({
       success: true,
       data: {
         accounts: formattedAccounts,
         recentInsights,
-        subscription: subscription
-          ? {
-              planName: subscription.plan.name,
-              reportsUsed: 0,
-              reportsLimit: subscription.plan.reportsPerDay || 0,
-            }
-          : null,
+        subscription: {
+          planName: quota.planName,
+          reportsUsed: quota.used,
+          reportsLimit: quota.limit,
+          remaining: quota.remaining,
+          isUnlimited: quota.isUnlimited,
+        },
       },
     });
   } catch (error) {

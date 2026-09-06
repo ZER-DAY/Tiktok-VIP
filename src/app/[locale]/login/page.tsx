@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
@@ -10,9 +10,14 @@ import { BrandMark } from "@/components/brand/brand-mark";
 
 function LoginForm() {
   const t = useTranslations("auth");
+  const locale = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+  const requestedCallback = searchParams.get("callbackUrl");
+  const callbackUrl =
+    requestedCallback?.startsWith("/") && !requestedCallback.startsWith("//")
+      ? requestedCallback
+      : `/${locale}/dashboard`;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -191,7 +196,10 @@ function LoginForm() {
 
           <p className="text-center text-muted-foreground text-sm mt-6">
             {t("noAccount")}{" "}
-            <Link href="/register" className="text-brand hover:text-brand/80 transition-colors">
+            <Link
+              href={`/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+              className="text-brand hover:text-brand/80 transition-colors"
+            >
               {t("registerLink")}
             </Link>
           </p>

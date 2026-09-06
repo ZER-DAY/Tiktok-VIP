@@ -7,6 +7,7 @@
 ```
 User ──1:N── AnalyzedAccount (accounts أضافها/تتبعها المستخدم)
 User ──1:N── Subscription
+User ──1:N── PaymentOrder
 User ──1:N── AgencyApplication (كمقدّم طلب، اختياري إن كان مسجلاً)
 User ──1:N── AuditLog (كفاعل)
 User ──1:N── Notification
@@ -39,7 +40,8 @@ Provider (enum/جدول مرجعي) ──1:N── AnalyzedAccount
 | passwordHash          | string, nullable       | nullable لأن OAuth لا يحتاج كلمة مرور           |
 | name                  | string                 |                                                 |
 | avatarUrl             | string, nullable       |                                                 |
-| emailVerifiedAt       | datetime, nullable     |                                                 |
+| emailVerified         | boolean                | حقل Better Auth الأساسي                         |
+| emailVerifiedAt       | datetime, nullable     | طابع زمني إضافي للتدقيق                         |
 | preferredLocale       | string, default `"ar"` | العربية افتراضيًا، `"en"` إن بدّل المستخدم لغته |
 | planId                | FK → Plan              | الخطة الحالية                                   |
 | createdAt / updatedAt | datetime               |                                                 |
@@ -57,8 +59,11 @@ Provider (enum/جدول مرجعي) ──1:N── AnalyzedAccount
 
 ### Plan / Subscription
 
-- `Plan`: id, name (free/pro/agency), priceCents, billingInterval, reportsPerDay (nullable = unlimited), features (JSON).
+- `Plan`: id, name (free/individual/saver/agency), priceCents, billingInterval, reportsPerMonth (nullable = unlimited), features (JSON).
 - `Subscription`: id, userId (FK), planId (FK), status (active/canceled/past_due), startedAt, currentPeriodEnd, paymentProviderRef.
+- `PaymentOrder`: محاولة الدفع المحلية ومصدر الحقيقة للربط مع البوابة؛ تحفظ الخطة، طريقة الدفع، السعر الأصلي بالدولار، المبلغ المحوّل للجنيه، الحالة، ومراجع المزود. الحالات: pending/processing/manual_review/paid/failed/canceled.
+- `AnalysisUsageCounter`: عدّاد ذري لكل مستخدم/زائر وفترة فوترة لمنع تجاوز الحد عند الطلبات المتزامنة.
+- `AnalysisUsage`: سجل كل تحليل محتسب مع `requestId` فريد لضمان عدم احتساب إعادة المحاولة مرتين.
 
 ### Provider (مرجعي)
 

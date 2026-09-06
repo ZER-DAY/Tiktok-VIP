@@ -143,34 +143,69 @@ async function main() {
   const plans = await Promise.all([
     prisma.plan.upsert({
       where: { name: "free" },
-      update: {},
+      update: {
+        priceCents: 0,
+        billingInterval: "lifetime",
+        reportsPerDay: null,
+        reportsPerMonth: 1,
+      },
       create: {
         name: "free",
         priceCents: 0,
-        billingInterval: null,
-        reportsPerDay: 3,
+        billingInterval: "lifetime",
+        reportsPerDay: null,
+        reportsPerMonth: 1,
         features: { pdfExport: false, competitorComparison: false, historicalTracking: false },
       },
     }),
     prisma.plan.upsert({
-      where: { name: "pro" },
-      update: {},
-      create: {
-        name: "pro",
-        priceCents: 1900,
+      where: { name: "individual" },
+      update: {
+        priceCents: 2000,
         billingInterval: "monthly",
         reportsPerDay: null,
+        reportsPerMonth: 100,
+      },
+      create: {
+        name: "individual",
+        priceCents: 2000,
+        billingInterval: "monthly",
+        reportsPerDay: null,
+        reportsPerMonth: 100,
+        features: { pdfExport: true, competitorComparison: true, historicalTracking: true },
+      },
+    }),
+    prisma.plan.upsert({
+      where: { name: "saver" },
+      update: {
+        priceCents: 3000,
+        billingInterval: "monthly",
+        reportsPerDay: null,
+        reportsPerMonth: 200,
+      },
+      create: {
+        name: "saver",
+        priceCents: 3000,
+        billingInterval: "monthly",
+        reportsPerDay: null,
+        reportsPerMonth: 200,
         features: { pdfExport: true, competitorComparison: true, historicalTracking: true },
       },
     }),
     prisma.plan.upsert({
       where: { name: "agency" },
-      update: {},
-      create: {
-        name: "agency",
-        priceCents: 4900,
+      update: {
+        priceCents: 5000,
         billingInterval: "monthly",
         reportsPerDay: null,
+        reportsPerMonth: null,
+      },
+      create: {
+        name: "agency",
+        priceCents: 5000,
+        billingInterval: "monthly",
+        reportsPerDay: null,
+        reportsPerMonth: null,
         features: {
           pdfExport: true,
           competitorComparison: true,
@@ -231,7 +266,8 @@ async function main() {
       name: "مدير المنصة",
       passwordHash: await hashPassword(adminPassword),
       preferredLocale: "ar",
-      planId: plans[2].id, // agency plan
+      planId: plans[3].id, // agency plan
+      emailVerified: true,
       emailVerifiedAt: new Date(),
     },
   });

@@ -5,7 +5,16 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
-import { AlertCircle, Clock, Cpu, CheckCircle2, Loader2, Trophy } from "lucide-react";
+import {
+  AlertCircle,
+  Check,
+  CheckCircle2,
+  Clock,
+  CreditCard,
+  Cpu,
+  Loader2,
+  Trophy,
+} from "lucide-react";
 
 type JobStatus = "queued" | "processing" | "ready" | "failed";
 
@@ -25,8 +34,10 @@ export default function AnalyzePage({
   const t = useTranslations("analyze");
   const reportT = useTranslations("report");
   const router = useRouter();
+  const [requestId] = useState(() => crypto.randomUUID());
   const [jobStatus, setJobStatus] = useState<JobStatus>("queued");
   const [errorMessage, setErrorMessage] = useState("");
+  const [requiresSubscription, setRequiresSubscription] = useState(false);
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
@@ -42,7 +53,11 @@ export default function AnalyzePage({
         const response = await fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, provider: "tiktok" }),
+          body: JSON.stringify({
+            username,
+            provider: "tiktok",
+            requestId,
+          }),
         });
 
         const data = await response.json();
@@ -51,6 +66,7 @@ export default function AnalyzePage({
 
         if (!data.success) {
           setJobStatus("failed");
+          setRequiresSubscription(data.error?.code === "SUBSCRIPTION_REQUIRED");
           setErrorMessage(data.error?.message || t("errorGeneric"));
           return;
         }
@@ -99,7 +115,7 @@ export default function AnalyzePage({
       if (pollInterval) clearInterval(pollInterval);
       if (timerInterval) clearInterval(timerInterval);
     };
-  }, [username, router, locale, t]);
+  }, [username, router, locale, t, requestId]);
 
   const StatusIcon = statusConfig[jobStatus].icon;
 
@@ -112,7 +128,50 @@ export default function AnalyzePage({
         animate={{ opacity: 1, y: 0 }}
         className="relative w-full max-w-md text-center"
       >
-        {jobStatus === "failed" ? (
+        {jobStatus === "failed" && requiresSubscription ? (
+          <>
+            <div className="mx-auto mb-5 grid size-16 place-items-center rounded-2xl bg-brand/10">
+              <CreditCard className="size-8 text-brand" />
+            </div>
+            <h1 className="mb-2 text-2xl font-black text-foreground">{t("trialEndedTitle")}</h1>
+            <p className="mx-auto mb-6 max-w-sm text-sm leading-7 text-muted-foreground">
+              {t("trialEndedDescription")}
+            </p>
+            <div className="mb-6 grid gap-3 text-start sm:grid-cols-3">
+              {(["individual", "saver", "agency"] as const).map((plan) => (
+                <div
+                  key={plan}
+                  className="rounded-2xl border border-border bg-card p-4 shadow-[0_12px_32px_-24px_rgba(17,24,39,.5)]"
+                >
+                  <p className="text-sm font-black text-foreground">
+                    {t(`paywallPlans.${plan}.name`)}
+                  </p>
+                  <p className="mt-2 text-xl font-black text-brand" dir="ltr">
+                    {t(`paywallPlans.${plan}.price`)}
+                  </p>
+                  <p className="mt-2 flex items-start gap-1.5 text-xs leading-5 text-muted-foreground">
+                    <Check className="mt-0.5 size-3.5 shrink-0 text-success" />
+                    {t(`paywallPlans.${plan}.limit`)}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col justify-center gap-3 sm:flex-row">
+              <Link
+                href="/#pricing"
+                className="rounded-xl bg-brand px-6 py-3 font-bold text-brand-foreground transition hover:bg-brand/90"
+              >
+                {t("chooseSubscription")}
+              </Link>
+              <Link
+                href="/login"
+                className="rounded-xl border border-border px-6 py-3 font-bold text-foreground transition hover:bg-muted"
+              >
+                {t("signIn")}
+              </Link>
+            </div>
+          </>
+        ) : jobStatus === "failed" ? (
           <>
             <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center mx-auto mb-4">
               <AlertCircle className="w-8 h-8 text-destructive" />

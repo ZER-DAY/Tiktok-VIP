@@ -7,6 +7,7 @@ const sidebarItems = [
   { key: "stats", icon: BarChart3, href: "/admin/stats" },
   { key: "users", icon: Users, href: "/admin/users" },
   { key: "plans", icon: CreditCard, href: "/admin/plans" },
+  { key: "payments", icon: CreditCard, href: "/admin/payments" },
   { key: "settings", icon: Settings, href: "/admin/settings" },
   { key: "auditLogs", icon: FileText, href: "/admin/audit-logs" },
   { key: "roles", icon: Shield, href: "/admin/roles" },

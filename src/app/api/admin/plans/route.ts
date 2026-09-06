@@ -2,6 +2,19 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/modules/auth";
 import { hasPermission } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { z } from "zod";
+
+const updatePlansSchema = z.object({
+  plans: z.array(
+    z.object({
+      id: z.string().uuid(),
+      name: z.string().min(1).max(50),
+      priceCents: z.number().int().min(0),
+      reportsPerMonth: z.number().int().min(0).nullable(),
+      isActive: z.boolean(),
+    })
+  ),
+});
 
 export async function GET() {
   try {
@@ -53,16 +66,21 @@ export async function PATCH(request: Request) {
       );
     }
 
-    const body = await request.json();
-    const { plans } = body;
+    const parsed = updatePlansSchema.safeParse(await request.json());
+    if (!parsed.success) {
+      return NextResponse.json(
+        { success: false, error: { code: "VALIDATION_ERROR", message: "Invalid plan data" } },
+        { status: 400 }
+      );
+    }
 
-    for (const plan of plans) {
+    for (const plan of parsed.data.plans) {
       await prisma.plan.update({
         where: { id: plan.id },
         data: {
           name: plan.name,
           priceCents: plan.priceCents,
-          reportsPerDay: plan.reportsPerDay,
+          reportsPerMonth: plan.reportsPerMonth,
           isActive: plan.isActive,
         },
       });

@@ -87,6 +87,18 @@ describe("i18n: Arabic Content", () => {
     expect(ar.pricing.free).toBeTruthy();
     expect(ar.pricing.pro).toBeTruthy();
     expect(ar.pricing.agency).toBeTruthy();
+    expect(ar.pricing.trial.feature1).toContain("واحد");
+    expect(ar.pricing.individual.feature1).toContain("100");
+    expect(ar.pricing.saver.feature1).toContain("200");
+    expect(ar.pricing.agents.feature1).toContain("غير محدود");
+  });
+
+  it("analysis paywall has matching Arabic and English plan keys", () => {
+    expect(Object.keys(ar.analyze.paywallPlans).sort()).toEqual(
+      Object.keys(en.analyze.paywallPlans).sort()
+    );
+    expect(ar.analyze.trialEndedTitle).toBeTruthy();
+    expect(en.analyze.trialEndedTitle).toBeTruthy();
   });
 
   it("auth login has Arabic translations", () => {
