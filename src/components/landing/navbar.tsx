@@ -1,10 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Globe2, Menu, X } from "lucide-react";
+import { ChevronDown, Globe2, LayoutDashboard, Loader2, LogOut, Menu, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { authClient, useSession } from "@/lib/auth-client";
 
 const navigationItems = [
   { key: "home", href: "#home" },
@@ -19,10 +20,29 @@ export function Navbar() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const { data: session, isPending } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+
+  const isRtl = locale === "ar";
+  const isAuthenticated = Boolean(session?.user);
 
   const switchLanguage = () => {
-    router.replace(pathname, { locale: locale === "ar" ? "en" : "ar" });
+    router.replace(pathname, { locale: isRtl ? "en" : "ar" });
+  };
+
+  const handleLogout = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      const result = await authClient.signOut();
+      if (result.error) return;
+      setMobileOpen(false);
+      router.refresh();
+      router.push("/");
+    } finally {
+      setSigningOut(false);
+    }
   };
 
   return (
@@ -47,7 +67,7 @@ export function Navbar() {
 
           <div
             className="hidden h-full items-center justify-center gap-[53px] md:flex xl:-translate-x-[33px]"
-            dir={locale === "ar" ? "rtl" : "ltr"}
+            dir={isRtl ? "rtl" : "ltr"}
           >
             {navigationItems.map((item) => (
               <a
@@ -64,25 +84,71 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="hidden items-center justify-end gap-3 md:flex xl:translate-x-1">
+          <div
+            className="hidden items-center justify-end gap-2 md:flex xl:translate-x-1"
+            dir={isRtl ? "rtl" : "ltr"}
+          >
             <button
               type="button"
               onClick={switchLanguage}
-              dir={locale === "ar" ? "rtl" : "ltr"}
               className="inline-flex h-10 min-w-[105px] items-center justify-center gap-2 rounded-[10px] border border-black/[0.07] bg-white px-3 text-xs font-medium text-[#3d4350] transition hover:border-brand/25 hover:text-brand"
               aria-label={tCommon("switchLanguage")}
             >
               <Globe2 className="size-4" />
-              <span>{locale === "ar" ? "العربية" : "English"}</span>
+              <span>{isRtl ? "العربية" : "English"}</span>
               <ChevronDown className="size-3.5 text-[#7b808b]" />
             </button>
-            <Link
-              href="/register"
-              dir={locale === "ar" ? "rtl" : "ltr"}
-              className="inline-flex h-10 min-w-[92px] items-center justify-center rounded-[10px] bg-brand px-5 text-sm font-bold text-white shadow-[0_9px_20px_-10px_rgba(255,77,103,.85)] transition hover:-translate-y-0.5 hover:bg-[#f33f5b]"
-            >
-              {t("startNow")}
-            </Link>
+
+            {isPending ? (
+              <AuthActionsSkeleton />
+            ) : isAuthenticated ? (
+              <div className="flex items-center gap-2">
+                <div className="flex min-w-0 max-w-[180px] flex-col items-end" role="status">
+                  <Link
+                    href="/dashboard"
+                    className="flex min-w-0 items-center gap-1.5 rounded-[10px] border border-black/[0.07] bg-white py-1.5 pl-3 pr-3 text-xs font-black text-[#3d4350] transition hover:border-brand/25 hover:text-brand"
+                    aria-label={t("dashboard")}
+                  >
+                    <LayoutDashboard className="size-3.5 shrink-0" />
+                    <span className="max-w-[90px] truncate">
+                      {session?.user?.name || session?.user?.email}
+                    </span>
+                  </Link>
+                  <span className="mt-1 hidden max-w-[180px] truncate text-[10px] text-[#8a919e] xl:block">
+                    {session?.user?.email}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  disabled={signingOut}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border border-black/[0.07] bg-white px-4 text-xs font-bold text-[#3d4350] transition hover:border-destructive/25 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label={t("logout")}
+                >
+                  {signingOut ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <LogOut className="size-4" />
+                  )}
+                  {t("logout")}
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/login"
+                  className="inline-flex h-10 min-w-[90px] items-center justify-center rounded-[10px] border border-black/[0.15] bg-white px-5 text-sm font-bold text-[#3d4350] transition hover:border-brand/30 hover:text-brand"
+                >
+                  {t("login")}
+                </Link>
+                <Link
+                  href="/register"
+                  className="inline-flex h-10 min-w-[92px] items-center justify-center rounded-[10px] bg-brand px-5 text-sm font-bold text-white shadow-[0_9px_20px_-10px_rgba(255,77,103,.85)] transition hover:-translate-y-0.5 hover:bg-[#f33f5b]"
+                >
+                  {t("register")}
+                </Link>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center justify-end gap-1 md:hidden">
@@ -113,7 +179,7 @@ export function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               className="overflow-hidden border-t border-black/[0.06] md:hidden"
-              dir={locale === "ar" ? "rtl" : "ltr"}
+              dir={isRtl ? "rtl" : "ltr"}
             >
               <div className="grid gap-1 py-3">
                 {navigationItems.map((item) => (
@@ -130,18 +196,80 @@ export function Navbar() {
                     {t(item.key)}
                   </a>
                 ))}
-                <Link
-                  href="/register"
-                  onClick={() => setMobileOpen(false)}
-                  className="mt-1 inline-flex h-11 items-center justify-center rounded-xl bg-brand px-4 text-sm font-bold text-white"
-                >
-                  {t("startNow")}
-                </Link>
+
+                <div className="mt-1 grid gap-2">
+                  {isPending ? (
+                    <AuthActionsSkeleton mobile />
+                  ) : isAuthenticated ? (
+                    <>
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setMobileOpen(false)}
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-black/[0.09] bg-white px-4 py-3 text-sm font-bold text-[#3d4350]"
+                      >
+                        <LayoutDashboard className="size-4" />
+                        {session?.user?.name || session?.user?.email}
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        disabled={signingOut}
+                        className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-black/[0.09] bg-white px-4 text-sm font-bold text-destructive disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {signingOut ? (
+                          <Loader2 className="size-4 animate-spin" />
+                        ) : (
+                          <LogOut className="size-4" />
+                        )}
+                        {t("logout")}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login"
+                        onClick={() => setMobileOpen(false)}
+                        className="inline-flex h-11 items-center justify-center rounded-xl border border-black/[0.14] bg-white px-4 text-sm font-bold text-[#3d4350]"
+                      >
+                        {t("login")}
+                      </Link>
+                      <Link
+                        href="/register"
+                        onClick={() => setMobileOpen(false)}
+                        className="inline-flex h-11 items-center justify-center rounded-xl bg-brand px-4 text-sm font-bold text-white"
+                      >
+                        {t("register")}
+                      </Link>
+                    </>
+                  )}
+                </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </nav>
     </header>
+  );
+}
+
+function AuthActionsSkeleton({ mobile = false }: { mobile?: boolean }) {
+  return (
+    <div
+      className="flex items-center gap-2"
+      role="status"
+      aria-label="Loading account state"
+      data-testid="navbar-auth-skeleton"
+    >
+      <span
+        className={`animate-pulse rounded-[10px] bg-black/[0.06] ${
+          mobile ? "h-11 w-full" : "h-10 w-24"
+        }`}
+      />
+      <span
+        className={`animate-pulse rounded-[10px] bg-black/[0.06] ${
+          mobile ? "h-11 w-full" : "h-10 w-24"
+        }`}
+      />
+    </div>
   );
 }

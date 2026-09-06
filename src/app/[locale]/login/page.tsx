@@ -1,12 +1,14 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { BrandMark } from "@/components/brand/brand-mark";
+import { useSession } from "@/lib/auth-client";
+import { resolveAuthenticatedDestination } from "@/lib/auth-utils";
 
 function LoginForm() {
   const t = useTranslations("auth");
@@ -14,10 +16,9 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const requestedCallback = searchParams.get("callbackUrl");
-  const callbackUrl =
-    requestedCallback?.startsWith("/") && !requestedCallback.startsWith("//")
-      ? requestedCallback
-      : `/${locale}/dashboard`;
+  const callbackUrl = resolveAuthenticatedDestination(requestedCallback, locale as "ar" | "en");
+  const { data: session, isPending } = useSession();
+  const justSubmitted = useRef(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,8 +26,17 @@ function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (isPending || justSubmitted.current) return;
+    if (session?.user) {
+      router.replace(`/${locale}/dashboard`);
+      router.refresh();
+    }
+  }, [isPending, session, router, locale]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
     setIsLoading(true);
     setError("");
 
@@ -40,8 +50,8 @@ function LoginForm() {
       const data = await response.json();
 
       if (response.ok) {
-        router.push(callbackUrl);
-        router.refresh();
+        justSubmitted.current = true;
+        window.location.replace(callbackUrl);
       } else {
         setError(data.message || t("loginError"));
       }
@@ -53,6 +63,9 @@ function LoginForm() {
   };
 
   const handleGoogleLogin = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    setError("");
     try {
       const response = await fetch("/api/auth/sign-in/social", {
         method: "POST",
@@ -67,6 +80,8 @@ function LoginForm() {
       }
     } catch {
       setError(t("loginError"));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -171,7 +186,8 @@ function LoginForm() {
 
           <button
             onClick={handleGoogleLogin}
-            className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-border font-bold text-foreground transition-all hover:bg-muted"
+            disabled={isLoading}
+            className="flex h-12 w-full items-center justify-center gap-3 rounded-xl border border-border font-bold text-foreground transition-all hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path

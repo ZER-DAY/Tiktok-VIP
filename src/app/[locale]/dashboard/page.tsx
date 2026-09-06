@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, BarChart3, Plus } from "lucide-react";
+import { redirectToLogin } from "@/lib/auth-client";
 
 interface DashboardData {
   accounts: Array<{
@@ -31,6 +32,7 @@ interface DashboardData {
 
 export default function DashboardPage() {
   const t = useTranslations("dashboard");
+  const locale = useLocale();
   const [data, setData] = useState<DashboardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,6 +40,10 @@ export default function DashboardPage() {
     async function fetchDashboard() {
       try {
         const res = await fetch("/api/dashboard");
+        if (res.status === 401) {
+          redirectToLogin(`/${locale}/dashboard`);
+          return;
+        }
         if (res.ok) {
           const result = await res.json();
           setData(result.data);
@@ -49,7 +55,7 @@ export default function DashboardPage() {
       }
     }
     fetchDashboard();
-  }, []);
+  }, [locale]);
 
   if (isLoading) {
     return (

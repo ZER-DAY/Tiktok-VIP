@@ -15,6 +15,7 @@ import {
   Info,
   LockKeyhole,
   Phone,
+  RefreshCw,
   ShieldCheck,
   Smartphone,
   Sparkles,
@@ -54,7 +55,12 @@ type BillingData = {
     status: "pending" | "processing" | "manual_review" | "paid" | "failed" | "canceled";
     paymentAmountCents: number;
     paymentCurrency: string;
+    customerPhone: string | null;
+    transferReference: string | null;
+    providerTransactionId: string | null;
     createdAt: string;
+    paidAt: string | null;
+    reviewedAt: string | null;
     plan: { name: PlanName };
   }>;
 };
@@ -156,10 +162,16 @@ function BillingPageContent() {
   }, [loadBilling, t]);
 
   useEffect(() => {
-    if (!data?.orders.some((order) => order.status === "processing")) return;
+    if (
+      !data?.orders.some(
+        (order) => order.status === "processing" || order.status === "manual_review"
+      )
+    ) {
+      return;
+    }
     const timer = window.setInterval(() => {
       loadBilling().catch(() => undefined);
-    }, 4000);
+    }, 5000);
     return () => window.clearInterval(timer);
   }, [data?.orders, loadBilling]);
 
@@ -172,6 +184,7 @@ function BillingPageContent() {
       ? (plan.priceCents / 100) * data.payment.conversionRate
       : null;
   const methodEnabled = data?.payment.methods[selectedMethod].enabled ?? false;
+  const latestReview = data?.orders.find((order) => order.status === "manual_review") ?? null;
   const formattedPrice =
     convertedPrice === null
       ? t("afterConfiguration")
@@ -200,6 +213,12 @@ function BillingPageContent() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error?.code || "CHECKOUT_FAILED");
+      if (result.data.duplicate) {
+        setSuccess(t("alreadySubmitted"));
+        setTransferReference("");
+        await loadBilling();
+        return;
+      }
       if (result.data.checkoutUrl) {
         window.location.assign(result.data.checkoutUrl);
         return;
@@ -214,6 +233,15 @@ function BillingPageContent() {
       );
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function refreshBilling() {
+    setError("");
+    try {
+      await loadBilling();
+    } catch {
+      setError(t("loadError"));
     }
   }
 
@@ -263,6 +291,67 @@ function BillingPageContent() {
             </div>
           </div>
         </header>
+
+        {latestReview && (
+          <section
+            role="status"
+            aria-live="polite"
+            className="border-b border-[#252c3a] bg-[#1a1d26] px-4 py-5 sm:px-8 lg:px-10"
+          >
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex items-start gap-3">
+                <Clock3 className="mt-0.5 size-5 shrink-0 text-amber-400" />
+                <div>
+                  <h3 className="flex items-center gap-2 font-black text-amber-300">
+                    {t(`statuses.manual_review`)}
+                  </h3>
+                  <p className="mt-1 text-sm text-[#9aa5ba]">{t("reviewBannerHint")}</p>
+                  <dl className="mt-3 grid gap-x-8 gap-y-1.5 text-sm sm:grid-cols-2">
+                    <div className="flex items-center gap-2">
+                      <dt className="text-[#818da4]">{t("plan")}:</dt>
+                      <dd className="font-bold text-[#f7f8fb]">
+                        {t(`plans.${latestReview.plan.name}.name`)}
+                      </dd>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <dt className="text-[#818da4]">{t("amount")}:</dt>
+                      <dd className="font-bold text-[#f7f8fb]" dir="ltr">
+                        {(latestReview.paymentAmountCents / 100).toLocaleString(
+                          locale === "ar" ? "ar-EG" : "en-US"
+                        )}{" "}
+                        {latestReview.paymentCurrency}
+                      </dd>
+                    </div>
+                    {latestReview.transferReference && (
+                      <div className="flex items-center gap-2">
+                        <dt className="text-[#818da4]">{t("transferReference")}:</dt>
+                        <dd className="font-bold text-[#f7f8fb]" dir="ltr">
+                          {latestReview.transferReference}
+                        </dd>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <dt className="text-[#818da4]">{t("date")}:</dt>
+                      <dd className="font-bold text-[#f7f8fb]">
+                        {new Date(latestReview.createdAt).toLocaleDateString(
+                          locale === "ar" ? "ar-EG" : "en-US"
+                        )}
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={refreshBilling}
+                className="inline-flex h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-xl border border-[#ff1768]/35 bg-[#ff1768]/10 px-4 text-sm font-bold text-[#ff4c87] transition hover:bg-[#ff1768]/20"
+              >
+                <RefreshCw className="size-4" />
+                {t("refresh")}
+              </button>
+            </div>
+          </section>
+        )}
 
         <section className="border-b border-[#252c3a] bg-[#11151d] px-4 py-6 sm:px-8 lg:px-10">
           <div className="mb-4 flex items-center justify-between gap-4">
@@ -588,11 +677,22 @@ function BillingPageContent() {
         <section className="border-t border-[#252c3a] bg-[#0f131a] px-4 py-6 sm:px-8 lg:px-10">
           <div className="mb-4 flex items-center justify-between gap-3">
             <h2 className="font-black">{t("paymentHistory")}</h2>
-            {data?.orders.length ? (
-              <span className="text-xs text-[#768197]">
-                {data.orders.length} {t("operations")}
-              </span>
-            ) : null}
+            <div className="flex items-center gap-3">
+              {data?.orders.length ? (
+                <span className="text-xs text-[#768197]">
+                  {data.orders.length} {t("operations")}
+                </span>
+              ) : null}
+              <button
+                type="button"
+                onClick={refreshBilling}
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-lg border border-[#293140] bg-[#171b24] px-3 text-xs font-bold text-[#9aa5ba] transition hover:border-[#465064] hover:text-[#f7f8fb]"
+                aria-label={t("refresh")}
+              >
+                <RefreshCw className="size-3.5" />
+                <span className="hidden sm:inline">{t("refresh")}</span>
+              </button>
+            </div>
           </div>
           {data?.orders.length ? (
             <div className="divide-y divide-[#293140] overflow-hidden rounded-[22px] border border-[#293140] bg-[#171b24]">
@@ -610,6 +710,11 @@ function BillingPageContent() {
                       {" · "}
                       {t(`methods.${order.method}.title`)}
                     </p>
+                    {order.transferReference && (
+                      <p className="mt-1 text-xs text-[#7f8aa0]" dir="ltr">
+                        {t("transferReference")}: {order.transferReference}
+                      </p>
+                    )}
                   </div>
                   <strong dir="ltr">
                     {(order.paymentAmountCents / 100).toLocaleString(

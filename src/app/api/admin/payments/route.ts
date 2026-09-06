@@ -3,11 +3,16 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/modules/auth";
 import { hasPermission } from "@/lib/auth";
-import { activatePaidOrder } from "@/modules/billing/subscription-activation";
+import {
+  activatePaidOrder,
+  isOrderPaymentValid,
+  rejectManualOrder,
+} from "@/modules/billing/subscription-activation";
 
 const reviewSchema = z.object({
   orderId: z.string().uuid(),
   decision: z.enum(["approve", "reject"]),
+  reason: z.string().trim().max(500).optional(),
 });
 
 async function requirePaymentsAdmin() {
@@ -46,6 +51,8 @@ export async function GET() {
         providerTransactionId: true,
         createdAt: true,
         paidAt: true,
+        reviewedAt: true,
+        failureReason: true,
         user: { select: { name: true, email: true } },
         plan: { select: { name: true } },
       },
@@ -85,7 +92,13 @@ export async function PATCH(request: Request) {
         provider: "manual",
         status: "manual_review",
       },
-      select: { id: true },
+      select: {
+        id: true,
+        planPriceCents: true,
+        paymentAmountCents: true,
+        paymentCurrency: true,
+        plan: { select: { name: true, priceCents: true, isActive: true } },
+      },
     });
     if (!order) {
       return NextResponse.json(
@@ -93,28 +106,25 @@ export async function PATCH(request: Request) {
         { status: 409 }
       );
     }
-
-    if (parsed.data.decision === "approve") {
-      await activatePaidOrder(order.id, `manual:${order.id}`, new Date());
-    } else {
-      await prisma.paymentOrder.update({
-        where: { id: order.id },
-        data: {
-          status: "failed",
-          failureReason: "MANUAL_PAYMENT_REJECTED",
-          reviewedAt: new Date(),
-        },
-      });
+    if (!isOrderPaymentValid(order)) {
+      return NextResponse.json(
+        { success: false, error: { code: "ORDER_INVALID" } },
+        { status: 422 }
+      );
     }
 
-    await prisma.auditLog.create({
-      data: {
+    if (parsed.data.decision === "approve") {
+      await activatePaidOrder(order.id, `manual:${order.id}`, {
+        reviewedAt: new Date(),
         actorUserId: access.user.id,
-        action: `manual_payment_${parsed.data.decision}`,
-        entityType: "PaymentOrder",
-        entityId: order.id,
-      },
-    });
+      });
+    } else {
+      await rejectManualOrder(
+        order.id,
+        parsed.data.reason ?? "MANUAL_PAYMENT_REJECTED",
+        access.user.id
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -76,6 +76,30 @@ export async function POST(request: Request) {
         );
       }
 
+      const existingReview = await prisma.paymentOrder.findFirst({
+        where: {
+          userId: user.id,
+          planId: plan.id,
+          method: "manual_transfer",
+          status: "manual_review",
+          OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }],
+        },
+        select: { id: true, status: true },
+      });
+      if (existingReview) {
+        return NextResponse.json(
+          {
+            success: true,
+            data: {
+              orderId: existingReview.id,
+              status: existingReview.status,
+              duplicate: true,
+            },
+          },
+          { status: 200 }
+        );
+      }
+
       const paymentAmountCents = convertUsdCentsToEgp(plan.priceCents, manualConfig.conversionRate);
       const order = await prisma.paymentOrder.create({
         data: {

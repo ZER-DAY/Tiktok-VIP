@@ -68,6 +68,31 @@ describe("i18n: Translation Files", () => {
     const enReportKeys = Object.keys(en.report).sort();
     expect(arReportKeys).toEqual(enReportKeys);
   });
+
+  it("nav section has matching sub-keys", () => {
+    expect(Object.keys(ar.nav).sort()).toEqual(Object.keys(en.nav).sort());
+  });
+
+  it("billing section has matching sub-keys", () => {
+    expect(Object.keys(ar.billing).sort()).toEqual(Object.keys(en.billing).sort());
+  });
+
+  it("admin.payments section has matching sub-keys", () => {
+    expect(Object.keys(ar.admin.payments).sort()).toEqual(Object.keys(en.admin.payments).sort());
+  });
+
+  it("new auth/payments keys exist in both locales", () => {
+    expect(ar.billing.alreadySubmitted).toBeTruthy();
+    expect(en.billing.alreadySubmitted).toBeTruthy();
+    expect(ar.billing.reviewBannerHint).toBeTruthy();
+    expect(en.billing.reviewBannerHint).toBeTruthy();
+    expect(ar.billing.refresh).toBeTruthy();
+    expect(en.billing.refresh).toBeTruthy();
+    expect(ar.admin.payments.rejectReason).toBeTruthy();
+    expect(en.admin.payments.rejectReason).toBeTruthy();
+    expect(ar.admin.payments.confirmApprove).toBeTruthy();
+    expect(en.admin.payments.confirmApprove).toBeTruthy();
+  });
 });
 
 describe("i18n: Arabic Content", () => {

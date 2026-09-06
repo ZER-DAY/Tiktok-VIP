@@ -6,8 +6,18 @@ import { usePathname } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogOut, Menu, X, ChevronLeft, ChevronRight, Globe, type LucideIcon } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Globe,
+  Loader2,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
+import { authClient } from "@/lib/auth-client";
 import { BrandMark } from "@/components/brand/brand-mark";
 
 export interface SidebarItem {
@@ -30,15 +40,21 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
   const tCommon = useTranslations("common");
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const isRtl = locale === "ar";
 
   const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
     try {
-      await fetch("/api/auth/sign-out", { method: "POST" });
+      const result = await authClient.signOut();
+      if (result.error) return;
+      setIsMobileMenuOpen(false);
+      router.refresh();
       router.push("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
+    } finally {
+      setIsLoggingOut(false);
     }
   };
 
@@ -133,9 +149,14 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
           </button>
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sidebar-foreground transition-smooth hover:bg-muted hover:text-foreground"
+            disabled={isLoggingOut}
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sidebar-foreground transition-smooth hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <LogOut className="w-5 h-5 flex-shrink-0 text-muted-foreground" />
+            {isLoggingOut ? (
+              <Loader2 className="w-5 h-5 flex-shrink-0 animate-spin text-muted-foreground" />
+            ) : (
+              <LogOut className="w-5 h-5 flex-shrink-0 text-muted-foreground" />
+            )}
             {!isCollapsed && <span className="truncate">{t("logout")}</span>}
           </button>
         </div>
@@ -262,9 +283,14 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
                       handleLogout();
                       setIsMobileMenuOpen(false);
                     }}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-foreground hover:bg-muted hover:text-foreground transition-smooth w-full"
+                    disabled={isLoggingOut}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sidebar-foreground hover:bg-muted hover:text-foreground transition-smooth w-full disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <LogOut className="w-5 h-5 text-muted-foreground" />
+                    {isLoggingOut ? (
+                      <Loader2 className="w-5 h-5 flex-shrink-0 animate-spin text-muted-foreground" />
+                    ) : (
+                      <LogOut className="w-5 h-5 text-muted-foreground" />
+                    )}
                     <span className="font-medium">{t("logout")}</span>
                   </button>
                 </div>
