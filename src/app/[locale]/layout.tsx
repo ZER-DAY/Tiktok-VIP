@@ -1,24 +1,11 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
-import { Tajawal } from "next/font/google";
-import { Inter } from "next/font/google";
+import "@fontsource/inter/latin.css";
+import "@fontsource/tajawal/arabic.css";
+import "@fontsource/tajawal/latin.css";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
-
-const tajawal = Tajawal({
-  subsets: ["arabic"],
-  weight: ["200", "300", "400", "500", "700", "800", "900"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "700", "800", "900"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -56,8 +43,11 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
       <body
-        className={`${tajawal.variable} ${inter.variable} antialiased`}
-        style={{ fontFamily: "var(--font-sans)" }}
+        className="antialiased"
+        style={{
+          fontFamily:
+            locale === "ar" ? '"Tajawal", "Inter", sans-serif' : '"Inter", "Tajawal", sans-serif',
+        }}
       >
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
