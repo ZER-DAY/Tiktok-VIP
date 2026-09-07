@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
 import {
   AUTH_SESSION_COOKIE,
+  SECURE_AUTH_SESSION_COOKIE,
+  hasAuthSessionCookie,
+  shouldRedirectToLogin,
+  isProtectedPath,
   isSafeInternalPath,
   getPathLocale,
   normalizeLocalePrefix,
@@ -102,5 +106,76 @@ describe("auth-utils: buildLoginUrl", () => {
 describe("auth-utils: session cookie constant", () => {
   it("matches the Better Auth default cookie name", () => {
     expect(AUTH_SESSION_COOKIE).toBe("better-auth.session_token");
+    expect(SECURE_AUTH_SESSION_COOKIE).toBe("__Secure-better-auth.session_token");
+  });
+});
+
+describe("auth-utils: hasAuthSessionCookie", () => {
+  it("rejects empty or malformed session cookies", () => {
+    expect(hasAuthSessionCookie("better-auth.session_token=")).toBe(false);
+    expect(hasAuthSessionCookie("__Secure-better-auth.session_token= ")).toBe(false);
+    expect(hasAuthSessionCookie("better-auth.session_token")).toBe(false);
+  });
+
+  it("recognizes the plain session cookie", () => {
+    expect(hasAuthSessionCookie("foo=bar; better-auth.session_token=abc; x=1")).toBe(true);
+    expect(hasAuthSessionCookie("better-auth.session_token=abc")).toBe(true);
+  });
+
+  it("recognizes the secure-prefixed session cookie used in production", () => {
+    expect(hasAuthSessionCookie("__Secure-better-auth.session_token=abc")).toBe(true);
+    expect(hasAuthSessionCookie("__Secure-foo=1; __Secure-better-auth.session_token=abc")).toBe(
+      true
+    );
+  });
+
+  it("treats a guest (no cookie, empty, or unrelated cookies) as logged out and never logs a value", () => {
+    expect(hasAuthSessionCookie(undefined)).toBe(false);
+    expect(hasAuthSessionCookie("")).toBe(false);
+    expect(hasAuthSessionCookie("foo=bar; session_token=abc")).toBe(false);
+    expect(hasAuthSessionCookie("better-auth.session_data=abc")).toBe(false);
+    expect(hasAuthSessionCookie("__Secure-other=abc")).toBe(false);
+  });
+});
+
+describe("auth-utils: shouldRedirectToLogin", () => {
+  it("redirects guests away from protected paths", () => {
+    expect(shouldRedirectToLogin("/ar/dashboard", undefined)).toBe(true);
+    expect(shouldRedirectToLogin("/en/admin", "lang=ar")).toBe(true);
+    expect(shouldRedirectToLogin("/ar/agency/reports", "")).toBe(true);
+  });
+
+  it("does not redirect authenticated users with either supported cookie name", () => {
+    expect(
+      shouldRedirectToLogin("/ar/dashboard", "better-auth.session_token=token-value; lang=en")
+    ).toBe(false);
+    expect(
+      shouldRedirectToLogin("/ar/admin", "__Secure-better-auth.session_token=token-value")
+    ).toBe(false);
+    expect(
+      shouldRedirectToLogin("/en/agency/analytics", "x=1; __Secure-better-auth.session_token=tok")
+    ).toBe(false);
+  });
+
+  it("does not redirect on public paths even for guests", () => {
+    expect(shouldRedirectToLogin("/", undefined)).toBe(false);
+    expect(shouldRedirectToLogin("/ar", undefined)).toBe(false);
+    expect(shouldRedirectToLogin("/ar/pricing", undefined)).toBe(false);
+    expect(shouldRedirectToLogin("/ar/login", "foo=bar")).toBe(false);
+  });
+});
+
+describe("auth-utils: isProtectedPath", () => {
+  it("recognizes dashboard, agency, and admin prefixes", () => {
+    expect(isProtectedPath("/ar/dashboard")).toBe(true);
+    expect(isProtectedPath("/en/agency")).toBe(true);
+    expect(isProtectedPath("/ar/admin/payments")).toBe(true);
+    expect(isProtectedPath("/ar/dashboard/billing")).toBe(true);
+  });
+
+  it("ignores public and other paths", () => {
+    expect(isProtectedPath("/ar")).toBe(false);
+    expect(isProtectedPath("/about")).toBe(false);
+    expect(isProtectedPath("/api/health")).toBe(false);
   });
 });

@@ -611,6 +611,7 @@
     "english": "English",
     "free": "Free",
     "retry": "Retry",
+    "logoutFailed": "Logout failed. Please try again.",
     "submit": "Submit",
     "cancel": "Cancel",
     "save": "Save",

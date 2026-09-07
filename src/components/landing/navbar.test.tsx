@@ -79,7 +79,7 @@ describe("Navbar", () => {
     render(<Navbar />);
 
     const dashboardLink = screen.getByRole("link", { name: "dashboard" });
-    const logoutButton = screen.getByRole("button", { name: "logout" });
+    const logoutButton = screen.getAllByRole("button", { name: "logout" })[0];
 
     expect(dashboardLink.getAttribute("href")).toBe("/dashboard");
     expect(screen.getAllByText("أحمد").length).toBeGreaterThan(0);
@@ -104,24 +104,52 @@ describe("Navbar", () => {
     mockSignOut.mockResolvedValue({ error: null });
 
     render(<Navbar />);
-    await waitFor(() => expect(screen.getByRole("button", { name: "logout" })).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getAllByRole("button", { name: "logout" }).length).toBeGreaterThan(0)
+    );
 
-    fireEvent.click(screen.getByRole("button", { name: "logout" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "logout" })[0]);
 
     await waitFor(() => expect(mockSignOut).toHaveBeenCalledTimes(1));
     await waitFor(() => expect(mockRouter.refresh).toHaveBeenCalledTimes(1));
     await waitFor(() => expect(mockRouter.push).toHaveBeenCalledWith("/"));
   });
 
-  it("keeps the user logged in when sign-out fails", async () => {
+  it("keeps the user logged in when sign-out fails with an error result", async () => {
     mockUseSession.mockReturnValue(sessionLike({ name: "أحمد", email: "ahmed@example.com" }));
     mockSignOut.mockResolvedValue({ error: { message: "boom" } });
 
     render(<Navbar />);
-    fireEvent.click(screen.getByRole("button", { name: "logout" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "logout" })[0]);
 
     await waitFor(() => expect(mockSignOut).toHaveBeenCalledTimes(1));
     expect(mockRouter.push).not.toHaveBeenCalled();
     expect(mockRouter.refresh).not.toHaveBeenCalled();
+    await waitFor(() => expect(screen.getAllByRole("alert").length).toBeGreaterThan(0));
+  });
+
+  it("shows a localized retry message and never navigates when sign-out throws", async () => {
+    mockUseSession.mockReturnValue(sessionLike({ name: "أحمد", email: "ahmed@example.com" }));
+    mockSignOut.mockRejectedValue(new Error("network down"));
+
+    render(<Navbar />);
+    fireEvent.click(screen.getAllByRole("button", { name: "logout" })[0]);
+
+    await waitFor(() => expect(mockSignOut).toHaveBeenCalledTimes(1));
+    expect(mockRouter.push).not.toHaveBeenCalled();
+    expect(mockRouter.refresh).not.toHaveBeenCalled();
+    await waitFor(() => expect(screen.getAllByRole("alert").length).toBeGreaterThan(0));
+  });
+
+  it("renders an explicitly labeled logout control on mobile (not icon-only)", async () => {
+    mockUseSession.mockReturnValue(sessionLike({ name: "أحمد", email: "ahmed@example.com" }));
+
+    render(<Navbar />);
+
+    const logoutButtons = screen.getAllByRole("button", { name: "logout" });
+    // Desktop header and mobile top control both exist; at least one is visible
+    // with the logout text beside the icon (i.e. not icon-only).
+    expect(logoutButtons.length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("logout").length).toBeGreaterThanOrEqual(2);
   });
 });

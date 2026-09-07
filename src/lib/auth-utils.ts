@@ -1,6 +1,36 @@
 export type AppLocale = "ar" | "en";
 
 export const AUTH_SESSION_COOKIE = "better-auth.session_token";
+export const SECURE_AUTH_SESSION_COOKIE = "__Secure-better-auth.session_token";
+
+export const AUTH_SESSION_COOKIES = [AUTH_SESSION_COOKIE, SECURE_AUTH_SESSION_COOKIE] as const;
+
+export function getCookieNames(cookie: string | undefined): string[] {
+  if (!cookie) return [];
+  return cookie.split(";").flatMap((part) => {
+    const eq = part.indexOf("=");
+    if (eq === -1 || !part.slice(eq + 1).trim()) return [];
+    return [part.slice(0, eq).trim()];
+  });
+}
+
+export function hasAuthSessionCookie(cookieHeader: string | undefined): boolean {
+  const names = new Set(getCookieNames(cookieHeader));
+  return AUTH_SESSION_COOKIES.some((name) => names.has(name));
+}
+
+const PROTECTED_PREFIXES = ["/dashboard", "/agency", "/admin"] as const;
+
+export function isProtectedPath(pathname: string): boolean {
+  const locale = getPathLocale(pathname) ?? "ar";
+  return PROTECTED_PREFIXES.some((prefix) => {
+    return pathname === `/${locale}${prefix}` || pathname.startsWith(`/${locale}${prefix}/`);
+  });
+}
+
+export function shouldRedirectToLogin(pathname: string, cookieHeader: string | undefined): boolean {
+  return isProtectedPath(pathname) && !hasAuthSessionCookie(cookieHeader);
+}
 
 export const LOCALE_REGEX = /^\/(ar|en)(\/|$)/;
 

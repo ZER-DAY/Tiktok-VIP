@@ -41,18 +41,27 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [logoutFailed, setLogoutFailed] = useState(false);
 
   const isRtl = locale === "ar";
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
+    setLogoutFailed(false);
     try {
       const result = await authClient.signOut();
-      if (result.error) return;
+      if (result.error) {
+        setLogoutFailed(true);
+        return;
+      }
       setIsMobileMenuOpen(false);
       router.refresh();
       router.push("/");
+    } catch {
+      // A thrown network error must never leave the user stuck; surface a
+      // localized retry message instead of navigating.
+      setLogoutFailed(true);
     } finally {
       setIsLoggingOut(false);
     }
@@ -159,6 +168,11 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
             )}
             {!isCollapsed && <span className="truncate">{t("logout")}</span>}
           </button>
+          {logoutFailed && (
+            <p role="alert" className="px-3 text-xs font-medium text-destructive">
+              {tCommon("logoutFailed")}
+            </p>
+          )}
         </div>
 
         {/* Collapse Toggle */}
@@ -192,6 +206,19 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
         </Link>
         <div className="flex items-center gap-1">
           <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="flex items-center gap-1.5 rounded-lg px-2 py-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
+            aria-label={t("logout")}
+          >
+            {isLoggingOut ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <LogOut className="w-4 h-4" />
+            )}
+            <span className="text-xs font-semibold">{t("logout")}</span>
+          </button>
+          <button
             onClick={switchLanguage}
             className="rounded-lg p-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
             aria-label={tCommon("switchLanguage")}
@@ -207,6 +234,15 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
           </button>
         </div>
       </div>
+
+      {logoutFailed && !isMobileMenuOpen && (
+        <p
+          role="alert"
+          className="fixed inset-x-0 top-16 z-50 bg-background px-4 py-2 text-sm text-destructive lg:hidden"
+        >
+          {tCommon("logoutFailed")}
+        </p>
+      )}
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
@@ -293,6 +329,11 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
                     )}
                     <span className="font-medium">{t("logout")}</span>
                   </button>
+                  {logoutFailed && (
+                    <p role="alert" className="px-3 text-xs font-medium text-destructive">
+                      {tCommon("logoutFailed")}
+                    </p>
+                  )}
                 </div>
               </div>
             </motion.div>

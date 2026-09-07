@@ -23,6 +23,7 @@ export function Navbar() {
   const { data: session, isPending } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+  const [logoutError, setLogoutError] = useState(false);
 
   const isRtl = locale === "ar";
   const isAuthenticated = Boolean(session?.user);
@@ -34,12 +35,20 @@ export function Navbar() {
   const handleLogout = async () => {
     if (signingOut) return;
     setSigningOut(true);
+    setLogoutError(false);
     try {
       const result = await authClient.signOut();
-      if (result.error) return;
+      if (result.error) {
+        setLogoutError(true);
+        return;
+      }
       setMobileOpen(false);
       router.refresh();
       router.push("/");
+    } catch {
+      // A thrown network error must never leave the user stuck; surface a
+      // localized retry message instead of navigating.
+      setLogoutError(true);
     } finally {
       setSigningOut(false);
     }
@@ -132,6 +141,14 @@ export function Navbar() {
                   )}
                   {t("logout")}
                 </button>
+                {logoutError && (
+                  <p
+                    role="alert"
+                    className="mt-1 flex items-center gap-1 text-[11px] font-medium text-destructive"
+                  >
+                    {tCommon("logoutFailed")}
+                  </p>
+                )}
               </div>
             ) : (
               <div className="flex items-center gap-2">
@@ -152,6 +169,29 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center justify-end gap-1 md:hidden">
+            {isAuthenticated && !isPending && (
+              <>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  disabled={signingOut}
+                  className="inline-flex h-10 items-center justify-center gap-1.5 rounded-xl border border-black/[0.09] bg-white px-2.5 text-[12px] font-bold text-destructive transition hover:bg-[#f5f5f4] disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label={t("logout")}
+                >
+                  {signingOut ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <LogOut className="size-4" />
+                  )}
+                  <span className="max-w-[60px] truncate sm:max-w-none">{t("logout")}</span>
+                </button>
+                {logoutError && (
+                  <p role="alert" className="text-[10px] font-medium text-destructive">
+                    {tCommon("logoutFailed")}
+                  </p>
+                )}
+              </>
+            )}
             <button
               type="button"
               onClick={switchLanguage}

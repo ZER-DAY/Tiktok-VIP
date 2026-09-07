@@ -7,6 +7,56 @@ const globalForAuth = globalThis as unknown as {
   auth: ReturnType<typeof createAuth> | undefined;
 };
 
+type UserCreateInput = {
+  planId?: string | null;
+  [key: string]: unknown;
+};
+
+export async function assignFreePlanOnCreate(user: UserCreateInput) {
+  // planId is server-only (input:false below), so a public signup or update can
+  // never set it. New users always get the free plan regardless of any value
+  // found or provided.
+  const freePlan = await prisma.plan.findUnique({
+    where: { name: "free" },
+    select: { id: true },
+  });
+  if (!freePlan) {
+    throw new Error("FREE_PLAN_NOT_CONFIGURED");
+  }
+
+  return {
+    data: {
+      ...user,
+      planId: freePlan.id,
+    },
+  };
+}
+
+export const USER_ADDITIONAL_FIELDS = {
+  // Server-only: never accepted from public input, never exposed.
+  passwordHash: {
+    type: "string" as const,
+    required: false,
+    input: false,
+    returned: false,
+  },
+  emailVerifiedAt: {
+    type: "date" as const,
+    required: false,
+    input: false,
+  },
+  preferredLocale: {
+    type: "string" as const,
+    required: false,
+    defaultValue: "ar",
+  },
+  planId: {
+    type: "string" as const,
+    required: false,
+    input: false,
+  },
+};
+
 function createAuth() {
   return betterAuth({
     baseURL: process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL,
@@ -47,24 +97,7 @@ function createAuth() {
     databaseHooks: {
       user: {
         create: {
-          before: async (user) => {
-            if (user.planId) return;
-
-            const freePlan = await prisma.plan.findUnique({
-              where: { name: "free" },
-              select: { id: true },
-            });
-            if (!freePlan) {
-              throw new Error("FREE_PLAN_NOT_CONFIGURED");
-            }
-
-            return {
-              data: {
-                ...user,
-                planId: freePlan.id,
-              },
-            };
-          },
+          before: async (user) => assignFreePlanOnCreate(user as UserCreateInput),
         },
       },
     },
@@ -72,25 +105,7 @@ function createAuth() {
       fields: {
         image: "avatarUrl",
       },
-      additionalFields: {
-        passwordHash: {
-          type: "string",
-          required: false,
-        },
-        emailVerifiedAt: {
-          type: "date",
-          required: false,
-        },
-        preferredLocale: {
-          type: "string",
-          required: false,
-          defaultValue: "ar",
-        },
-        planId: {
-          type: "string",
-          required: false,
-        },
-      },
+      additionalFields: USER_ADDITIONAL_FIELDS,
     },
   });
 }
