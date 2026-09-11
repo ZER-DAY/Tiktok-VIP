@@ -1,5 +1,5 @@
 {
-  "siteName": "TikTok Intelligence",
+  "siteName": "LiveStream Tech",
   "hero": {
     "eyebrow": "تحليلات مستقلة للمبدعين",
     "titleLine1": "حلّل حسابك.",
@@ -215,7 +215,7 @@
     }
   },
   "nav": {
-    "siteName": "TikTok Intelligence",
+    "siteName": "LiveStream Tech",
     "home": "الرئيسية",
     "features": "المميزات",
     "howItWorks": "كيف يعمل",
@@ -228,7 +228,7 @@
     "switchLang": "English"
   },
   "footer": {
-    "siteName": "TikTok Intelligence",
+    "siteName": "LiveStream Tech",
     "socialInstagram": "إنستغرام",
     "product": "المنتج",
     "analyzer": "تحليل الحساب",
@@ -245,20 +245,27 @@
     "madeWith": "صُنع بـ ❤️ للمبدعين العرب"
   },
   "about": {
-    "metaTitle": "من نحن — TikTok Intelligence",
+    "metaTitle": "من نحن — LiveStream Tech",
     "eyebrow": "من نحن",
-    "title": "الفريق وراء TikTok Intelligence",
+    "title": "الفريق وراء LiveStream Tech",
     "subtitle": "نبني منصة عربية مستقلة لتحليل حسابات TikTok، تمنح المبدعين والوكالات رؤى واضحة يمكن الاعتماد عليها لاتخاذ قرارات أذكى.",
     "teamHeading": "فريقنا",
     "photoAlt": "صورة {name}",
+    "foundersLabel": "مؤسسو الموقع",
+    "whatsapp": "تواصل واتساب",
+    "whatsappAria": "تواصل مع {name} على واتساب",
     "members": {
       "bahaa": {
-        "name": "بهاء الهبيل",
-        "role": "مبرمج ومهندس الموقع"
+        "name": "المهندس بهاء الهبيل",
+        "role": "مؤسس ومهندس المنصة",
+        "country": "روسيا",
+        "flag": "🇷🇺"
       },
       "tarek": {
-        "name": "طارق صقر",
-        "role": "شريك"
+        "name": "المهندس طارق صقر",
+        "role": "مؤسس وشريك",
+        "country": "مصر",
+        "flag": "🇪🇬"
       }
     },
     "ctaTitle": "جاهز تفهم حسابك أكثر؟",
@@ -266,7 +273,7 @@
     "ctaButton": "ابدأ التحليل الآن"
   },
   "auth": {
-    "siteName": "TikTok Intelligence",
+    "siteName": "LiveStream Tech",
     "loginTitle": "تسجيل الدخول",
     "loginSubtitle": "مرحباً بعودتك! سجّل دخولك للوصول إلى حسابك",
     "registerTitle": "إنشاء حساب جديد",
@@ -301,7 +308,7 @@
     "backToLogin": "العودة لتسجيل الدخول"
   },
   "dashboard": {
-    "kicker": "لوحة تحكم TikTok Intelligence",
+    "kicker": "لوحة تحكم LiveStream Tech",
     "welcome": "مرحباً بعودتك!",
     "welcomeSubtitle": "إليك ملخص حساباتك الأخيرة",
     "analyzeNew": "تحليل حساب جديد",
@@ -325,7 +332,7 @@
     "recentInsights": "آخر التوصيات",
     "noInsights": "لم تحصل على توصيات بعد",
     "sidebar": {
-      "siteName": "TikTok Intelligence",
+      "siteName": "LiveStream Tech",
       "dashboard": "الرئيسية",
       "accounts": "حساباتي",
       "compare": "المقارنات",
@@ -443,11 +450,21 @@
     "operations": "عمليات",
     "noPayments": "لا توجد عمليات دفع حتى الآن",
     "plans": {
-      "free": { "name": "التجربة المجانية" },
-      "pro": { "name": "خطة الأفراد" },
-      "individual": { "name": "خطة الأفراد" },
-      "saver": { "name": "الخطة الموفّرة" },
-      "agency": { "name": "خطة الوكلاء" }
+      "free": {
+        "name": "التجربة المجانية"
+      },
+      "pro": {
+        "name": "خطة الأفراد"
+      },
+      "individual": {
+        "name": "خطة الأفراد"
+      },
+      "saver": {
+        "name": "الخطة الموفّرة"
+      },
+      "agency": {
+        "name": "خطة الوكلاء"
+      }
     },
     "features": {
       "100": "تحليل 100 حساب شهرياً",
@@ -459,9 +476,18 @@
       "priority": "أولوية الدعم"
     },
     "methods": {
-      "card": { "title": "البطاقات", "subtitle": "Visa وMastercard وMeeza" },
-      "mobile_wallet": { "title": "محافظ الهاتف", "subtitle": "المحافظ المصرية المدعومة" },
-      "manual_transfer": { "title": "تحويل مباشر", "subtitle": "InstaPay أو محفظة مع مراجعة" }
+      "card": {
+        "title": "البطاقات",
+        "subtitle": "\u200fفيزا، ماستركارد، ميزة"
+      },
+      "mobile_wallet": {
+        "title": "محافظ الهاتف",
+        "subtitle": "المحافظ المصرية المدعومة"
+      },
+      "manual_transfer": {
+        "title": "تحويل مباشر",
+        "subtitle": "InstaPay أو محفظة مع مراجعة"
+      }
     },
     "statuses": {
       "pending": "بانتظار البدء",
@@ -470,7 +496,8 @@
       "paid": "مدفوع ومفعّل",
       "failed": "فشل أو رُفض",
       "canceled": "ملغي"
-    }
+    },
+    "methodUnavailableShort": "غير متاح حالياً"
   },
   "analyze": {
     "title": "جاري التحليل...",
@@ -643,7 +670,8 @@
     "next": "التالي",
     "previous": "السابق",
     "viewAll": "عرض الكل",
-    "learnMore": "اعرف المزيد"
+    "learnMore": "اعرف المزيد",
+    "pendingCount": "{count} طلب بانتظار المراجعة"
   },
   "health": {
     "status": "النظام يعمل بشكل طبيعي",
@@ -654,7 +682,7 @@
   },
   "agency": {
     "sidebar": {
-      "siteName": "TikTok Intelligence",
+      "siteName": "LiveStream Tech",
       "applicants": "المتقدمون",
       "logout": "تسجيل الخروج"
     },
@@ -712,7 +740,7 @@
   },
   "admin": {
     "sidebar": {
-      "siteName": "TikTok Intelligence",
+      "siteName": "LiveStream Tech",
       "stats": "الإحصائيات",
       "users": "المستخدمون",
       "plans": "الخطط",
@@ -824,7 +852,7 @@
     "lastUpdated": "آخر تحديث: 6 أغسطس 2026",
     "intro": {
       "title": "مقدمة",
-      "content": "مرحباً بك في TikTok Intelligence ('المنصة'). نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح هذه السياسة كيف نجمع ونستخدم ونحمي معلوماتك عند استخدامك لخدماتنا."
+      "content": "مرحباً بك في LiveStream Tech ('المنصة'). نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح هذه السياسة كيف نجمع ونستخدم ونحمي معلوماتك عند استخدامك لخدماتنا."
     },
     "dataCollection": {
       "title": "المعلومات التي نجمعها",
@@ -886,7 +914,7 @@
     "lastUpdated": "آخر تحديث: 6 أغسطس 2026",
     "acceptance": {
       "title": "القبول",
-      "content": "باستخدامك لمنصة TikTok Intelligence ('المنصة')، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي من هذه الشروط، يرجى عدم استخدام المنصة."
+      "content": "باستخدامك لمنصة LiveStream Tech ('المنصة')، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي من هذه الشروط، يرجى عدم استخدام المنصة."
     },
     "description": {
       "title": "وصف الخدمة",

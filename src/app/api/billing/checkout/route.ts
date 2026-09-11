@@ -157,7 +157,7 @@ export async function POST(request: Request) {
       const intention = await createPaymobIntention({
         method,
         orderId: order.id,
-        planName: `TikTok Intelligence - ${plan.name}`,
+        planName: `LiveStream Tech - ${plan.name}`,
         amountCents: paymentAmountCents,
         currency: "EGP",
         customer: { name: user.name, email: user.email, phone },

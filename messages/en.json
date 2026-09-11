@@ -1,5 +1,5 @@
 {
-  "siteName": "TikTok Intelligence",
+  "siteName": "LiveStream Tech",
   "hero": {
     "eyebrow": "Independent analytics for creators",
     "titleLine1": "Analyze your account.",
@@ -215,7 +215,7 @@
     }
   },
   "nav": {
-    "siteName": "TikTok Intelligence",
+    "siteName": "LiveStream Tech",
     "home": "Home",
     "features": "Features",
     "howItWorks": "How it works",
@@ -228,7 +228,7 @@
     "switchLang": "العربية"
   },
   "footer": {
-    "siteName": "TikTok Intelligence",
+    "siteName": "LiveStream Tech",
     "socialInstagram": "Instagram",
     "product": "Product",
     "analyzer": "Account Analysis",
@@ -245,20 +245,27 @@
     "madeWith": "Made with ❤️ for Arab creators"
   },
   "about": {
-    "metaTitle": "About us — TikTok Intelligence",
+    "metaTitle": "About us — LiveStream Tech",
     "eyebrow": "About us",
-    "title": "The team behind TikTok Intelligence",
+    "title": "The team behind LiveStream Tech",
     "subtitle": "We're building an independent, Arabic-first TikTok analytics platform that gives creators and agencies clear, reliable insights for smarter decisions.",
     "teamHeading": "Our team",
     "photoAlt": "Photo of {name}",
+    "foundersLabel": "Founders",
+    "whatsapp": "Chat on WhatsApp",
+    "whatsappAria": "Message {name} on WhatsApp",
     "members": {
       "bahaa": {
-        "name": "Bahaa Al-Habeel",
-        "role": "Developer & Site Engineer"
+        "name": "Eng. Bahaa Al-Habeel",
+        "role": "Co-founder & Platform Engineer",
+        "country": "Russia",
+        "flag": "🇷🇺"
       },
       "tarek": {
-        "name": "Tarek Saqr",
-        "role": "Partner"
+        "name": "Eng. Tarek Saqr",
+        "role": "Co-founder & Partner",
+        "country": "Egypt",
+        "flag": "🇪🇬"
       }
     },
     "ctaTitle": "Ready to understand your account better?",
@@ -266,7 +273,7 @@
     "ctaButton": "Start Analysis Now"
   },
   "auth": {
-    "siteName": "TikTok Intelligence",
+    "siteName": "LiveStream Tech",
     "loginTitle": "Login",
     "loginSubtitle": "Welcome back! Sign in to access your account",
     "registerTitle": "Create New Account",
@@ -301,7 +308,7 @@
     "backToLogin": "Back to Sign In"
   },
   "dashboard": {
-    "kicker": "TikTok Intelligence dashboard",
+    "kicker": "LiveStream Tech dashboard",
     "welcome": "Welcome back!",
     "welcomeSubtitle": "Here's a summary of your recent accounts",
     "analyzeNew": "Analyze New Account",
@@ -325,7 +332,7 @@
     "recentInsights": "Recent Recommendations",
     "noInsights": "No recommendations yet",
     "sidebar": {
-      "siteName": "TikTok Intelligence",
+      "siteName": "LiveStream Tech",
       "dashboard": "Overview",
       "accounts": "My Accounts",
       "compare": "Comparisons",
@@ -443,11 +450,21 @@
     "operations": "operations",
     "noPayments": "No payments yet",
     "plans": {
-      "free": { "name": "Free Trial" },
-      "pro": { "name": "Individuals" },
-      "individual": { "name": "Individuals" },
-      "saver": { "name": "Saver" },
-      "agency": { "name": "Agents" }
+      "free": {
+        "name": "Free Trial"
+      },
+      "pro": {
+        "name": "Individuals"
+      },
+      "individual": {
+        "name": "Individuals"
+      },
+      "saver": {
+        "name": "Saver"
+      },
+      "agency": {
+        "name": "Agents"
+      }
     },
     "features": {
       "100": "Analyze 100 accounts monthly",
@@ -459,8 +476,14 @@
       "priority": "Priority support"
     },
     "methods": {
-      "card": { "title": "Cards", "subtitle": "Visa, Mastercard and Meeza" },
-      "mobile_wallet": { "title": "Mobile wallets", "subtitle": "Supported Egyptian wallets" },
+      "card": {
+        "title": "Cards",
+        "subtitle": "Visa, Mastercard and Meeza"
+      },
+      "mobile_wallet": {
+        "title": "Mobile wallets",
+        "subtitle": "Supported Egyptian wallets"
+      },
       "manual_transfer": {
         "title": "Direct transfer",
         "subtitle": "InstaPay or wallet with review"
@@ -473,7 +496,8 @@
       "paid": "Paid and active",
       "failed": "Failed or rejected",
       "canceled": "Canceled"
-    }
+    },
+    "methodUnavailableShort": "Not available yet"
   },
   "analyze": {
     "title": "Analyzing...",
@@ -646,7 +670,8 @@
     "next": "Next",
     "previous": "Previous",
     "viewAll": "View All",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "pendingCount": "{count} awaiting review"
   },
   "health": {
     "status": "System is running",
@@ -657,7 +682,7 @@
   },
   "agency": {
     "sidebar": {
-      "siteName": "TikTok Intelligence",
+      "siteName": "LiveStream Tech",
       "applicants": "Applicants",
       "logout": "Sign Out"
     },
@@ -715,7 +740,7 @@
   },
   "admin": {
     "sidebar": {
-      "siteName": "TikTok Intelligence",
+      "siteName": "LiveStream Tech",
       "stats": "Statistics",
       "users": "Users",
       "plans": "Plans",
@@ -827,7 +852,7 @@
     "lastUpdated": "Last updated: August 6, 2026",
     "intro": {
       "title": "Introduction",
-      "content": "Welcome to TikTok Intelligence ('the Platform'). We respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and protect your information when you use our services."
+      "content": "Welcome to LiveStream Tech ('the Platform'). We respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and protect your information when you use our services."
     },
     "dataCollection": {
       "title": "Information We Collect",
@@ -889,7 +914,7 @@
     "lastUpdated": "Last updated: August 6, 2026",
     "acceptance": {
       "title": "Acceptance",
-      "content": "By using TikTok Intelligence ('the Platform'), you agree to be bound by these terms and conditions. If you do not agree to any of these terms, please do not use the Platform."
+      "content": "By using LiveStream Tech ('the Platform'), you agree to be bound by these terms and conditions. If you do not agree to any of these terms, please do not use the Platform."
     },
     "description": {
       "title": "Service Description",

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { ArrowUpLeft, Users } from "lucide-react";
+import { ArrowUpLeft, MessageCircle, Users } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Navbar } from "@/components/landing/navbar";
 import { Footer } from "@/components/landing/footer";
@@ -49,6 +49,10 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             <p className="mx-auto mt-4 max-w-xl text-pretty text-[15px] leading-8 text-muted-foreground sm:text-base">
               {t("subtitle")}
             </p>
+            <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-black/[0.07] bg-white/70 px-4 py-1.5 text-[13px] font-bold text-[#3d4350] backdrop-blur">
+              <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
+              {t("foundersLabel")}
+            </p>
           </header>
 
           <section aria-labelledby="team-heading" className="mt-14">
@@ -86,12 +90,30 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
                           <h3 className="text-2xl font-black tracking-[-0.02em] text-white sm:text-[28px]">
                             {name}
                           </h3>
-                          <p className="mt-2.5 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-bold text-white ring-1 ring-white/25 backdrop-blur-md">
-                            <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
-                            {t(`members.${member.key}.role`)}
-                          </p>
+                          <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                            <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-sm font-bold text-white ring-1 ring-white/25 backdrop-blur-md">
+                              <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
+                              {t(`members.${member.key}.role`)}
+                            </p>
+                            <p className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-sm font-bold text-white ring-1 ring-white/25 backdrop-blur-md">
+                              <span aria-hidden="true" className="text-base leading-none">
+                                {t(`members.${member.key}.flag`)}
+                              </span>
+                              {t(`members.${member.key}.country`)}
+                            </p>
+                          </div>
                         </div>
                       </div>
+                      <a
+                        href={`/api/contact/${member.key}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={t("whatsappAria", { name })}
+                        className="mt-2.5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] text-[15px] font-extrabold text-white transition hover:bg-[#1eb257] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/30"
+                      >
+                        <MessageCircle className="size-[18px]" strokeWidth={2.5} />
+                        {t("whatsapp")}
+                      </a>
                     </article>
                   </li>
                 );

@@ -45,7 +45,7 @@ export async function createPaymobIntention(input: {
         {
           name: input.planName,
           amount: input.amountCents,
-          description: "TikTok Intelligence monthly subscription",
+          description: "LiveStream Tech monthly subscription",
           quantity: 1,
         },
       ],

@@ -24,6 +24,8 @@ export interface SidebarItem {
   key: string;
   icon: LucideIcon;
   href: string;
+  /** Pending-work counter (e.g. transfers awaiting review). Hidden when 0. */
+  badge?: number;
 }
 
 interface AppShellProps {
@@ -138,6 +140,19 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
                   )}
                 />
                 {!isCollapsed && <span className="truncate">{t(item.key)}</span>}
+                {!!item.badge && item.badge > 0 && (
+                  <span
+                    className={cn(
+                      "grid shrink-0 place-items-center rounded-full bg-primary font-bold text-primary-foreground tabular-nums",
+                      isCollapsed
+                        ? "absolute top-1.5 h-2.5 w-2.5 " + (isRtl ? "left-1.5" : "right-1.5")
+                        : "ms-auto h-5 min-w-5 px-1.5 text-[11px]"
+                    )}
+                    aria-label={tCommon("pendingCount", { count: item.badge })}
+                  >
+                    {!isCollapsed && item.badge}
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -297,6 +312,14 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
                           )}
                         />
                         <span className="font-medium">{t(item.key)}</span>
+                        {!!item.badge && item.badge > 0 && (
+                          <span
+                            className="ms-auto grid h-5 min-w-5 shrink-0 place-items-center rounded-full bg-primary px-1.5 text-[11px] font-bold tabular-nums text-primary-foreground"
+                            aria-label={tCommon("pendingCount", { count: item.badge })}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
                       </Link>
                     );
                   })}

@@ -117,7 +117,7 @@ export function Footer() {
 
         <div className="flex flex-col gap-3 border-t border-border pt-7 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} TikTok Intelligence Platform. {t("rights")}
+            &copy; {new Date().getFullYear()} LiveStream Tech. {t("rights")}
           </p>
           <Link href="/" className="inline-flex items-center gap-1 font-semibold text-brand">
             {t("analyzer")}

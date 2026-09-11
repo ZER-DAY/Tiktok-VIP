@@ -70,7 +70,7 @@ export function Navbar() {
               <span className="h-[10px] w-[4px] rounded-full bg-brand" />
             </span>
             <span className="truncate text-[15px] font-black tracking-[-0.025em] text-[#121827] [font-family:var(--font-inter)] sm:text-[17px]">
-              TikTok Intelligence
+              LiveStream Tech
             </span>
           </Link>
 

@@ -424,6 +424,7 @@ function BillingPageContent() {
                 <PaymentMethodButton
                   active={selectedMethod === "mobile_wallet"}
                   enabled={data?.payment.methods.mobile_wallet.enabled ?? false}
+                  unavailableLabel={t("methodUnavailableShort")}
                   onClick={() => setSelectedMethod("mobile_wallet")}
                   icon={<Smartphone className="size-5" />}
                   title={t("methods.mobile_wallet.title")}
@@ -432,6 +433,7 @@ function BillingPageContent() {
                 <PaymentMethodButton
                   active={selectedMethod === "card"}
                   enabled={data?.payment.methods.card.enabled ?? false}
+                  unavailableLabel={t("methodUnavailableShort")}
                   onClick={() => setSelectedMethod("card")}
                   icon={<CreditCard className="size-5" />}
                   title={t("methods.card.title")}
@@ -440,6 +442,7 @@ function BillingPageContent() {
                 <PaymentMethodButton
                   active={selectedMethod === "manual_transfer"}
                   enabled={data?.payment.methods.manual_transfer.enabled ?? false}
+                  unavailableLabel={t("methodUnavailableShort")}
                   onClick={() => setSelectedMethod("manual_transfer")}
                   icon={<Banknote className="size-5" />}
                   title={t("methods.manual_transfer.title")}
@@ -773,6 +776,7 @@ function PaymentMethodButton({
   icon,
   title,
   subtitle,
+  unavailableLabel,
 }: {
   active: boolean;
   enabled: boolean;
@@ -780,30 +784,49 @@ function PaymentMethodButton({
   icon: React.ReactNode;
   title: string;
   subtitle: string;
+  unavailableLabel: string;
 }) {
+  // An unconfigured provider must read as unavailable before it is tapped —
+  // selecting it only to be told "not linked to a merchant account" is a
+  // dead end the user cannot act on.
   return (
     <button
       type="button"
       onClick={onClick}
+      disabled={!enabled}
       aria-pressed={active}
+      aria-disabled={!enabled}
       className={`relative flex min-h-24 items-center gap-3 rounded-[20px] border p-4 text-start transition ${
         active
           ? "border-[#ff1768] bg-[#ff1768]/[0.075] ring-2 ring-[#ff1768]/10"
-          : "border-[#293140] bg-[#171c25] hover:border-[#465064]"
-      } ${enabled ? "" : "opacity-60"}`}
+          : "border-[#293140] bg-[#171c25]"
+      } ${
+        enabled
+          ? "hover:border-[#465064] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ff1768]/40"
+          : "cursor-not-allowed opacity-45 grayscale"
+      }`}
     >
       <span
         className={`grid size-11 shrink-0 place-items-center rounded-2xl ${active ? "bg-[#ed1763] text-white" : "bg-[#222936] text-[#8390a7]"}`}
       >
         {icon}
       </span>
-      <span className="min-w-0">
+      <span className="min-w-0 flex-1">
         <strong className="block text-sm text-[#f7f8fb]">{title}</strong>
-        <span className="mt-1 block text-[11px] leading-4 text-[#7f8aa0]">{subtitle}</span>
+        <span className="mt-1 block text-[11px] leading-4 text-[#7f8aa0]" dir="auto">
+          {subtitle}
+        </span>
+        {!enabled && (
+          <span className="mt-1.5 inline-block rounded-full bg-[#2a313f] px-2 py-0.5 text-[10px] font-bold text-[#93a0b6]">
+            {unavailableLabel}
+          </span>
+        )}
       </span>
-      <ArrowLeft
-        className={`ms-auto size-4 shrink-0 text-[#5d687e] ${active ? "opacity-100" : "opacity-0"}`}
-      />
+      {enabled && (
+        <ArrowLeft
+          className={`ms-auto size-4 shrink-0 text-[#5d687e] ${active ? "opacity-100" : "opacity-0"}`}
+        />
+      )}
     </button>
   );
 }
