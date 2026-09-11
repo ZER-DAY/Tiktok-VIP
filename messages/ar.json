@@ -244,6 +244,27 @@
     "rights": "جميع الحقوق محفوظة",
     "madeWith": "صُنع بـ ❤️ للمبدعين العرب"
   },
+  "about": {
+    "metaTitle": "من نحن — TikTok Intelligence",
+    "eyebrow": "من نحن",
+    "title": "الفريق وراء TikTok Intelligence",
+    "subtitle": "نبني منصة عربية مستقلة لتحليل حسابات TikTok، تمنح المبدعين والوكالات رؤى واضحة يمكن الاعتماد عليها لاتخاذ قرارات أذكى.",
+    "teamHeading": "فريقنا",
+    "photoAlt": "صورة {name}",
+    "members": {
+      "bahaa": {
+        "name": "بهاء الهبيل",
+        "role": "مبرمج ومهندس الموقع"
+      },
+      "tarek": {
+        "name": "طارق صقر",
+        "role": "شريك"
+      }
+    },
+    "ctaTitle": "جاهز تفهم حسابك أكثر؟",
+    "ctaSubtitle": "حلّل أي حساب TikTok واحصل على تقرير احترافي شامل عن قوة الحساب والأداء والجمهور.",
+    "ctaButton": "ابدأ التحليل الآن"
+  },
   "auth": {
     "siteName": "TikTok Intelligence",
     "loginTitle": "تسجيل الدخول",

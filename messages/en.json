@@ -244,6 +244,27 @@
     "rights": "All rights reserved",
     "madeWith": "Made with ❤️ for Arab creators"
   },
+  "about": {
+    "metaTitle": "About us — TikTok Intelligence",
+    "eyebrow": "About us",
+    "title": "The team behind TikTok Intelligence",
+    "subtitle": "We're building an independent, Arabic-first TikTok analytics platform that gives creators and agencies clear, reliable insights for smarter decisions.",
+    "teamHeading": "Our team",
+    "photoAlt": "Photo of {name}",
+    "members": {
+      "bahaa": {
+        "name": "Bahaa Al-Habeel",
+        "role": "Developer & Site Engineer"
+      },
+      "tarek": {
+        "name": "Tarek Saqr",
+        "role": "Partner"
+      }
+    },
+    "ctaTitle": "Ready to understand your account better?",
+    "ctaSubtitle": "Analyze any TikTok account and get a comprehensive professional report on account strength, performance, and audience.",
+    "ctaButton": "Start Analysis Now"
+  },
   "auth": {
     "siteName": "TikTok Intelligence",
     "loginTitle": "Login",
