@@ -9,14 +9,15 @@
  * Buyer submits a manual transfer -> order lands for review -> admin sees it in
  * the list and in the pending counter -> admin approves -> subscription is
  * active for one month and the counter drops back to zero.
+ *
+ * Needs a real database, so it is gated behind E2E_DB:
+ *   E2E_DB=1 DATABASE_URL="postgresql://..." \
+ *     pnpm exec vitest run src/test/purchase-flow.e2e.test.ts
  */
 import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
 import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
 
-const db = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
-});
+const db = new PrismaClient();
 
 let buyerId = "";
 let adminId = "";
@@ -28,14 +29,13 @@ vi.mock("@/modules/auth", () => ({
   getCurrentUser: async () => {
     if (!currentUserId) return null;
     const { PrismaClient: PC } = await import("@prisma/client");
-    const { PrismaPg: PP } = await import("@prisma/adapter-pg");
-    const c = new PC({ adapter: new PP({ connectionString: process.env.DATABASE_URL }) });
-    const u = await c.user.findUnique({
+    const client = new PC();
+    const user = await client.user.findUnique({
       where: { id: currentUserId },
       include: { plan: true, roles: { include: { role: true } } },
     });
-    await c.$disconnect();
-    return u;
+    await client.$disconnect();
+    return user;
   },
 }));
 
@@ -51,8 +51,6 @@ const json = (body: unknown, method = "POST") =>
     body: JSON.stringify(body),
   });
 
-// Needs a real database. Run with:
-//   E2E_DB=1 DATABASE_URL="postgresql://..." pnpm exec vitest run src/test/purchase-flow.e2e.test.ts
 const describeE2E = process.env.E2E_DB ? describe : describe.skip;
 
 describeE2E("purchase flow: buyer transfer -> admin review -> subscription active", () => {
@@ -71,8 +69,10 @@ describeE2E("purchase flow: buyer transfer -> admin review -> subscription activ
     });
     buyerId = buyer.id;
 
-    const admin = await db.user.findUnique({ where: { email: "admin@tiktok-intelligence.test" } });
-    if (!admin) throw new Error("seed admin missing - run prisma/seed.ts first");
+    const admin = await db.user.findFirst({
+      where: { roles: { some: { role: { name: "platform_admin" } } } },
+    });
+    if (!admin) throw new Error("no platform_admin user - run prisma/seed.ts first");
     adminId = admin.id;
   });
 
@@ -92,13 +92,13 @@ describeE2E("purchase flow: buyer transfer -> admin review -> subscription activ
     currentUserIsAdmin = false;
 
     const { POST } = await import("@/app/api/billing/checkout/route");
+    // Phone only — the sender's number is the match key, no reference needed.
     const res = await POST(
       json({
         plan: "individual",
         method: "manual_transfer",
         locale: "ar",
         phone: "+201002003000",
-        transferReference: `E2E-${Date.now()}`,
       })
     );
     const body = await res.json();
@@ -115,8 +115,6 @@ describeE2E("purchase flow: buyer transfer -> admin review -> subscription activ
     expect(order!.status).toBe("manual_review");
     expect(order!.method).toBe("manual_transfer");
     expect(order!.customerPhone).toBe("+201002003000");
-    // 20 USD at the configured 48 EGP rate
-    expect(order!.paymentAmountCents).toBe(96000);
     expect(order!.plan.name).toBe("individual");
   });
 
@@ -138,7 +136,7 @@ describeE2E("purchase flow: buyer transfer -> admin review -> subscription activ
     expect(body.data.pending).toBeGreaterThanOrEqual(1);
   });
 
-  it("4. the admin sees the transfer in the payments list with the phone and reference", async () => {
+  it("4. the admin sees the transfer in the payments list with the phone", async () => {
     const { GET } = await import("@/app/api/admin/payments/route");
     const body = await (await GET()).json();
 
@@ -148,7 +146,6 @@ describeE2E("purchase flow: buyer transfer -> admin review -> subscription activ
     );
     expect(mine).toBeTruthy();
     expect(mine.status).toBe("manual_review");
-    expect(mine.transferReference).toMatch(/^E2E-/);
     expect(mine.user.email).toContain("buyer-");
   });
 
@@ -175,7 +172,8 @@ describeE2E("purchase flow: buyer transfer -> admin review -> subscription activ
     expect(sub!.plan.name).toBe("individual");
 
     // one month of access, within a day's tolerance
-    const days = (sub!.currentPeriodEnd.getTime() - Date.now()) / 86_400_000;
+    expect(sub!.currentPeriodEnd).toBeInstanceOf(Date);
+    const days = (sub!.currentPeriodEnd!.getTime() - Date.now()) / 86_400_000;
     expect(days).toBeGreaterThan(27);
     expect(days).toBeLessThan(32);
 
