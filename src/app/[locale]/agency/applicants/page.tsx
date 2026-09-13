@@ -97,7 +97,7 @@ export default function ApplicantsPage() {
 
   if (isLoading && applications.length === 0) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="min-w-0 p-4 space-y-6 sm:p-6">
         <div className="animate-pulse space-y-6">
           <div className="h-8 bg-muted rounded w-1/3" />
           <div className="h-12 bg-muted/50 rounded-xl" />
@@ -108,7 +108,7 @@ export default function ApplicantsPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-w-0 p-4 space-y-6 sm:p-6">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -228,7 +228,7 @@ export default function ApplicantsPage() {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[640px]">
               <thead>
                 <tr className="border-b border-border">
                   <th className="text-start py-4 px-6 text-muted-foreground font-medium">

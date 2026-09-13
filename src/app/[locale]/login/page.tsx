@@ -121,7 +121,7 @@ function LoginForm() {
             <div>
               <label className="block text-sm text-muted-foreground mb-2">{t("email")}</label>
               <div className="relative">
-                <Mail className="absolute end-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Mail className="absolute start-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type="email"
                   value={email}
@@ -139,7 +139,7 @@ function LoginForm() {
             <div>
               <label className="block text-sm text-muted-foreground mb-2">{t("password")}</label>
               <div className="relative">
-                <Lock className="absolute end-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Lock className="absolute start-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
@@ -152,7 +152,7 @@ function LoginForm() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}

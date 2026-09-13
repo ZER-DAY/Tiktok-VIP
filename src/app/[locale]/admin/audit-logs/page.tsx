@@ -59,7 +59,7 @@ export default function AuditLogsPage() {
 
   if (isLoading && logs.length === 0) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="min-w-0 p-4 space-y-6 sm:p-6">
         <div className="animate-pulse space-y-6">
           <div className="h-8 bg-muted rounded w-1/3" />
           <div className="h-96 bg-muted/50 rounded-2xl" />
@@ -69,7 +69,7 @@ export default function AuditLogsPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-w-0 p-4 space-y-6 sm:p-6">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
         <p className="text-muted-foreground">{t("subtitle")}</p>
@@ -118,7 +118,7 @@ export default function AuditLogsPage() {
         className="bg-card border border-border rounded-2xl overflow-hidden"
       >
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[640px]">
             <thead>
               <tr className="border-b border-border">
                 <th className="text-start py-4 px-6 text-muted-foreground font-medium">

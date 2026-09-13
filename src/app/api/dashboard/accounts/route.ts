@@ -44,13 +44,21 @@ export async function GET() {
         }
       }
 
+      // The compare page reads followers/avgViews/engagementRate/
+      // postingConsistency off these rows. They come from the snapshot and
+      // report that are already loaded above, so returning them costs no
+      // extra query — and leaving them out crashed the page on first render.
       return {
         id: account.id,
         username: account.externalUsername,
-        lastScore: latestReport?.accountStrengthScore || 0,
+        lastScore: latestReport?.accountStrengthScore ?? 0,
         lastAnalysisDate: account.lastAnalyzedAt.toISOString(),
         trend,
         provider: account.provider.displayName,
+        followers: latestSnapshot?.followers ?? 0,
+        avgViews: latestSnapshot?.avgViews ?? null,
+        engagementRate: latestReport?.engagementQualityScore ?? null,
+        postingConsistency: latestReport?.postingConsistencyScore ?? null,
       };
     });
 

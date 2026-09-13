@@ -971,5 +971,15 @@
       "title": "Important Notice",
       "content": "This platform is not officially affiliated with TikTok or ByteDance. Your use of this platform does not imply any association with or endorsement by TikTok. You are responsible for ensuring that your use of the platform complies with TikTok's terms of service."
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "That link is wrong, or the page has been removed.",
+    "backHome": "Back to home"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "description": "We couldn't load this page. Please try again.",
+    "retry": "Try again"
   }
 }

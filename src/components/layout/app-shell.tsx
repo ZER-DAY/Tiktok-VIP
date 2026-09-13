@@ -88,7 +88,7 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
   const sidebarWidth = isCollapsed ? "w-[72px]" : "w-64";
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="flex min-h-screen w-full min-w-0 overflow-x-clip bg-background">
       {/* Desktop Sidebar */}
       <aside
         className={cn(
@@ -365,7 +365,7 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 lg:pt-0 pt-14 min-h-screen">{children}</main>
+      <main className="min-w-0 flex-1 pt-14 min-h-screen lg:pt-0">{children}</main>
     </div>
   );
 }

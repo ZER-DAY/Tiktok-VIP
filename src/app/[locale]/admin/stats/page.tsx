@@ -48,7 +48,7 @@ export default function AdminStatsPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6 space-y-6">
+      <div className="min-w-0 p-4 space-y-6 sm:p-6">
         <div className="animate-pulse space-y-6">
           <div className="h-8 bg-muted rounded w-1/3" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -62,7 +62,7 @@ export default function AdminStatsPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-w-0 p-4 space-y-6 sm:p-6">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
         <p className="text-muted-foreground">{t("subtitle")}</p>

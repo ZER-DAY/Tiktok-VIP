@@ -101,7 +101,7 @@ export default function ComparePage() {
                       <div className="text-start">
                         <p className="text-foreground font-medium">@{account.username}</p>
                         <p className="text-muted-foreground text-sm">
-                          {account.followers.toLocaleString()} {t("followers")}
+                          {(account.followers ?? 0).toLocaleString()} {t("followers")}
                         </p>
                       </div>
                     </div>
@@ -177,7 +177,7 @@ export default function ComparePage() {
                   <td className="py-3 px-4 text-muted-foreground">{t("followers")}</td>
                   {selectedAccounts.map((account) => (
                     <td key={account.id} className="text-center py-3 px-4 text-foreground">
-                      {account.followers.toLocaleString()}
+                      {(account.followers ?? 0).toLocaleString()}
                     </td>
                   ))}
                 </tr>
