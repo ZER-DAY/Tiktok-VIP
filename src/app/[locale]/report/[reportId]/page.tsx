@@ -9,6 +9,7 @@ import { Navbar } from "@/components/landing/navbar";
 import { Footer } from "@/components/landing/footer";
 import { ScoreCard } from "@/components/report/score-card";
 import { InsightSection } from "@/components/report/insight-section";
+import { formatCompact, formatDate, formatDateLong } from "@/lib/format";
 import {
   TrendingUp,
   TrendingDown,
@@ -99,11 +100,11 @@ const COUNTRY_TRANSLATION_KEYS: Record<string, string> = {
   Syria: "Syria",
 };
 
-function formatNumber(num: number): string {
-  if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + "B";
-  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
-  if (num >= 1_000) return (num / 1_000).toFixed(1) + "K";
-  return num.toString();
+// Compact figures used to hardcode English K/M/B suffixes regardless of
+// locale; Intl produces the right suffix per language, still in Latin digits
+// so nothing sits next to Arabic-Indic numerals.
+function formatNumber(num: number, locale?: string): string {
+  return formatCompact(num, locale);
 }
 
 function formatAccountDate(value: string | null, locale: string): string | null {
@@ -111,12 +112,7 @@ function formatAccountDate(value: string | null, locale: string): string | null 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return null;
 
-  return new Intl.DateTimeFormat(locale, {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  }).format(date);
+  return formatDateLong(date, locale);
 }
 
 function regionCodeToFlag(regionCode: string | null): string | null {
@@ -315,9 +311,7 @@ export default function ReportPage({
               </div>
               <h1 className="text-4xl font-black tracking-tight text-foreground">{t("title")}</h1>
               <p className="text-muted-foreground text-sm">
-                {new Date(report.generatedAt).toLocaleDateString(
-                  locale === "ar" ? "ar-SA" : "en-US"
-                )}{" "}
+                {formatDate(report.generatedAt, locale)}{" "}
                 • {report.account.displayName ?? `@${report.account.username}`}
               </p>
             </div>
@@ -450,7 +444,7 @@ export default function ReportPage({
                   { label: t("videoCount"), value: report.statistics.videoCount },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <p className="text-xl font-black text-foreground">{formatNumber(stat.value)}</p>
+                    <p className="text-xl font-black text-foreground">{formatNumber(stat.value, locale)}</p>
                     <p className="mt-1 text-xs text-muted-foreground">{stat.label}</p>
                   </div>
                 ))}
@@ -500,7 +494,7 @@ export default function ReportPage({
                 .map((stat) => (
                   <div key={stat.label} className="surface-card p-4 text-center">
                     <p className="text-lg font-bold text-foreground">
-                      {stat.value ? formatNumber(stat.value) : "-"}
+                      {stat.value ? formatNumber(stat.value, locale) : "-"}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">{stat.label}</p>
                   </div>

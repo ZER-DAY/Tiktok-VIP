@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { formatDateTime, formatNumber } from "@/lib/format";
 
 type PaymentOrder = {
   id: string;
@@ -173,9 +174,7 @@ export default function AdminPaymentsPage() {
                       </span>
                     </td>
                     <td className="px-4 py-4 font-bold" dir="ltr">
-                      {(order.paymentAmountCents / 100).toLocaleString(
-                        locale === "ar" ? "ar-EG" : "en-US"
-                      )}{" "}
+                      {formatNumber(order.paymentAmountCents / 100, locale)}{" "}
                       {order.paymentCurrency}
                     </td>
                     <td className="max-w-44 break-all px-4 py-4 text-xs" dir="ltr">
@@ -195,15 +194,11 @@ export default function AdminPaymentsPage() {
                       )}
                     </td>
                     <td className="px-4 py-4 text-xs text-muted-foreground">
-                      {new Date(order.createdAt).toLocaleString(
-                        locale === "ar" ? "ar-EG" : "en-US"
-                      )}
+                      {formatDateTime(order.createdAt, locale)}
                       {order.reviewedAt && (
                         <span className="mt-1 block text-[10px]">
                           ✓{" "}
-                          {new Date(order.reviewedAt).toLocaleString(
-                            locale === "ar" ? "ar-EG" : "en-US"
-                          )}
+                          {formatDateTime(order.reviewedAt, locale)}
                         </span>
                       )}
                     </td>
@@ -276,9 +271,7 @@ export default function AdminPaymentsPage() {
                 {billingT(`plans.${pendingReview.order.plan.name}.name`)}
               </p>
               <p className="mt-1 text-muted-foreground" dir="ltr">
-                {(pendingReview.order.paymentAmountCents / 100).toLocaleString(
-                  locale === "ar" ? "ar-EG" : "en-US"
-                )}{" "}
+                {formatNumber(pendingReview.order.paymentAmountCents / 100, locale)}{" "}
                 {pendingReview.order.paymentCurrency}
               </p>
               {pendingReview.order.transferReference && (

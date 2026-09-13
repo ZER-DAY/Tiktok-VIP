@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { BarChart3, X } from "lucide-react";
+import { formatNumber } from "@/lib/format";
 
 interface Account {
   id: string;
@@ -17,6 +18,7 @@ interface Account {
 
 export default function ComparePage() {
   const t = useTranslations("dashboard.compare");
+  const locale = useLocale();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [selectedAccounts, setSelectedAccounts] = useState<Account[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -101,7 +103,7 @@ export default function ComparePage() {
                       <div className="text-start">
                         <p className="text-foreground font-medium">@{account.username}</p>
                         <p className="text-muted-foreground text-sm">
-                          {(account.followers ?? 0).toLocaleString()} {t("followers")}
+                          {formatNumber(account.followers ?? 0, locale)} {t("followers")}
                         </p>
                       </div>
                     </div>
@@ -177,7 +179,7 @@ export default function ComparePage() {
                   <td className="py-3 px-4 text-muted-foreground">{t("followers")}</td>
                   {selectedAccounts.map((account) => (
                     <td key={account.id} className="text-center py-3 px-4 text-foreground">
-                      {(account.followers ?? 0).toLocaleString()}
+                      {formatNumber(account.followers ?? 0, locale)}
                     </td>
                   ))}
                 </tr>
@@ -185,7 +187,7 @@ export default function ComparePage() {
                   <td className="py-3 px-4 text-muted-foreground">{t("avgViews")}</td>
                   {selectedAccounts.map((account) => (
                     <td key={account.id} className="text-center py-3 px-4 text-foreground">
-                      {account.avgViews ? account.avgViews.toLocaleString() : "-"}
+                      {formatNumber(account.avgViews, locale)}
                     </td>
                   ))}
                 </tr>

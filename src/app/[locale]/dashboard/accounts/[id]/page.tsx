@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { ScoreCard } from "@/components/report/score-card";
 import { InsightSection } from "@/components/report/insight-section";
+import { formatDate, formatDateLong } from "@/lib/format";
 
 interface ReportData {
   reportId: string;
@@ -141,18 +142,13 @@ export default function AccountReportPage() {
               )}
             </div>
             <p className="text-muted-foreground text-sm">
-              {new Date(report.generatedAt).toLocaleDateString("ar-SA")}
+              {formatDate(report.generatedAt, locale)}
             </p>
             <p className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
               <CalendarDays className="size-3.5" />
               {t("accountCreatedAt")}:{" "}
               {report.account.accountCreatedAtGuess
-                ? new Intl.DateTimeFormat(locale, {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                    timeZone: "UTC",
-                  }).format(new Date(report.account.accountCreatedAtGuess))
+                ? formatDateLong(report.account.accountCreatedAtGuess, locale)
                 : t("accountCreatedAtUnavailable")}
               {report.account.accountCreatedAtGuess && report.account.isEstimated.createdAt
                 ? ` (${t("estimated")})`

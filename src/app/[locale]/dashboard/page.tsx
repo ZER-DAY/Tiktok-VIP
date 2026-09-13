@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, BarChart3, Plus } from "lucide-react";
 import { redirectToLogin } from "@/lib/auth-client";
+import { formatDate } from "@/lib/format";
 
 interface DashboardData {
   accounts: Array<{
@@ -198,7 +199,7 @@ export default function DashboardPage() {
                     <div>
                       <p className="text-foreground font-medium">@{account.username}</p>
                       <p className="text-muted-foreground text-sm">
-                        {new Date(account.lastAnalysisDate).toLocaleDateString("ar-SA")}
+                        {formatDate(account.lastAnalysisDate, locale)}
                       </p>
                     </div>
                   </div>

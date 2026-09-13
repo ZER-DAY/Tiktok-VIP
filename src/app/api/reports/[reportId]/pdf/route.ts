@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getStoredCreatorLeague } from "@/modules/providers/tiktok/live-league";
 import { getStoredLiveAccountLevel } from "@/modules/providers/tiktok/live-account-level";
 import { getStoredProfileDisplayName } from "@/modules/providers/stored-profile";
+import { formatDate, formatDateLong } from "@/lib/format";
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>'"]/g, (character) => {
@@ -52,12 +53,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
         ? (rawPayload.profile as Record<string, unknown>)
         : null;
     const accountCreatedAt = snapshot.accountCreatedAtGuess
-      ? new Intl.DateTimeFormat("ar-SA", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          timeZone: "UTC",
-        }).format(snapshot.accountCreatedAtGuess)
+      ? formatDateLong(snapshot.accountCreatedAtGuess, "ar")
       : "غير متاح";
     const accountCreatedAtIsEstimated =
       snapshot.accountCreatedAtGuess !== null &&
@@ -333,7 +329,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ repo
 <body>
   <div class="header">
     <h1>تقرير تحليل TikTok</h1>
-    <p class="subtitle">${new Date(report.generatedAt).toLocaleDateString("ar-SA")}</p>
+    <p class="subtitle">${formatDate(report.generatedAt, "ar")}</p>
   </div>
   
   <div class="account-info">

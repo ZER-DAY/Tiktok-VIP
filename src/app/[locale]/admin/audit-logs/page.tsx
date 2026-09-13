@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
+import { formatDate } from "@/lib/format";
 
 interface AuditLog {
   id: string;
@@ -17,6 +18,7 @@ interface AuditLog {
 
 export default function AuditLogsPage() {
   const t = useTranslations("admin.auditLogs");
+  const locale = useLocale();
   const [logs, setLogs] = useState<AuditLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -151,7 +153,7 @@ export default function AuditLogsPage() {
                     {log.entityType}: {log.entityId.slice(0, 8)}...
                   </td>
                   <td className="py-4 px-6 text-center text-muted-foreground text-sm">
-                    {new Date(log.createdAt).toLocaleDateString("ar-SA")}
+                    {formatDate(log.createdAt, locale)}
                   </td>
                 </tr>
               ))}

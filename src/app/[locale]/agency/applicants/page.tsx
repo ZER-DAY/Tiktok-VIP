@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Search, Filter, ChevronDown, ChevronUp, Eye, User, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { formatDate, formatNumber } from "@/lib/format";
 
 interface Application {
   id: string;
@@ -40,6 +41,7 @@ const STATUS_CONFIG: Record<string, { color: string }> = {
 
 export default function ApplicantsPage() {
   const t = useTranslations("agency.applicants");
+  const locale = useLocale();
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
@@ -298,7 +300,7 @@ export default function ApplicantsPage() {
                         </span>
                       </td>
                       <td className="py-4 px-6 text-center text-muted-foreground">
-                        {latestSnapshot?.followers?.toLocaleString() || "-"}
+                        {formatNumber(latestSnapshot?.followers, locale)}
                       </td>
                       <td className="py-4 px-6 text-center text-muted-foreground">
                         {latestSnapshot?.countryGuess || "-"}
@@ -329,7 +331,7 @@ export default function ApplicantsPage() {
                         )}
                       </td>
                       <td className="py-4 px-6 text-center text-muted-foreground text-sm">
-                        {new Date(app.createdAt).toLocaleDateString("ar-SA")}
+                        {formatDate(app.createdAt, locale)}
                       </td>
                       <td className="py-4 px-6 text-center">
                         <Link

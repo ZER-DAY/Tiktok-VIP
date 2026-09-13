@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
+import { formatDate } from "@/lib/format";
 
 interface AdminUser {
   id: string;
@@ -19,6 +20,7 @@ interface AdminUser {
 
 export default function AdminUsersPage() {
   const t = useTranslations("admin.users");
+  const locale = useLocale();
   const tCommon = useTranslations("common");
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -163,7 +165,7 @@ export default function AdminUsersPage() {
                     {user._count.ownedAccounts}
                   </td>
                   <td className="py-4 px-6 text-center text-muted-foreground text-sm">
-                    {new Date(user.createdAt).toLocaleDateString("ar-SA")}
+                    {formatDate(user.createdAt, locale)}
                   </td>
                 </tr>
               ))}

@@ -3,6 +3,7 @@
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
+import { formatCurrency, formatDate, formatNumber } from "@/lib/format";
 import {
   ArrowLeft,
   Banknote,
@@ -186,11 +187,7 @@ function BillingPageContent() {
   const formattedPrice =
     convertedPrice === null
       ? t("afterConfiguration")
-      : new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-EG", {
-          style: "currency",
-          currency: "EGP",
-          maximumFractionDigits: 0,
-        }).format(convertedPrice);
+      : formatCurrency(convertedPrice, "EGP", locale);
 
   async function submitCheckout() {
     if (!plan || !methodEnabled) return;
@@ -311,9 +308,7 @@ function BillingPageContent() {
                     <div className="flex items-center gap-2">
                       <dt className="text-[#818da4]">{t("amount")}:</dt>
                       <dd className="font-bold text-[#f7f8fb]" dir="ltr">
-                        {(latestReview.paymentAmountCents / 100).toLocaleString(
-                          locale === "ar" ? "ar-EG" : "en-US"
-                        )}{" "}
+                        {formatNumber(latestReview.paymentAmountCents / 100, locale)}{" "}
                         {latestReview.paymentCurrency}
                       </dd>
                     </div>
@@ -328,9 +323,7 @@ function BillingPageContent() {
                     <div className="flex items-center gap-2">
                       <dt className="text-[#818da4]">{t("date")}:</dt>
                       <dd className="font-bold text-[#f7f8fb]">
-                        {new Date(latestReview.createdAt).toLocaleDateString(
-                          locale === "ar" ? "ar-EG" : "en-US"
-                        )}
+                        {formatDate(latestReview.createdAt, locale)}
                       </dd>
                     </div>
                   </dl>
@@ -684,9 +677,7 @@ function BillingPageContent() {
                   <div>
                     <p className="font-bold">{t(`plans.${order.plan.name}.name`)}</p>
                     <p className="mt-1 text-xs text-[#7f8aa0]">
-                      {new Date(order.createdAt).toLocaleDateString(
-                        locale === "ar" ? "ar-EG" : "en-US"
-                      )}
+                      {formatDate(order.createdAt, locale)}
                       {" · "}
                       {t(`methods.${order.method}.title`)}
                     </p>
@@ -697,9 +688,7 @@ function BillingPageContent() {
                     )}
                   </div>
                   <strong dir="ltr">
-                    {(order.paymentAmountCents / 100).toLocaleString(
-                      locale === "ar" ? "ar-EG" : "en-US"
-                    )}{" "}
+                    {formatNumber(order.paymentAmountCents / 100, locale)}{" "}
                     {order.paymentCurrency}
                   </strong>
                   <span

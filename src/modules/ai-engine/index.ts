@@ -13,6 +13,7 @@ import {
 import { generateInsights } from "./rules";
 import { analyzeAudience } from "./audience";
 import { findCompetitors } from "./competitors";
+import { formatNumber } from "@/lib/format";
 
 export async function generateAnalysisReport(snapshotId: string) {
   const snapshot = await prisma.accountSnapshot.findUnique({
@@ -119,7 +120,7 @@ export async function generateAnalysisReport(snapshotId: string) {
   const competitorInsights = competitors.map((c, i) => ({
     type: "competitor" as const,
     title: `منافس مقترح: @${c.username}`,
-    description: `حساب مشابه بـ ${c.followers.toLocaleString()} متابع ودرجة قوة ${c.accountStrength}/100`,
+    description: `حساب مشابه بـ ${formatNumber(c.followers, "ar")} متابع ودرجة قوة ${c.accountStrength}/100`,
     evidenceRef: {
       username: c.username,
       followers: c.followers,

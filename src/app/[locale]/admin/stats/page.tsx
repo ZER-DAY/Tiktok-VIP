@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Users, FileText, BarChart3, Clock } from "lucide-react";
+import { formatDate } from "@/lib/format";
 
 interface Stats {
   users: { total: number; newThisMonth: number };
@@ -26,6 +27,7 @@ const FUNNEL_COLORS: Record<string, string> = {
 
 export default function AdminStatsPage() {
   const t = useTranslations("admin.stats");
+  const locale = useLocale();
   const [stats, setStats] = useState<Stats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -167,7 +169,7 @@ export default function AdminStatsPage() {
                   {report.score}
                 </span>
                 <span className="text-muted-foreground text-sm">
-                  {new Date(report.generatedAt).toLocaleDateString("ar-SA")}
+                  {formatDate(report.generatedAt, locale)}
                 </span>
               </div>
             </div>

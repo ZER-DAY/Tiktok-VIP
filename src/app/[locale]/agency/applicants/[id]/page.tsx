@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight, Phone, Send, Mail, User, Clock, MessageSquare, Eye } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { formatDate, formatNumber } from "@/lib/format";
 
 interface ApplicationDetail {
   id: string;
@@ -88,6 +89,7 @@ function statusKey(status: string): string {
 export default function ApplicantDetailPage() {
   const params = useParams();
   const t = useTranslations("agency.detail");
+  const locale = useLocale();
   const tStatus = useTranslations("agency.applicants");
   const [application, setApplication] = useState<ApplicationDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -332,7 +334,7 @@ export default function ApplicantDetailPage() {
                         </span>
                       </div>
                       <span className="text-muted-foreground text-xs">
-                        {new Date(note.createdAt).toLocaleDateString("ar-SA")}
+                        {formatDate(note.createdAt, locale)}
                       </span>
                     </div>
                     <p className="text-muted-foreground text-sm">{note.body}</p>
@@ -361,7 +363,7 @@ export default function ApplicantDetailPage() {
                 </div>
                 <div className="bg-muted/50 rounded-xl p-4 text-center">
                   <p className="text-2xl font-bold text-foreground">
-                    {latestSnapshot.followers.toLocaleString()}
+                    {formatNumber(latestSnapshot.followers, locale)}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">{tStatus("followers")}</p>
                 </div>
@@ -435,7 +437,7 @@ export default function ApplicantDetailPage() {
                       </div>
                       <p className="text-muted-foreground text-xs mt-1">
                         {t("changedBy")} {history.changedBy.name} {"\u2022"}{" "}
-                        {new Date(history.changedAt).toLocaleDateString("ar-SA")}
+                        {formatDate(history.changedAt, locale)}
                       </p>
                     </div>
                   </div>

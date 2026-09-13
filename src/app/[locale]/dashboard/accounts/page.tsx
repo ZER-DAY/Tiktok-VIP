@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, Plus, RefreshCw, BarChart3 } from "lucide-react";
+import { formatDate } from "@/lib/format";
 
 interface Account {
   id: string;
@@ -17,6 +18,7 @@ interface Account {
 
 export default function AccountsPage() {
   const t = useTranslations("dashboard.accounts");
+  const locale = useLocale();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -137,7 +139,7 @@ export default function AccountsPage() {
 
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">
-                    {new Date(account.lastAnalysisDate).toLocaleDateString("ar-SA")}
+                    {formatDate(account.lastAnalysisDate, locale)}
                   </span>
                   <button
                     onClick={(e) => {
