@@ -11,7 +11,6 @@ import {
   Clock3,
   Copy,
   CreditCard,
-  Gift,
   Info,
   LockKeyhole,
   Phone,
@@ -118,7 +117,6 @@ function BillingPageContent() {
     selectedPlanOverride ?? (isPlanName(requestedPlan) ? requestedPlan : "individual");
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>("mobile_wallet");
   const [phone, setPhone] = useState("");
-  const [transferReference, setTransferReference] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -208,14 +206,12 @@ function BillingPageContent() {
           method: selectedMethod,
           locale,
           phone,
-          ...(selectedMethod === "manual_transfer" ? { transferReference } : {}),
         }),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error?.code || "CHECKOUT_FAILED");
       if (result.data.duplicate) {
         setSuccess(t("alreadySubmitted"));
-        setTransferReference("");
         await loadBilling();
         return;
       }
@@ -224,7 +220,6 @@ function BillingPageContent() {
         return;
       }
       setSuccess(t("manualSubmitted"));
-      setTransferReference("");
       await loadBilling();
     } catch (checkoutError) {
       const code = checkoutError instanceof Error ? checkoutError.message : "CHECKOUT_FAILED";
@@ -552,23 +547,6 @@ function BillingPageContent() {
                     />
                   </span>
                 </label>
-                {selectedMethod === "manual_transfer" && (
-                  <label className="block">
-                    <span className="mb-2 block text-sm font-black text-[#929db2]">
-                      {t("transferReference")}
-                    </span>
-                    <span className="relative block">
-                      <Gift className="pointer-events-none absolute start-4 top-1/2 size-5 -translate-y-1/2 text-[#445069]" />
-                      <input
-                        dir="ltr"
-                        value={transferReference}
-                        onChange={(event) => setTransferReference(event.target.value)}
-                        placeholder={t("transferReferencePlaceholder")}
-                        className="h-14 w-full rounded-2xl border border-[#293140] bg-[#171c25] px-12 text-start text-[#f7f8fb] outline-none transition placeholder:text-[#465168] focus:border-[#ff347a] focus:ring-4 focus:ring-[#ff1768]/10"
-                      />
-                    </span>
-                  </label>
-                )}
               </div>
 
               {selectedMethod === "manual_transfer" && methodEnabled && (
@@ -595,8 +573,7 @@ function BillingPageContent() {
                 disabled={
                   isSubmitting ||
                   !methodEnabled ||
-                  phone.trim().length < 8 ||
-                  (selectedMethod === "manual_transfer" && transferReference.trim().length < 4)
+                  phone.trim().length < 8
                 }
                 onClick={submitCheckout}
                 className="mt-6 inline-flex h-16 w-full items-center justify-center gap-3 rounded-[22px] bg-gradient-to-l from-[#ff1768] to-[#d80e55] px-6 text-lg font-black text-white shadow-[0_18px_34px_-16px_rgba(255,23,104,.8)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"

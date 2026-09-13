@@ -66,7 +66,10 @@ export async function POST(request: Request) {
 
     if (method === "manual_transfer") {
       const manualConfig = getManualPaymentConfig();
-      if (!manualConfig || !transferReference) {
+      // The sender's phone number is the match key: InstaPay and the Egyptian
+      // wallets both show it to the recipient, so the admin can tie an incoming
+      // transfer to an order without the payer transcribing a reference.
+      if (!manualConfig) {
         return NextResponse.json(
           {
             success: false,
