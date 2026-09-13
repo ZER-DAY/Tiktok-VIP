@@ -140,6 +140,42 @@ async function verify(userId: string) {
   };
 }
 
+/**
+ * Exit codes the wrapper reacts to:
+ *   2 = connected, but the schema is not there (migrations never applied)
+ *   3 = could not connect at all
+ */
+async function preflight() {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+  } catch (error) {
+    const host = (process.env.DATABASE_URL || "").replace(/^[^:]+:\/\/[^@]*@/, "").replace(/\?.*$/, "");
+    console.error("");
+    console.error("  ❌ ما قدرتش أتصل بقاعدة البيانات.");
+    console.error(`     الخادم: ${host || "(DATABASE_URL مش متعيّن)"}`);
+    console.error("");
+    console.error("     راجع: الرابط صح؟ الشبكة سامحة؟ Neon صاحي؟");
+    const detail = (error instanceof Error ? error.message : String(error))
+      .split("\n")
+      .map((line) => line.trim())
+      .find((line) => line.length > 0);
+    if (detail) console.error(`     التفاصيل: ${detail}`);
+    console.error("");
+    process.exit(3);
+  }
+
+  const [{ exists }] = await prisma.$queryRaw<Array<{ exists: boolean }>>`
+    SELECT to_regclass('"Role"') IS NOT NULL AS exists
+  `;
+  if (!exists) {
+    console.error("");
+    console.error("  ❌ الاتصال تمام، بس جداول المشروع مش موجودة في قاعدة البيانات دي.");
+    console.error("     شغّل الهجرات الأول:  pnpm exec prisma migrate deploy");
+    console.error("");
+    process.exit(2);
+  }
+}
+
 async function main() {
   const email = process.argv[2]?.trim().toLowerCase();
   const name = process.argv[3]?.trim() || "مدير المنصة";
@@ -148,6 +184,8 @@ async function main() {
     console.error("Usage: pnpm exec tsx scripts/create-admin.ts <email> [name]");
     process.exit(1);
   }
+
+  await preflight();
 
   const supplied = process.env.ADMIN_PASSWORD?.trim();
   if (supplied && supplied.length < 12) {

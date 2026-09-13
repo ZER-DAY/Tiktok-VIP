@@ -11,6 +11,9 @@
 #   4. vercel env pull  (لو Vercel CLI مثبت والمشروع مربوط)
 #   5. بيسألك تكتبه
 #
+# وبيتحقق من الاتصال والجداول عن طريق create-admin.ts نفسه، بنفس عميل
+# Prisma اللي التطبيق شغال بيه — مش بأمر CLI منفصل.
+#
 # وبيسأل عن كلمة المرور لو ADMIN_PASSWORD مش متعيّن — الكتابة مخفية،
 # وما بتتسجلش في history التيرمنال.
 
@@ -92,21 +95,7 @@ case "$DATABASE_URL" in
     ;;
 esac
 
-# ─── 3. الاتصال ────────────────────────────────────────────
-step "اختبار الاتصال بقاعدة البيانات"
-$RUN prisma db execute --stdin <<<'SELECT 1;' >/dev/null 2>&1 \
-  || die "ما قدرتش أتصل بقاعدة البيانات. راجع الرابط."
-printf '  %s✓ متصل%s\n' "$c_grn" "$c_off"
-
-# ─── 4. الجداول ────────────────────────────────────────────
-step "التأكد إن جداول قاعدة البيانات موجودة"
-if ! $RUN prisma db execute --stdin <<<'SELECT 1 FROM "Role" LIMIT 1;' >/dev/null 2>&1; then
-  printf '  الجداول ناقصة — بشغّل الهجرات...\n'
-  $RUN prisma migrate deploy || die "فشلت الهجرات."
-fi
-printf '  %s✓ الجداول جاهزة%s\n' "$c_grn" "$c_off"
-
-# ─── 5. كلمة المرور ────────────────────────────────────────
+# ─── 3. كلمة المرور ────────────────────────────────────────
 if [ -z "${ADMIN_PASSWORD:-}" ]; then
   step "كلمة المرور"
   printf '  اتركها فاضية عشان يتولّد واحدة عشوائية وتتطبع مرة واحدة.\n'
@@ -115,6 +104,21 @@ if [ -z "${ADMIN_PASSWORD:-}" ]; then
   export ADMIN_PASSWORD
 fi
 
-# ─── 6. إنشاء الحساب ───────────────────────────────────────
+# ─── 4. إنشاء الحساب ───────────────────────────────────────
+# create-admin.ts بيختبر الاتصال والجداول بنفسه بنفس عميل Prisma
+# اللي التطبيق بيستخدمه، ويرجّع 3 لو مفيش اتصال و 2 لو الجداول ناقصة.
 step "إنشاء حساب المدير"
+set +e
 $RUN tsx scripts/create-admin.ts "$EMAIL" "$NAME"
+code=$?
+set -e
+
+if [ "$code" -eq 2 ]; then
+  step "الجداول ناقصة — بشغّل الهجرات"
+  $RUN prisma migrate deploy || die "فشلت الهجرات."
+  step "إعادة المحاولة"
+  $RUN tsx scripts/create-admin.ts "$EMAIL" "$NAME" || die "فشل إنشاء الحساب."
+elif [ "$code" -ne 0 ]; then
+  exit "$code"
+fi
+
