@@ -1,3 +1,6 @@
+import { getSetting } from "@/modules/admin/settings";
+import { getUsdToEgpRate } from "@/modules/billing/exchange-rate";
+
 const PAYMOB_EGYPT_BASE_URL = "https://accept.paymob.com";
 
 function positiveNumber(value: string | undefined) {
@@ -42,14 +45,27 @@ export function getPaymobServerConfig(method: "card" | "mobile_wallet") {
   };
 }
 
-export function getManualPaymentConfig() {
-  const accountNumber = process.env.MANUAL_PAYMENT_ACCOUNT_NUMBER?.trim();
-  const conversionRate = positiveNumber(process.env.PAYMENT_USD_TO_EGP_RATE);
+export async function getManualPaymentConfig() {
+  // Plans are priced in USD; Egyptian transfers are made in EGP, so the amount
+  // shown to the buyer is converted at the live mid-market rate. The rate is
+  // resolved once here and then frozen onto the order, so the figure the buyer
+  // transfers is the figure the admin checks later.
+  const [settingNumber, settingLabel, conversionRate] = await Promise.all([
+    getSetting("payment.manual.accountNumber"),
+    getSetting("payment.manual.accountLabel"),
+    getUsdToEgpRate(),
+  ]);
+
+  const accountNumber =
+    settingNumber?.trim() || process.env.MANUAL_PAYMENT_ACCOUNT_NUMBER?.trim();
   if (!accountNumber || !conversionRate) return null;
 
   return {
     accountNumber,
-    accountLabel: process.env.MANUAL_PAYMENT_ACCOUNT_LABEL?.trim() || "InstaPay / Mobile wallet",
+    accountLabel:
+      settingLabel?.trim() ||
+      process.env.MANUAL_PAYMENT_ACCOUNT_LABEL?.trim() ||
+      "InstaPay / Mobile wallet",
     conversionRate,
   };
 }
@@ -65,10 +81,10 @@ export function convertUsdCentsToEgp(usdCents: number, conversionRate: number) {
   return Math.round(usdCents * conversionRate);
 }
 
-export function getPublicPaymentConfiguration() {
+export async function getPublicPaymentConfiguration() {
   const card = getPaymobServerConfig("card");
   const mobileWallet = getPaymobServerConfig("mobile_wallet");
-  const manual = getManualPaymentConfig();
+  const manual = await getManualPaymentConfig();
   const conversionRate =
     card?.conversionRate ?? mobileWallet?.conversionRate ?? manual?.conversionRate;
 

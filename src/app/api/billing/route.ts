@@ -69,7 +69,7 @@ export async function GET() {
         plans,
         currentPlan: activeSubscription?.plan.name ?? user.plan.name,
         currentPeriodEnd: activeSubscription?.currentPeriodEnd ?? null,
-        payment: getPublicPaymentConfiguration(),
+        payment: await getPublicPaymentConfiguration(),
         orders,
       },
     });

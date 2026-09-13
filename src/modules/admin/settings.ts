@@ -2,6 +2,16 @@ import { prisma } from "@/lib/prisma";
 
 // Default system settings
 const DEFAULT_SETTINGS: Record<string, string> = {
+  // Receiving account for manual transfers. This is shown to every buyer on
+  // the payment page, so it is published information, not a secret — but it
+  // lives here rather than in an env var so the admin can change it from
+  // /admin/settings without a redeploy.
+  "payment.manual.accountNumber": "201102888141",
+  "payment.manual.accountLabel": "InstaPay",
+  // Used only when the live rate cannot be fetched and nothing is cached yet,
+  // so an upstream outage can never take the payment method offline. Keep it
+  // roughly current from /admin/settings.
+  "payment.usdEgp.fallbackRate": "48",
   "agency.eligibility.minScore": "60",
   "agency.eligibility.highPriorityScore": "80",
   "cache.snapshot.ttlHours": "24",
