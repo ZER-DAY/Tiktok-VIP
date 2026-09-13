@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, CreditCard, Settings, FileText, BarChart3, Shield } from "lucide-react";
+import { Users, CreditCard, Settings, FileText, BarChart3 } from "lucide-react";
 import { AppShell, type SidebarItem } from "@/components/layout/app-shell";
 
 const BASE_ITEMS: SidebarItem[] = [
@@ -11,7 +11,6 @@ const BASE_ITEMS: SidebarItem[] = [
   { key: "payments", icon: CreditCard, href: "/admin/payments" },
   { key: "settings", icon: Settings, href: "/admin/settings" },
   { key: "auditLogs", icon: FileText, href: "/admin/audit-logs" },
-  { key: "roles", icon: Shield, href: "/admin/roles" },
 ];
 
 const POLL_MS = 60_000;
