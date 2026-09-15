@@ -98,9 +98,17 @@ esac
 # ─── 3. كلمة المرور ────────────────────────────────────────
 if [ -z "${ADMIN_PASSWORD:-}" ]; then
   step "كلمة المرور"
-  printf '  اتركها فاضية عشان يتولّد واحدة عشوائية وتتطبع مرة واحدة.\n'
-  printf '  كلمة المرور: '
-  read -rs ADMIN_PASSWORD; printf '\n'
+  printf '  اضغط Enter على طول عشان يتولّد واحدة عشوائية وتتطبع مرة واحدة.\n'
+  printf '  الكتابة مخفية — مش هتشوف حروف وانت بتلصق، وده طبيعي.\n'
+  while :; do
+    printf '  كلمة المرور: '
+    read -rs ADMIN_PASSWORD; printf '\n'
+    # فاضية = ولّد واحدة عشوائية
+    [ -z "$ADMIN_PASSWORD" ] && break
+    [ "${#ADMIN_PASSWORD}" -ge 12 ] && break
+    printf '  %sقصيرة (%s حرف). لازم 12 حرف على الأقل — جرّب تاني.%s\n' \
+      "$c_ylw" "${#ADMIN_PASSWORD}" "$c_off"
+  done
   export ADMIN_PASSWORD
 fi
 
