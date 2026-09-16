@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { ArrowUpLeft, AtSign, Mail } from "lucide-react";
-import { BrandMark } from "@/components/brand/brand-mark";
+import { BrandLogo } from "@/components/brand/brand-mark";
 import { Link } from "@/i18n/navigation";
 
 export function Footer() {
@@ -14,11 +14,8 @@ export function Footer() {
         <div className="mb-12 grid gap-10 sm:grid-cols-2 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
           {/* Brand */}
           <div className="sm:col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2.5">
-              <BrandMark className="size-9 rounded-xl" iconClassName="size-[18px]" />
-              <span className="text-lg font-black tracking-tight text-foreground">
-                {t("siteName")}
-              </span>
+            <div className="inline-flex items-center rounded-xl bg-[#0b0b0d] px-4 py-3">
+              <BrandLogo className="h-8 w-auto" priority={false} />
             </div>
             <p className="mt-4 max-w-xs text-sm leading-7 text-muted-foreground">{t("madeWith")}</p>
             <div className="mt-5 flex items-center gap-2">
@@ -117,7 +114,7 @@ export function Footer() {
 
         <div className="flex flex-col gap-3 border-t border-border pt-7 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} LiveStream Tech. {t("rights")}
+            &copy; {new Date().getFullYear()} {t("siteName")}. {t("rights")}
           </p>
           <Link href="/" className="inline-flex items-center gap-1 font-semibold text-brand">
             {t("analyzer")}

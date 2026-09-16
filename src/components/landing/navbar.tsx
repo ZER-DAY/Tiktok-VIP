@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Globe2, LayoutDashboard, Loader2, LogOut, Menu, X } from "lucide-react";
+import { BrandLogo } from "@/components/brand/brand-mark";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
@@ -59,7 +60,7 @@ export function Navbar() {
       <nav
         data-testid="landing-navbar"
         dir="ltr"
-        className="mx-auto w-full max-w-[1100px] rounded-[17px] border border-black/[0.07] bg-white/95 px-3 shadow-[0_9px_28px_rgba(19,27,44,0.10)] backdrop-blur-xl sm:px-4 xl:w-[71.615vw]"
+        className="mx-auto w-full max-w-[1100px] rounded-[17px] border border-white/[0.09] bg-[#0b0b0d]/95 px-3 shadow-[0_12px_34px_rgba(0,0,0,0.30)] backdrop-blur-xl sm:px-4 xl:w-[71.615vw]"
       >
         <div className="grid min-h-[62px] grid-cols-[1fr_auto] items-center gap-2 sm:gap-4 md:grid-cols-[1fr_1.35fr_1fr]">
           <Link
@@ -67,15 +68,9 @@ export function Navbar() {
             className="flex min-w-0 items-center gap-2 sm:gap-3"
             aria-label={t("siteName")}
           >
-            <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-end gap-[3px] pb-0.5">
-              <span className="h-[19px] w-[4px] rounded-full bg-brand" />
-              <span className="h-[30px] w-[4px] rounded-full bg-brand" />
-              <span className="h-[24px] w-[4px] rounded-full bg-brand" />
-              <span className="h-[10px] w-[4px] rounded-full bg-brand" />
-            </span>
-            <span className="truncate text-[14px] font-black tracking-[-0.025em] text-[#121827] [font-family:var(--font-inter)] min-[380px]:text-[15px] sm:text-[17px]">
-              LiveStream Tech
-            </span>
+            {/* The lockup carries the name, so nothing here can truncate the
+                way the old text wordmark did on a narrow phone. */}
+            <BrandLogo className="h-9 w-auto sm:h-10" />
           </Link>
 
           <div
@@ -89,7 +84,7 @@ export function Navbar() {
                 className={`relative flex h-[62px] items-center text-[14px] font-medium transition-colors ${
                   item.key === "home"
                     ? "text-brand after:absolute after:inset-x-0 after:bottom-[8px] after:h-px after:bg-brand"
-                    : "text-[#222938] hover:text-brand"
+                    : "text-white/70 hover:text-brand"
                 }`}
               >
                 {t(item.key)}
@@ -104,12 +99,12 @@ export function Navbar() {
             <button
               type="button"
               onClick={switchLanguage}
-              className="inline-flex h-10 min-w-[105px] items-center justify-center gap-2 rounded-[10px] border border-black/[0.07] bg-white px-3 text-xs font-medium text-[#3d4350] transition hover:border-brand/25 hover:text-brand"
+              className="inline-flex h-10 min-w-[105px] items-center justify-center gap-2 rounded-[10px] border border-white/[0.14] bg-white/[0.06] px-3 text-xs font-medium text-white/80 transition hover:border-brand/40 hover:text-brand"
               aria-label={tCommon("switchLanguage")}
             >
               <Globe2 className="size-4" />
               <span>{isRtl ? "العربية" : "English"}</span>
-              <ChevronDown className="size-3.5 text-[#7b808b]" />
+              <ChevronDown className="size-3.5 text-white/50" />
             </button>
 
             {isPending ? (
@@ -119,7 +114,7 @@ export function Navbar() {
                 <div className="flex min-w-0 max-w-[180px] flex-col items-end" role="status">
                   <Link
                     href="/dashboard"
-                    className="flex min-w-0 items-center gap-1.5 rounded-[10px] border border-black/[0.07] bg-white py-1.5 pl-3 pr-3 text-xs font-black text-[#3d4350] transition hover:border-brand/25 hover:text-brand"
+                    className="flex min-w-0 items-center gap-1.5 rounded-[10px] border border-white/[0.14] bg-white/[0.06] py-1.5 pl-3 pr-3 text-xs font-black text-white/85 transition hover:border-brand/40 hover:text-brand"
                     aria-label={t("dashboard")}
                   >
                     <LayoutDashboard className="size-3.5 shrink-0" />
@@ -127,7 +122,7 @@ export function Navbar() {
                       {session?.user?.name || session?.user?.email}
                     </span>
                   </Link>
-                  <span className="mt-1 hidden max-w-[180px] truncate text-[10px] text-[#8a919e] xl:block">
+                  <span className="mt-1 hidden max-w-[180px] truncate text-[10px] text-white/45 xl:block">
                     {session?.user?.email}
                   </span>
                 </div>
@@ -135,7 +130,7 @@ export function Navbar() {
                   type="button"
                   onClick={handleLogout}
                   disabled={signingOut}
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border border-black/[0.07] bg-white px-4 text-xs font-bold text-[#3d4350] transition hover:border-destructive/25 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border border-white/[0.14] bg-white/[0.06] px-4 text-xs font-bold text-white/80 transition hover:border-destructive/50 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label={t("logout")}
                 >
                   {signingOut ? (
@@ -158,7 +153,7 @@ export function Navbar() {
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="inline-flex h-10 min-w-[90px] items-center justify-center rounded-[10px] border border-black/[0.15] bg-white px-5 text-sm font-bold text-[#3d4350] transition hover:border-brand/30 hover:text-brand"
+                  className="inline-flex h-10 min-w-[90px] items-center justify-center rounded-[10px] border border-white/[0.18] bg-white/[0.06] px-5 text-sm font-bold text-white/85 transition hover:border-brand/45 hover:text-brand"
                 >
                   {t("login")}
                 </Link>
@@ -179,7 +174,7 @@ export function Navbar() {
                   type="button"
                   onClick={handleLogout}
                   disabled={signingOut}
-                  className="inline-flex h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-black/[0.09] bg-white px-2.5 text-[12px] font-bold text-destructive transition hover:bg-[#f5f5f4] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-white/[0.14] bg-white/[0.06] px-2.5 text-[12px] font-bold text-[#ff8f9f] transition hover:bg-white/[0.12] disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label={t("logout")}
                 >
                   {signingOut ? (
@@ -194,14 +189,14 @@ export function Navbar() {
             <button
               type="button"
               onClick={switchLanguage}
-              className="grid size-10 place-items-center rounded-xl text-[#5f6674] transition hover:bg-[#f5f5f4]"
+              className="grid size-10 place-items-center rounded-xl text-white/65 transition hover:bg-white/[0.10]"
               aria-label={tCommon("switchLanguage")}
             >
               <Globe2 className="size-5" />
             </button>
             <button
               type="button"
-              className="grid size-10 place-items-center rounded-xl text-[#5f6674] transition hover:bg-[#f5f5f4]"
+              className="grid size-10 place-items-center rounded-xl text-white/65 transition hover:bg-white/[0.10]"
               onClick={() => setMobileOpen((open) => !open)}
               aria-label={mobileOpen ? tCommon("closeMenu") : tCommon("openMenu")}
               aria-expanded={mobileOpen}
@@ -229,7 +224,7 @@ export function Navbar() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="overflow-hidden border-t border-black/[0.06] md:hidden"
+              className="overflow-hidden border-t border-white/[0.08] md:hidden"
               dir={isRtl ? "rtl" : "ltr"}
             >
               <div className="grid gap-1 py-3">
@@ -241,7 +236,7 @@ export function Navbar() {
                     className={`rounded-xl px-4 py-3 text-sm font-semibold ${
                       item.key === "home"
                         ? "bg-brand/[0.07] text-brand"
-                        : "text-[#454b57] hover:bg-[#f6f6f4]"
+                        : "text-white/70 hover:bg-white/[0.08]"
                     }`}
                   >
                     {t(item.key)}
@@ -256,7 +251,7 @@ export function Navbar() {
                       <Link
                         href="/dashboard"
                         onClick={() => setMobileOpen(false)}
-                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-black/[0.09] bg-white px-4 py-3 text-sm font-bold text-[#3d4350]"
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.06] px-4 py-3 text-sm font-bold text-white/85"
                       >
                         <LayoutDashboard className="size-4" />
                         {session?.user?.name || session?.user?.email}
@@ -265,7 +260,7 @@ export function Navbar() {
                         type="button"
                         onClick={handleLogout}
                         disabled={signingOut}
-                        className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-black/[0.09] bg-white px-4 text-sm font-bold text-destructive disabled:cursor-not-allowed disabled:opacity-50"
+                        className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.06] px-4 text-sm font-bold text-[#ff8f9f] disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {signingOut ? (
                           <Loader2 className="size-4 animate-spin" />
@@ -280,7 +275,7 @@ export function Navbar() {
                       <Link
                         href="/login"
                         onClick={() => setMobileOpen(false)}
-                        className="inline-flex h-11 items-center justify-center rounded-xl border border-black/[0.14] bg-white px-4 text-sm font-bold text-[#3d4350]"
+                        className="inline-flex h-11 items-center justify-center rounded-xl border border-white/[0.18] bg-white/[0.06] px-4 text-sm font-bold text-white/85"
                       >
                         {t("login")}
                       </Link>

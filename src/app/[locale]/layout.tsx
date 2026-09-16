@@ -24,8 +24,8 @@ export async function generateMetadata({
 
   return {
     title: isArabic
-      ? "LiveStream Tech — تحليل حسابات TikTok بالذكاء الاصطناعي"
-      : "LiveStream Tech — AI-powered TikTok analytics",
+      ? "LIVE STREAM TECHNOLOGY — تحليل حسابات TikTok بالذكاء الاصطناعي"
+      : "LIVE STREAM TECHNOLOGY — AI-powered TikTok analytics",
     description: isArabic
       ? "حلّل أي حساب TikTok واحصل على تقرير احترافي شامل عن قوة الحساب والأداء والجمهور"
       : "Analyze any TikTok account and get a comprehensive professional report on account strength, performance, and audience",

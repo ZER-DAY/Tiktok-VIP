@@ -160,7 +160,7 @@ export async function POST(request: Request) {
       const intention = await createPaymobIntention({
         method,
         orderId: order.id,
-        planName: `LiveStream Tech - ${plan.name}`,
+        planName: `LIVE STREAM TECHNOLOGY - ${plan.name}`,
         amountCents: paymentAmountCents,
         currency: "EGP",
         customer: { name: user.name, email: user.email, phone },

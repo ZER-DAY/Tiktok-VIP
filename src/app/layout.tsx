@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "LiveStream Tech",
+  title: "LIVE STREAM TECHNOLOGY",
   description: "Analyze TikTok accounts with AI-powered insights",
 };
 

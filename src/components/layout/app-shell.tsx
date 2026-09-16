@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
-import { BrandMark } from "@/components/brand/brand-mark";
+import { BrandLogo, BrandMark } from "@/components/brand/brand-mark";
 
 export interface SidebarItem {
   key: string;
@@ -99,11 +99,12 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
       >
         {/* Logo */}
         <div className={cn("border-b border-border p-4", isCollapsed && "px-3")}>
-          <Link href="/" className="flex items-center gap-3" aria-label={t("siteName")}>
-            <BrandMark className="size-10 rounded-xl" />
-            {!isCollapsed && (
-              <span className="truncate text-lg font-black tracking-tight text-foreground">
-                {t("siteName")}
+          <Link href="/" className="flex items-center" aria-label={t("siteName")}>
+            {isCollapsed ? (
+              <BrandMark className="size-10 rounded-xl" />
+            ) : (
+              <span className="inline-flex items-center rounded-xl bg-[#0b0b0d] px-3.5 py-3">
+                <BrandLogo className="h-8 w-auto" />
               </span>
             )}
           </Link>
@@ -214,16 +215,15 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
       </aside>
 
       {/* Mobile Header */}
-      <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-border bg-card/95 px-4 py-3 backdrop-blur-xl lg:hidden">
-        <Link href="/" className="flex min-w-0 items-center gap-2" aria-label={t("siteName")}>
-          <BrandMark className="size-8 rounded-lg" iconClassName="size-4" />
-          <span className="truncate text-base font-black text-foreground">{t("siteName")}</span>
+      <div className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-white/[0.08] bg-[#0b0b0d]/95 px-4 py-3 backdrop-blur-xl lg:hidden">
+        <Link href="/" className="flex min-w-0 items-center" aria-label={t("siteName")}>
+          <BrandLogo className="h-9 w-auto" />
         </Link>
         <div className="flex shrink-0 items-center gap-0.5">
           <button
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-lg px-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-lg px-2 text-white/70 transition-smooth hover:bg-white/[0.10] hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
             aria-label={t("logout")}
           >
             {isLoggingOut ? (
@@ -237,14 +237,14 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
           </button>
           <button
             onClick={switchLanguage}
-            className="grid size-10 shrink-0 place-items-center rounded-lg text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
+            className="grid size-10 shrink-0 place-items-center rounded-lg text-white/70 transition-smooth hover:bg-white/[0.10] hover:text-white"
             aria-label={tCommon("switchLanguage")}
           >
             <Globe className="w-5 h-5" />
           </button>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="grid size-10 shrink-0 place-items-center rounded-lg text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
+            className="grid size-10 shrink-0 place-items-center rounded-lg text-white/70 transition-smooth hover:bg-white/[0.10] hover:text-white"
             aria-label={isMobileMenuOpen ? tCommon("closeMenu") : tCommon("openMenu")}
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

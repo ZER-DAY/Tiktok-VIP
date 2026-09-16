@@ -1,5 +1,5 @@
 {
-  "siteName": "LiveStream Tech",
+  "siteName": "LIVE STREAM TECHNOLOGY",
   "hero": {
     "eyebrow": "Independent analytics for creators",
     "titleLine1": "Analyze your account.",
@@ -215,7 +215,7 @@
     }
   },
   "nav": {
-    "siteName": "LiveStream Tech",
+    "siteName": "LIVE STREAM TECHNOLOGY",
     "home": "Home",
     "features": "Features",
     "howItWorks": "How it works",
@@ -229,7 +229,7 @@
     "switchLang": "العربية"
   },
   "footer": {
-    "siteName": "LiveStream Tech",
+    "siteName": "LIVE STREAM TECHNOLOGY",
     "socialInstagram": "Instagram",
     "product": "Product",
     "analyzer": "Account Analysis",
@@ -246,9 +246,9 @@
     "madeWith": "Made with ❤️ for Arab creators"
   },
   "about": {
-    "metaTitle": "About us — LiveStream Tech",
+    "metaTitle": "About us — LIVE STREAM TECHNOLOGY",
     "eyebrow": "About us",
-    "title": "The team behind LiveStream Tech",
+    "title": "The team behind LIVE STREAM TECHNOLOGY",
     "subtitle": "We're building an independent, Arabic-first TikTok analytics platform that gives creators and agencies clear, reliable insights for smarter decisions.",
     "teamHeading": "Our team",
     "photoAlt": "Photo of {name}",
@@ -274,7 +274,7 @@
     "ctaButton": "Start Analysis Now"
   },
   "auth": {
-    "siteName": "LiveStream Tech",
+    "siteName": "LIVE STREAM TECHNOLOGY",
     "loginTitle": "Login",
     "loginSubtitle": "Welcome back! Sign in to access your account",
     "registerTitle": "Create New Account",
@@ -309,7 +309,7 @@
     "backToLogin": "Back to Sign In"
   },
   "dashboard": {
-    "kicker": "LiveStream Tech dashboard",
+    "kicker": "LIVE STREAM TECHNOLOGY dashboard",
     "welcome": "Welcome back!",
     "welcomeSubtitle": "Here's a summary of your recent accounts",
     "analyzeNew": "Analyze New Account",
@@ -333,7 +333,7 @@
     "recentInsights": "Recent Recommendations",
     "noInsights": "No recommendations yet",
     "sidebar": {
-      "siteName": "LiveStream Tech",
+      "siteName": "LIVE STREAM TECHNOLOGY",
       "dashboard": "Overview",
       "accounts": "My Accounts",
       "compare": "Comparisons",
@@ -684,7 +684,7 @@
   },
   "agency": {
     "sidebar": {
-      "siteName": "LiveStream Tech",
+      "siteName": "LIVE STREAM TECHNOLOGY",
       "applicants": "Applicants",
       "logout": "Sign Out"
     },
@@ -742,7 +742,7 @@
   },
   "admin": {
     "sidebar": {
-      "siteName": "LiveStream Tech",
+      "siteName": "LIVE STREAM TECHNOLOGY",
       "stats": "Statistics",
       "users": "Users",
       "plans": "Plans",
@@ -855,7 +855,7 @@
     "lastUpdated": "Last updated: August 6, 2026",
     "intro": {
       "title": "Introduction",
-      "content": "Welcome to LiveStream Tech ('the Platform'). We respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and protect your information when you use our services."
+      "content": "Welcome to LIVE STREAM TECHNOLOGY ('the Platform'). We respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and protect your information when you use our services."
     },
     "dataCollection": {
       "title": "Information We Collect",
@@ -917,7 +917,7 @@
     "lastUpdated": "Last updated: August 6, 2026",
     "acceptance": {
       "title": "Acceptance",
-      "content": "By using LiveStream Tech ('the Platform'), you agree to be bound by these terms and conditions. If you do not agree to any of these terms, please do not use the Platform."
+      "content": "By using LIVE STREAM TECHNOLOGY ('the Platform'), you agree to be bound by these terms and conditions. If you do not agree to any of these terms, please do not use the Platform."
     },
     "description": {
       "title": "Service Description",

@@ -97,7 +97,7 @@ describe("i18n: Translation Files", () => {
 
 describe("i18n: Arabic Content", () => {
   it("siteName is correct", () => {
-    expect(ar.siteName).toBe("LiveStream Tech");
+    expect(ar.siteName).toBe("LIVE STREAM TECHNOLOGY");
   });
 
   it("hero title contains Arabic text", () => {
@@ -161,7 +161,7 @@ describe("i18n: Arabic Content", () => {
 
 describe("i18n: English Content", () => {
   it("siteName is correct", () => {
-    expect(en.siteName).toBe("LiveStream Tech");
+    expect(en.siteName).toBe("LIVE STREAM TECHNOLOGY");
   });
 
   it("hero title is in English", () => {

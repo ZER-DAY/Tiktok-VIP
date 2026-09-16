@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { Mail, ArrowLeft } from "lucide-react";
-import { BrandMark } from "@/components/brand/brand-mark";
+import { BrandLogo } from "@/components/brand/brand-mark";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations("auth");
@@ -50,11 +50,12 @@ export default function ForgotPasswordPage() {
         className="w-full max-w-md"
       >
         <div className="mb-8 text-center">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <BrandMark />
-            <span className="text-2xl font-black tracking-tight text-foreground">
-              {t("siteName")}
-            </span>
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center rounded-2xl bg-[#0b0b0d] px-5 py-3.5 shadow-[0_18px_44px_-28px_rgba(0,0,0,.7)]"
+            aria-label={t("siteName")}
+          >
+            <BrandLogo className="h-10 w-auto sm:h-11" />
           </Link>
         </div>
 
