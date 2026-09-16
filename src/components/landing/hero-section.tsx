@@ -51,9 +51,9 @@ export function HeroSection() {
             dir="ltr"
             className="mx-auto mt-[29px] grid max-w-[500px] gap-2 sm:grid-cols-[minmax(0,1fr)_170px] lg:mx-0"
           >
-            <label className="relative block min-w-0">
+            <label className="relative block min-w-0" dir={locale === "ar" ? "rtl" : "ltr"}>
               <span className="sr-only">{t("inputPlaceholder")}</span>
-              <AtSign className="absolute left-4 top-1/2 size-[19px] -translate-y-1/2 text-[#6c727e]" />
+              <AtSign className="absolute start-4 top-1/2 size-[19px] -translate-y-1/2 text-[#6c727e]" />
               <input
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}

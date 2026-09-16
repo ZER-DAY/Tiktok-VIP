@@ -207,19 +207,19 @@ export default function ApplicantDetailPage() {
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto">
           <span className={`px-4 py-2 rounded-full text-sm font-medium ${statusInfo.color}`}>
             {tStatus(statusKey(application.status) as never)}
           </span>
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <button
               onClick={() => setShowStatusDropdown(!showStatusDropdown)}
-              className="px-4 py-2 rounded-xl bg-muted/50 border border-border text-foreground hover:bg-muted transition-all"
+              className="h-11 w-full rounded-xl border border-border bg-muted/50 px-4 text-foreground transition-all hover:bg-muted sm:h-auto sm:w-auto sm:py-2"
             >
               {t("changeStatus")}
             </button>
             {showStatusDropdown && (
-              <div className="absolute top-full left-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-lg z-10">
+              <div className="absolute top-full start-0 z-10 mt-2 w-full rounded-xl border border-border bg-card shadow-lg sm:w-64">
                 <div className="p-3 border-b border-border">
                   <input
                     type="text"
