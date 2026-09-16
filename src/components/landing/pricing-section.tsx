@@ -38,20 +38,22 @@ export function PricingSection() {
           >
             {plan.popular && (
               <>
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#fff0f0] px-3 py-1 text-[9px] font-black text-brand">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#fff0f0] px-3 py-1 text-[10px] font-black text-brand sm:text-[9px]">
                   {t("mostPopular")}
                 </span>
               </>
             )}
 
-            <h3 className="text-[12px] font-bold text-[#262c38]">{t(`${plan.key}.name`)}</h3>
+            <h3 className="text-sm font-bold text-[#262c38] sm:text-[12px]">
+              {t(`${plan.key}.name`)}
+            </h3>
             <div className="mt-2" dir="ltr">
               <strong className="text-[28px] font-black tracking-tight text-[#111724]">
                 {t(`${plan.key}.price`)}
               </strong>
             </div>
-            <span className="text-[9px] text-[#7a808a]">{t(`${plan.key}.period`)}</span>
-            <p className="mt-2 min-h-8 text-[9px] leading-4 text-[#6e7480]">
+            <span className="text-xs text-[#7a808a] sm:text-[9px]">{t(`${plan.key}.period`)}</span>
+            <p className="mt-2 min-h-8 text-xs leading-5 text-[#6e7480] sm:text-[9px] sm:leading-4">
               {t(`${plan.key}.description`)}
             </p>
 
@@ -59,7 +61,7 @@ export function PricingSection() {
               {Array.from({ length: plan.featureCount }, (_, featureIndex) => (
                 <li
                   key={featureIndex}
-                  className="flex items-start gap-2 text-[9px] leading-4 text-[#646b76]"
+                  className="flex items-start gap-2 text-xs leading-5 text-[#646b76] sm:text-[9px] sm:leading-4"
                 >
                   <Check className="mt-0.5 size-3.5 shrink-0 text-[#12ad69]" strokeWidth={2.5} />
                   <span>{t(`${plan.key}.feature${featureIndex + 1}`)}</span>
@@ -73,7 +75,7 @@ export function PricingSection() {
                   ? "/register"
                   : `/dashboard/billing?plan=${plan.key === "agents" ? "agency" : plan.key}`
               }
-              className={`mt-4 inline-flex h-9 items-center justify-center rounded-[9px] text-[11px] font-bold transition ${
+              className={`mt-4 inline-flex h-11 items-center justify-center rounded-[9px] text-sm font-bold transition sm:h-9 sm:text-[11px] ${
                 plan.popular
                   ? "bg-brand text-white hover:bg-[#f33f5b]"
                   : "border border-black/[0.08] text-[#353b47] hover:border-brand/25 hover:text-brand"

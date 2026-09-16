@@ -147,9 +147,14 @@ describe("Navbar", () => {
     render(<Navbar />);
 
     const logoutButtons = screen.getAllByRole("button", { name: "logout" });
-    // Desktop header and mobile top control both exist; at least one is visible
-    // with the logout text beside the icon (i.e. not icon-only).
+    // Desktop header and mobile top control both exist, and each carries a
+    // visible text label beside the icon rather than being icon-only. The
+    // phone one uses a shorter word ("خروج") because the full label did not
+    // fit a 360px bar - it was being clamped to 60px and cut mid-word - so
+    // assert that a label is rendered, not which string it is.
     expect(logoutButtons.length).toBeGreaterThanOrEqual(2);
-    expect(screen.getAllByText("logout").length).toBeGreaterThanOrEqual(2);
+    for (const button of logoutButtons) {
+      expect(button.textContent?.trim()).not.toBe("");
+    }
   });
 });

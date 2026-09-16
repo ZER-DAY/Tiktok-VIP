@@ -85,7 +85,7 @@ export default function AuditLogsPage() {
       >
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <input
               type="text"
               value={search}
@@ -119,7 +119,27 @@ export default function AuditLogsPage() {
         transition={{ delay: 0.2 }}
         className="bg-card border border-border rounded-2xl overflow-hidden"
       >
-        <div className="overflow-x-auto">
+        {/* Phone: the log reads better as a list than as a 640px-wide table. */}
+        <ul className="divide-y divide-border/50 md:hidden">
+          {logs.map((log) => (
+            <li key={log.id} className="space-y-2 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <strong className="min-w-0 truncate text-foreground">
+                  {log.actor?.name || "System"}
+                </strong>
+                <span className="shrink-0 rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
+                  {log.action}
+                </span>
+              </div>
+              <p className="break-all text-xs text-muted-foreground" dir="ltr">
+                {log.entityType}: {log.entityId.slice(0, 8)}...
+              </p>
+              <p className="text-xs text-muted-foreground">{formatDate(log.createdAt, locale)}</p>
+            </li>
+          ))}
+        </ul>
+
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full min-w-[640px]">
             <thead>
               <tr className="border-b border-border">

@@ -311,8 +311,8 @@ export default function ReportPage({
               </div>
               <h1 className="text-4xl font-black tracking-tight text-foreground">{t("title")}</h1>
               <p className="text-muted-foreground text-sm">
-                {formatDate(report.generatedAt, locale)}{" "}
-                • {report.account.displayName ?? `@${report.account.username}`}
+                {formatDate(report.generatedAt, locale)} •{" "}
+                {report.account.displayName ?? `@${report.account.username}`}
               </p>
             </div>
             <a
@@ -333,7 +333,7 @@ export default function ReportPage({
             className="mb-5 overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-[0_25px_70px_-48px_rgba(17,24,39,.5)]"
           >
             <div className="grid items-stretch lg:grid-cols-[1fr_1px_.52fr_1px_180px]">
-              <div className="flex items-center gap-5 p-6 sm:p-8">
+              <div className="flex flex-col items-start gap-4 p-5 sm:flex-row sm:items-center sm:gap-5 sm:p-8">
                 <div className="relative grid size-20 shrink-0 place-items-center overflow-hidden rounded-full bg-foreground text-2xl font-black text-background ring-4 ring-muted">
                   {report.account.avatarUrl && !avatarFailed ? (
                     <Image
@@ -352,7 +352,7 @@ export default function ReportPage({
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h2 className="truncate text-2xl font-black text-foreground">
+                    <h2 className="min-w-0 break-words text-xl font-black text-foreground sm:truncate sm:text-2xl">
                       {report.account.displayName ?? `@${report.account.username}`}
                     </h2>
                     {report.account.isVerified && (
@@ -374,7 +374,7 @@ export default function ReportPage({
                         : t("unknown")}
                   </p>
                   <div className="mt-3 flex max-w-full flex-wrap gap-2">
-                    <div className="flex min-w-0 max-w-full items-center gap-2 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm">
+                    <div className="flex w-full min-w-0 max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm sm:w-auto sm:flex-nowrap">
                       <MapPin className="size-4 shrink-0 text-brand" />
                       <span className="min-w-0 text-muted-foreground">
                         {t("countryRegistered")}:
@@ -394,7 +394,7 @@ export default function ReportPage({
                           : t("countryUnavailable")}
                       </strong>
                     </div>
-                    <div className="flex min-w-0 max-w-full items-center gap-2 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm">
+                    <div className="flex w-full min-w-0 max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm sm:w-auto sm:flex-nowrap">
                       <CalendarDays className="size-4 shrink-0 text-brand-purple" />
                       <span className="min-w-0 text-muted-foreground">
                         {t("accountCreatedAt")}:
@@ -410,7 +410,7 @@ export default function ReportPage({
                           </span>
                         )}
                     </div>
-                    <div className="flex min-w-0 max-w-full items-center gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-2">
+                    <div className="flex w-full min-w-0 max-w-full items-center gap-3 rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-2 sm:w-auto">
                       <div className="grid size-8 shrink-0 place-items-center rounded-lg bg-amber-500/15">
                         <Trophy className="size-4 text-amber-500" />
                       </div>
@@ -444,7 +444,9 @@ export default function ReportPage({
                   { label: t("videoCount"), value: report.statistics.videoCount },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <p className="text-xl font-black text-foreground">{formatNumber(stat.value, locale)}</p>
+                    <p className="text-xl font-black text-foreground">
+                      {formatNumber(stat.value, locale)}
+                    </p>
                     <p className="mt-1 text-xs text-muted-foreground">{stat.label}</p>
                   </div>
                 ))}

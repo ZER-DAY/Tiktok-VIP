@@ -219,11 +219,11 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
           <BrandMark className="size-8 rounded-lg" iconClassName="size-4" />
           <span className="truncate text-base font-black text-foreground">{t("siteName")}</span>
         </Link>
-        <div className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-0.5">
           <button
             onClick={handleLogout}
             disabled={isLoggingOut}
-            className="flex items-center gap-1.5 rounded-lg px-2 py-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-lg px-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
             aria-label={t("logout")}
           >
             {isLoggingOut ? (
@@ -231,18 +231,20 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
             ) : (
               <LogOut className="w-4 h-4" />
             )}
-            <span className="text-xs font-semibold">{t("logout")}</span>
+            <span className="whitespace-nowrap text-xs font-semibold">
+              {tCommon("logoutShort")}
+            </span>
           </button>
           <button
             onClick={switchLanguage}
-            className="rounded-lg p-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
+            className="grid size-10 shrink-0 place-items-center rounded-lg text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
             aria-label={tCommon("switchLanguage")}
           >
             <Globe className="w-5 h-5" />
           </button>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="rounded-lg p-2 text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
+            className="grid size-10 shrink-0 place-items-center rounded-lg text-muted-foreground transition-smooth hover:bg-muted hover:text-foreground"
             aria-label={isMobileMenuOpen ? tCommon("closeMenu") : tCommon("openMenu")}
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

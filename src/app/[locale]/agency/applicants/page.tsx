@@ -130,7 +130,7 @@ export default function ApplicantsPage() {
       >
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <Search className="absolute end-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <input
               type="text"
               value={search}
@@ -229,125 +229,204 @@ export default function ApplicantsPage() {
             <p className="text-muted-foreground">{t("emptyDescription")}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px]">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-start py-4 px-6 text-muted-foreground font-medium">
-                    {t("name")}
-                  </th>
-                  <th className="text-start py-4 px-6 text-muted-foreground font-medium">
-                    {t("account")}
-                  </th>
-                  <th className="text-center py-4 px-6 text-muted-foreground font-medium">
-                    {t("score")}
-                  </th>
-                  <th className="text-center py-4 px-6 text-muted-foreground font-medium">
-                    {t("followers")}
-                  </th>
-                  <th className="text-center py-4 px-6 text-muted-foreground font-medium">
-                    {t("country")}
-                  </th>
-                  <th className="text-center py-4 px-6 text-muted-foreground font-medium">
-                    {t("status")}
-                  </th>
-                  <th className="text-center py-4 px-6 text-muted-foreground font-medium">
-                    {t("assignee")}
-                  </th>
-                  <th className="text-center py-4 px-6 text-muted-foreground font-medium">
-                    {t("date")}
-                  </th>
-                  <th className="text-center py-4 px-6 text-muted-foreground font-medium"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {applications.map((app, index) => {
-                  const latestSnapshot = app.account.snapshots[0];
-                  const report = latestSnapshot?.analysisReport;
-                  const score = report?.accountStrengthScore || 0;
-                  const statusInfo = STATUS_CONFIG[app.status] || STATUS_CONFIG.new;
+          <>
+            {/* Phone: nine columns is 1124px of table on a 390px screen. Each
+                applicant becomes a card instead, with the score and the status
+                up top where they decide whether to open the row at all. */}
+            <ul className="divide-y divide-border/50 md:hidden">
+              {applications.map((app) => {
+                const latestSnapshot = app.account.snapshots[0];
+                const report = latestSnapshot?.analysisReport;
+                const score = report?.accountStrengthScore || 0;
+                const statusInfo = STATUS_CONFIG[app.status] || STATUS_CONFIG.new;
 
-                  return (
-                    <motion.tr
-                      key={app.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.03 }}
-                      className="border-b border-border/50 hover:bg-muted/30 transition-colors"
-                    >
-                      <td className="py-4 px-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-pink text-sm font-bold">
-                            {app.fullName.charAt(0)}
-                          </div>
-                          <span className="text-foreground font-medium">{app.fullName}</span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-6 text-muted-foreground">
-                        @{app.account.externalUsername}
-                      </td>
-                      <td className="py-4 px-6 text-center">
-                        <span
-                          className={`text-lg font-bold ${
-                            score >= 70
-                              ? "text-success"
-                              : score >= 40
-                                ? "text-warning"
-                                : "text-destructive"
-                          }`}
-                        >
-                          {report?.accountStrengthScore || "-"}
+                return (
+                  <li key={app.id} className="space-y-3 p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-pink/20 text-sm font-bold text-brand-pink">
+                        {app.fullName.charAt(0)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <strong className="block truncate font-medium text-foreground">
+                          {app.fullName}
+                        </strong>
+                        <span className="block truncate text-xs text-muted-foreground" dir="ltr">
+                          @{app.account.externalUsername}
                         </span>
-                      </td>
-                      <td className="py-4 px-6 text-center text-muted-foreground">
-                        {formatNumber(latestSnapshot?.followers, locale)}
-                      </td>
-                      <td className="py-4 px-6 text-center text-muted-foreground">
-                        {latestSnapshot?.countryGuess || "-"}
-                      </td>
-                      <td className="py-4 px-6 text-center">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}
-                        >
-                          {t(
-                            `status${app.status.charAt(0).toUpperCase() + app.status.slice(1)}` as keyof typeof t extends never
-                              ? never
-                              : never
-                          )}
-                        </span>
-                      </td>
-                      <td className="py-4 px-6 text-center">
-                        {app.assigneeUser ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center">
-                              <User className="w-3 h-3 text-muted-foreground" />
-                            </div>
-                            <span className="text-muted-foreground text-sm">
-                              {app.assigneeUser.name}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="text-muted-foreground text-sm">-</span>
+                      </div>
+                      <span
+                        className={`shrink-0 text-xl font-bold ${
+                          score >= 70
+                            ? "text-success"
+                            : score >= 40
+                              ? "text-warning"
+                              : "text-destructive"
+                        }`}
+                      >
+                        {report?.accountStrengthScore || "-"}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-medium ${statusInfo.color}`}
+                      >
+                        {t(
+                          `status${app.status.charAt(0).toUpperCase() + app.status.slice(1)}` as keyof typeof t extends never
+                            ? never
+                            : never
                         )}
-                      </td>
-                      <td className="py-4 px-6 text-center text-muted-foreground text-sm">
-                        {formatDate(app.createdAt, locale)}
-                      </td>
-                      <td className="py-4 px-6 text-center">
-                        <Link
-                          href={`/agency/applicants/${app.id}`}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-all text-sm"
-                        >
-                          <Eye className="w-4 h-4" />
-                          {t("view")}
-                        </Link>
-                      </td>
-                    </motion.tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {formatNumber(latestSnapshot?.followers, locale)} · {t("followers")}
+                      </span>
+                      {latestSnapshot?.countryGuess && (
+                        <span className="text-xs text-muted-foreground">
+                          {latestSnapshot.countryGuess}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
+                      <span className="inline-flex min-w-0 items-center gap-1.5">
+                        <User className="size-3.5 shrink-0" />
+                        <span className="truncate">{app.assigneeUser?.name || "-"}</span>
+                      </span>
+                      <span className="shrink-0">{formatDate(app.createdAt, locale)}</span>
+                    </div>
+
+                    <Link
+                      href={`/agency/applicants/${app.id}`}
+                      className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg bg-muted/50 text-sm text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+                    >
+                      <Eye className="size-4" />
+                      {t("view")}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="hidden overflow-x-auto md:block">
+              <table className="w-full min-w-[640px]">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-start py-4 px-6 text-muted-foreground font-medium">
+                      {t("name")}
+                    </th>
+                    <th className="text-start py-4 px-6 text-muted-foreground font-medium">
+                      {t("account")}
+                    </th>
+                    <th className="text-center py-4 px-6 text-muted-foreground font-medium">
+                      {t("score")}
+                    </th>
+                    <th className="text-center py-4 px-6 text-muted-foreground font-medium">
+                      {t("followers")}
+                    </th>
+                    <th className="text-center py-4 px-6 text-muted-foreground font-medium">
+                      {t("country")}
+                    </th>
+                    <th className="text-center py-4 px-6 text-muted-foreground font-medium">
+                      {t("status")}
+                    </th>
+                    <th className="text-center py-4 px-6 text-muted-foreground font-medium">
+                      {t("assignee")}
+                    </th>
+                    <th className="text-center py-4 px-6 text-muted-foreground font-medium">
+                      {t("date")}
+                    </th>
+                    <th className="text-center py-4 px-6 text-muted-foreground font-medium"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {applications.map((app, index) => {
+                    const latestSnapshot = app.account.snapshots[0];
+                    const report = latestSnapshot?.analysisReport;
+                    const score = report?.accountStrengthScore || 0;
+                    const statusInfo = STATUS_CONFIG[app.status] || STATUS_CONFIG.new;
+
+                    return (
+                      <motion.tr
+                        key={app.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.03 }}
+                        className="border-b border-border/50 hover:bg-muted/30 transition-colors"
+                      >
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-pink text-sm font-bold">
+                              {app.fullName.charAt(0)}
+                            </div>
+                            <span className="text-foreground font-medium">{app.fullName}</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 text-muted-foreground">
+                          @{app.account.externalUsername}
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          <span
+                            className={`text-lg font-bold ${
+                              score >= 70
+                                ? "text-success"
+                                : score >= 40
+                                  ? "text-warning"
+                                  : "text-destructive"
+                            }`}
+                          >
+                            {report?.accountStrengthScore || "-"}
+                          </span>
+                        </td>
+                        <td className="py-4 px-6 text-center text-muted-foreground">
+                          {formatNumber(latestSnapshot?.followers, locale)}
+                        </td>
+                        <td className="py-4 px-6 text-center text-muted-foreground">
+                          {latestSnapshot?.countryGuess || "-"}
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}
+                          >
+                            {t(
+                              `status${app.status.charAt(0).toUpperCase() + app.status.slice(1)}` as keyof typeof t extends never
+                                ? never
+                                : never
+                            )}
+                          </span>
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          {app.assigneeUser ? (
+                            <div className="flex items-center justify-center gap-2">
+                              <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center">
+                                <User className="w-3 h-3 text-muted-foreground" />
+                              </div>
+                              <span className="text-muted-foreground text-sm">
+                                {app.assigneeUser.name}
+                              </span>
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">-</span>
+                          )}
+                        </td>
+                        <td className="py-4 px-6 text-center text-muted-foreground text-sm">
+                          {formatDate(app.createdAt, locale)}
+                        </td>
+                        <td className="py-4 px-6 text-center">
+                          <Link
+                            href={`/agency/applicants/${app.id}`}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-all text-sm"
+                          >
+                            <Eye className="w-4 h-4" />
+                            {t("view")}
+                          </Link>
+                        </td>
+                      </motion.tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
 
         {totalPages > 1 && (

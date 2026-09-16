@@ -48,7 +48,7 @@ export function FeaturesSection() {
           >
             <div className="min-w-0 text-start">
               <h3 className="text-[14px] font-black text-[#1d2330]">{t(`${key}.title`)}</h3>
-              <p className="mt-1.5 text-[11px] leading-[1.75] text-[#707681]">
+              <p className="mt-1.5 text-xs leading-[1.7] text-[#707681] sm:text-[11px] sm:leading-[1.75]">
                 {t(`${key}.description`)}
               </p>
             </div>

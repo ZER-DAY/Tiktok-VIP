@@ -107,6 +107,44 @@ export default function AdminPaymentsPage() {
     }
   }
 
+  /**
+   * The only two actions on this page. Rendered in the desktop table cell and
+   * again in the phone card, so it lives in one place - on a phone the buttons
+   * go full width, because that is the whole point of the card layout.
+   */
+  const reviewActions = (order: PaymentOrder, stacked: boolean) => {
+    if (order.status !== "manual_review") return stacked ? null : "—";
+    const base = stacked ? "flex-1 justify-center py-3 text-sm" : "justify-start px-3 py-2 text-xs";
+    return (
+      <div className={stacked ? "flex gap-2" : "flex flex-col gap-2"}>
+        <button
+          type="button"
+          disabled={reviewing === order.id}
+          onClick={() => {
+            setRejectReason("");
+            setPendingReview({ order, decision: "approve" });
+          }}
+          className={`inline-flex items-center gap-1.5 rounded-lg bg-success px-3 font-bold text-white hover:bg-success/90 disabled:cursor-not-allowed disabled:opacity-50 ${base}`}
+        >
+          <Check className="size-4" />
+          {t("approve")}
+        </button>
+        <button
+          type="button"
+          disabled={reviewing === order.id}
+          onClick={() => {
+            setRejectReason("");
+            setPendingReview({ order, decision: "reject" });
+          }}
+          className={`inline-flex items-center gap-1.5 rounded-lg bg-destructive/10 px-3 font-bold text-destructive hover:bg-destructive/20 disabled:cursor-not-allowed disabled:opacity-50 ${base}`}
+        >
+          <X className="size-4" />
+          {t("reject")}
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="mx-auto w-full max-w-7xl space-y-6 p-4 sm:p-6 lg:p-8">
       <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -136,109 +174,142 @@ export default function AdminPaymentsPage() {
         ) : orders.length === 0 ? (
           <p className="p-12 text-center text-muted-foreground">{t("empty")}</p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[980px] text-sm">
-              <thead className="bg-muted/50 text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-3 text-start">{t("customer")}</th>
-                  <th className="px-4 py-3 text-start">{t("plan")}</th>
-                  <th className="px-4 py-3 text-start">{t("method")}</th>
-                  <th className="px-4 py-3 text-start">{t("amount")}</th>
-                  <th className="px-4 py-3 text-start">{t("reference")}</th>
-                  <th className="px-4 py-3 text-start">{t("status")}</th>
-                  <th className="px-4 py-3 text-start">{t("date")}</th>
-                  <th className="px-4 py-3 text-start">{t("actions")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {orders.map((order) => (
-                  <tr key={order.id} className="align-top hover:bg-muted/20">
-                    <td className="px-4 py-4">
-                      <strong className="block text-foreground">{order.user.name}</strong>
-                      <span className="mt-1 block text-xs text-muted-foreground" dir="ltr">
+          <>
+            {/* Phone: one card per order. A row of eight columns cannot be read
+                on a 390px screen - the amount, the status and the two buttons
+                all sat off the right edge and only scrolled into view
+                sideways. */}
+            <ul className="divide-y divide-border md:hidden">
+              {orders.map((order) => (
+                <li key={order.id} className="space-y-3 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <strong className="block truncate text-foreground">{order.user.name}</strong>
+                      <span
+                        className="mt-0.5 block truncate text-xs text-muted-foreground"
+                        dir="ltr"
+                      >
                         {order.user.email}
                       </span>
-                      {order.customerPhone && (
-                        <span className="mt-1 block text-xs text-muted-foreground" dir="ltr">
+                    </div>
+                    <span
+                      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold status-${order.status}`}
+                    >
+                      {order.status === "manual_review" && <Clock3 className="size-3.5" />}
+                      {billingT(`statuses.${order.status}`)}
+                    </span>
+                  </div>
+
+                  <p className="text-lg font-bold" dir="ltr">
+                    {formatNumber(order.paymentAmountCents / 100, locale)} {order.paymentCurrency}
+                  </p>
+
+                  <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-xs">
+                    <dt className="text-muted-foreground">{t("plan")}</dt>
+                    <dd className="font-bold">{billingT(`plans.${order.plan.name}.name`)}</dd>
+
+                    <dt className="text-muted-foreground">{t("method")}</dt>
+                    <dd className="inline-flex items-center gap-1.5">
+                      <CreditCard className="size-3.5 text-muted-foreground" />
+                      {billingT(`methods.${order.method}.title`)}
+                    </dd>
+
+                    {order.customerPhone && (
+                      <>
+                        <dt className="text-muted-foreground">{t("phone")}</dt>
+                        <dd className="break-all font-bold" dir="ltr">
                           {order.customerPhone}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-4 font-bold">
-                      {billingT(`plans.${order.plan.name}.name`)}
-                    </td>
-                    <td className="px-4 py-4">
-                      <span className="inline-flex items-center gap-1.5">
-                        <CreditCard className="size-4 text-muted-foreground" />
-                        {billingT(`methods.${order.method}.title`)}
-                      </span>
-                    </td>
-                    <td className="px-4 py-4 font-bold" dir="ltr">
-                      {formatNumber(order.paymentAmountCents / 100, locale)}{" "}
-                      {order.paymentCurrency}
-                    </td>
-                    <td className="max-w-44 break-all px-4 py-4 text-xs" dir="ltr">
-                      {order.transferReference || order.providerTransactionId || "—"}
-                    </td>
-                    <td className="px-4 py-4">
-                      <span
-                        className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold status-${order.status}`}
-                      >
-                        {order.status === "manual_review" && <Clock3 className="size-3.5" />}
-                        {billingT(`statuses.${order.status}`)}
-                      </span>
-                      {order.status === "failed" && order.failureReason && (
-                        <span className="mt-1 block max-w-44 truncate text-[10px] text-destructive/80">
-                          {order.failureReason}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-4 text-xs text-muted-foreground">
+                        </dd>
+                      </>
+                    )}
+
+                    <dt className="text-muted-foreground">{t("date")}</dt>
+                    <dd className="text-muted-foreground">
                       {formatDateTime(order.createdAt, locale)}
-                      {order.reviewedAt && (
-                        <span className="mt-1 block text-[10px]">
-                          ✓{" "}
-                          {formatDateTime(order.reviewedAt, locale)}
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-4 py-4">
-                      {order.status === "manual_review" ? (
-                        <div className="flex flex-col gap-2">
-                          <button
-                            type="button"
-                            disabled={reviewing === order.id}
-                            onClick={() => {
-                              setRejectReason("");
-                              setPendingReview({ order, decision: "approve" });
-                            }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-success px-3 py-2 text-xs font-bold text-white hover:bg-success/90 disabled:cursor-not-allowed disabled:opacity-50"
-                          >
-                            <Check className="size-3.5" />
-                            {t("approve")}
-                          </button>
-                          <button
-                            type="button"
-                            disabled={reviewing === order.id}
-                            onClick={() => {
-                              setRejectReason("");
-                              setPendingReview({ order, decision: "reject" });
-                            }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-destructive/10 px-3 py-2 text-xs font-bold text-destructive hover:bg-destructive/20 disabled:cursor-not-allowed disabled:opacity-50"
-                          >
-                            <X className="size-3.5" />
-                            {t("reject")}
-                          </button>
-                        </div>
-                      ) : (
-                        "—"
-                      )}
-                    </td>
+                    </dd>
+                  </dl>
+
+                  {order.status === "failed" && order.failureReason && (
+                    <p className="text-xs text-destructive/80">{order.failureReason}</p>
+                  )}
+
+                  {reviewActions(order, true)}
+                </li>
+              ))}
+            </ul>
+
+            <div className="hidden overflow-x-auto md:block">
+              <table className="w-full min-w-[980px] text-sm">
+                <thead className="bg-muted/50 text-muted-foreground">
+                  <tr>
+                    <th className="px-4 py-3 text-start">{t("customer")}</th>
+                    <th className="px-4 py-3 text-start">{t("plan")}</th>
+                    <th className="px-4 py-3 text-start">{t("method")}</th>
+                    <th className="px-4 py-3 text-start">{t("amount")}</th>
+                    <th className="px-4 py-3 text-start">{t("reference")}</th>
+                    <th className="px-4 py-3 text-start">{t("status")}</th>
+                    <th className="px-4 py-3 text-start">{t("date")}</th>
+                    <th className="px-4 py-3 text-start">{t("actions")}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {orders.map((order) => (
+                    <tr key={order.id} className="align-top hover:bg-muted/20">
+                      <td className="px-4 py-4">
+                        <strong className="block text-foreground">{order.user.name}</strong>
+                        <span className="mt-1 block text-xs text-muted-foreground" dir="ltr">
+                          {order.user.email}
+                        </span>
+                        {order.customerPhone && (
+                          <span className="mt-1 block text-xs text-muted-foreground" dir="ltr">
+                            {order.customerPhone}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-4 font-bold">
+                        {billingT(`plans.${order.plan.name}.name`)}
+                      </td>
+                      <td className="px-4 py-4">
+                        <span className="inline-flex items-center gap-1.5">
+                          <CreditCard className="size-4 text-muted-foreground" />
+                          {billingT(`methods.${order.method}.title`)}
+                        </span>
+                      </td>
+                      <td className="px-4 py-4 font-bold" dir="ltr">
+                        {formatNumber(order.paymentAmountCents / 100, locale)}{" "}
+                        {order.paymentCurrency}
+                      </td>
+                      <td className="max-w-44 break-all px-4 py-4 text-xs" dir="ltr">
+                        {order.transferReference || order.providerTransactionId || "—"}
+                      </td>
+                      <td className="px-4 py-4">
+                        <span
+                          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold status-${order.status}`}
+                        >
+                          {order.status === "manual_review" && <Clock3 className="size-3.5" />}
+                          {billingT(`statuses.${order.status}`)}
+                        </span>
+                        {order.status === "failed" && order.failureReason && (
+                          <span className="mt-1 block max-w-44 truncate text-[10px] text-destructive/80">
+                            {order.failureReason}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-4 text-xs text-muted-foreground">
+                        {formatDateTime(order.createdAt, locale)}
+                        {order.reviewedAt && (
+                          <span className="mt-1 block text-[10px]">
+                            ✓ {formatDateTime(order.reviewedAt, locale)}
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-4">{reviewActions(order, false)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 

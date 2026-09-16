@@ -224,6 +224,7 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
+    "logoutShort": "Logout",
     "startNow": "Start Now",
     "switchLang": "العربية"
   },
@@ -657,6 +658,7 @@
     "free": "Free",
     "retry": "Retry",
     "logoutFailed": "Logout failed. Please try again.",
+    "logoutShort": "Logout",
     "submit": "Submit",
     "cancel": "Cancel",
     "save": "Save",
@@ -811,6 +813,7 @@
       "method": "Method",
       "amount": "Amount",
       "reference": "Reference",
+      "phone": "Sender phone",
       "status": "Status",
       "date": "Date",
       "actions": "Actions",

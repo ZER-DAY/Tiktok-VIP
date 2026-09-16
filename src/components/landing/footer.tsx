@@ -46,7 +46,7 @@ export function Footer() {
               <li>
                 <a
                   href="#features"
-                  className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
                 >
                   {t("features")}
                 </a>
@@ -54,7 +54,7 @@ export function Footer() {
               <li>
                 <a
                   href="#pricing"
-                  className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
                 >
                   {t("pricing")}
                 </a>
@@ -62,7 +62,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
                 >
                   {t("analyzer")}
                 </Link>
@@ -77,7 +77,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
                 >
                   {t("about")}
                 </Link>
@@ -98,7 +98,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
                 >
                   {t("privacy")}
                 </Link>
@@ -106,7 +106,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
                 >
                   {t("terms")}
                 </Link>

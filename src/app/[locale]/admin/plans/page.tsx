@@ -111,12 +111,12 @@ export default function AdminPlansPage() {
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-foreground">{plan.name}</h3>
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex cursor-pointer items-center gap-2 py-1.5">
                 <input
                   type="checkbox"
                   checked={plan.isActive}
                   onChange={(e) => updatePlan(plan.id, "isActive", e.target.checked)}
-                  className="w-5 h-5 rounded bg-muted border-border text-brand-pink focus:ring-brand-pink"
+                  className="size-6 rounded bg-muted border-border text-brand-pink focus:ring-brand-pink"
                 />
                 <span className="text-muted-foreground text-sm">{t("active")}</span>
               </label>

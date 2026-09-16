@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ApplicationStatus } from "@prisma/client";
+import { toJsonSafe } from "@/lib/json-safe";
 
 // ─── Application Submission ─────────────────────────────
 
@@ -312,59 +313,65 @@ export async function listApplications(filters: ApplicationFilters) {
     prisma.agencyApplication.count({ where }),
   ]);
 
-  return {
+  // The included snapshot carries totalLikes, a BIGINT column. Returned raw it
+  // makes NextResponse.json() throw, so callers got a 500 the moment there was
+  // one applicant to list.
+  return toJsonSafe({
     applications,
     total,
     page,
     pageSize,
     totalPages: Math.ceil(total / pageSize),
-  };
+  });
 }
 
 // ─── Get Single Application ──────────────────────────────
 
 export async function getApplicationById(applicationId: string) {
-  return prisma.agencyApplication.findUnique({
-    where: { id: applicationId },
-    include: {
-      account: {
-        include: {
-          provider: true,
-          snapshots: {
-            include: {
-              analysisReport: {
-                include: { insights: true },
+  // Same BIGINT problem as listApplications - see the note there.
+  return toJsonSafe(
+    await prisma.agencyApplication.findUnique({
+      where: { id: applicationId },
+      include: {
+        account: {
+          include: {
+            provider: true,
+            snapshots: {
+              include: {
+                analysisReport: {
+                  include: { insights: true },
+                },
               },
+              orderBy: { capturedAt: "desc" },
+              take: 1,
             },
-            orderBy: { capturedAt: "desc" },
-            take: 1,
           },
         },
-      },
-      applicantUser: {
-        select: { id: true, name: true, email: true, avatarUrl: true },
-      },
-      assigneeUser: {
-        select: { id: true, name: true, email: true, avatarUrl: true },
-      },
-      notes: {
-        include: {
-          author: {
-            select: { id: true, name: true, avatarUrl: true },
-          },
+        applicantUser: {
+          select: { id: true, name: true, email: true, avatarUrl: true },
         },
-        orderBy: { createdAt: "desc" },
-      },
-      statusHistory: {
-        include: {
-          changedBy: {
-            select: { id: true, name: true },
-          },
+        assigneeUser: {
+          select: { id: true, name: true, email: true, avatarUrl: true },
         },
-        orderBy: { changedAt: "desc" },
+        notes: {
+          include: {
+            author: {
+              select: { id: true, name: true, avatarUrl: true },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+        },
+        statusHistory: {
+          include: {
+            changedBy: {
+              select: { id: true, name: true },
+            },
+          },
+          orderBy: { changedAt: "desc" },
+        },
       },
-    },
-  });
+    })
+  );
 }
 
 // ─── Notifications ───────────────────────────────────────

@@ -22,7 +22,7 @@ interface ApplicationDetail {
     snapshots: Array<{
       followers: number;
       following: number;
-      totalLikes: bigint;
+      totalLikes: number;
       videoCount: number;
       countryGuess: string | null;
       bioLanguageGuess: string | null;
@@ -189,21 +189,25 @@ export default function ApplicantDetailPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between"
+        className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
       >
-        <div className="flex items-center gap-4">
+        <div className="flex min-w-0 items-center gap-4">
           <Link
             href="/agency/applicants"
-            className="p-2 rounded-lg bg-muted/50 text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
+            className="grid size-10 shrink-0 place-items-center rounded-lg bg-muted/50 text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
           >
             <ArrowRight className="w-5 h-5" />
           </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">{application.fullName}</h1>
-            <p className="text-muted-foreground">@{application.account.externalUsername}</p>
+          <div className="min-w-0">
+            <h1 className="break-words text-xl font-bold text-foreground sm:text-2xl">
+              {application.fullName}
+            </h1>
+            <p className="truncate text-muted-foreground" dir="ltr">
+              @{application.account.externalUsername}
+            </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <span className={`px-4 py-2 rounded-full text-sm font-medium ${statusInfo.color}`}>
             {tStatus(statusKey(application.status) as never)}
           </span>
@@ -258,8 +262,10 @@ export default function ApplicantDetailPage() {
             <div className="space-y-4">
               {application.phone ? (
                 <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-foreground">{application.phone}</span>
+                  <Phone className="w-5 h-5 shrink-0 text-muted-foreground" />
+                  <span className="min-w-0 break-all text-foreground" dir="ltr">
+                    {application.phone}
+                  </span>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
@@ -269,8 +275,10 @@ export default function ApplicantDetailPage() {
               )}
               {application.telegram ? (
                 <div className="flex items-center gap-3">
-                  <Send className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-foreground">{application.telegram}</span>
+                  <Send className="w-5 h-5 shrink-0 text-muted-foreground" />
+                  <span className="min-w-0 break-all text-foreground" dir="ltr">
+                    {application.telegram}
+                  </span>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
@@ -280,8 +288,10 @@ export default function ApplicantDetailPage() {
               )}
               {application.email ? (
                 <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-muted-foreground" />
-                  <span className="text-foreground">{application.email}</span>
+                  <Mail className="w-5 h-5 shrink-0 text-muted-foreground" />
+                  <span className="min-w-0 break-all text-foreground" dir="ltr">
+                    {application.email}
+                  </span>
                 </div>
               ) : (
                 <div className="flex items-center gap-3">

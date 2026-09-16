@@ -105,7 +105,58 @@ export default function AdminUsersPage() {
         transition={{ delay: 0.2 }}
         className="bg-card border border-border rounded-2xl overflow-hidden"
       >
-        <div className="overflow-x-auto">
+        {/* Phone: six columns do not fit a 390px screen, so each user becomes
+            a card - name and email first, then the facts as label/value rows. */}
+        <ul className="divide-y divide-border/50 md:hidden">
+          {users.map((user) => (
+            <li key={user.id} className="space-y-3 p-4">
+              <div className="flex items-center gap-3">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-pink/20 text-sm font-bold text-brand-pink">
+                  {user.name?.charAt(0) || "U"}
+                </div>
+                <div className="min-w-0">
+                  <strong className="block truncate text-foreground">{user.name}</strong>
+                  <span className="block truncate text-xs text-muted-foreground" dir="ltr">
+                    {user.email}
+                  </span>
+                </div>
+              </div>
+
+              <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-xs">
+                <dt className="text-muted-foreground">{t("plan")}</dt>
+                <dd>
+                  <span className="rounded-full bg-muted px-3 py-1 text-foreground">
+                    {user.plan?.name || tCommon("free")}
+                  </span>
+                </dd>
+
+                <dt className="text-muted-foreground">{t("roles")}</dt>
+                <dd className="flex flex-wrap gap-1">
+                  {user.roles.length === 0 ? (
+                    <span className="text-muted-foreground">—</span>
+                  ) : (
+                    user.roles.map((ur, i) => (
+                      <span
+                        key={i}
+                        className="rounded bg-brand-pink/20 px-2 py-0.5 text-brand-pink"
+                      >
+                        {ur.role.name}
+                      </span>
+                    ))
+                  )}
+                </dd>
+
+                <dt className="text-muted-foreground">{t("accounts")}</dt>
+                <dd className="text-foreground">{user._count.ownedAccounts}</dd>
+
+                <dt className="text-muted-foreground">{t("joined")}</dt>
+                <dd className="text-muted-foreground">{formatDate(user.createdAt, locale)}</dd>
+              </dl>
+            </li>
+          ))}
+        </ul>
+
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full min-w-[640px]">
             <thead>
               <tr className="border-b border-border">

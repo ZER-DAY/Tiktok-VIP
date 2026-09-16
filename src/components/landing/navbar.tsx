@@ -61,15 +61,19 @@ export function Navbar() {
         dir="ltr"
         className="mx-auto w-full max-w-[1100px] rounded-[17px] border border-black/[0.07] bg-white/95 px-3 shadow-[0_9px_28px_rgba(19,27,44,0.10)] backdrop-blur-xl sm:px-4 xl:w-[71.615vw]"
       >
-        <div className="grid min-h-[62px] grid-cols-[1fr_auto] items-center gap-4 md:grid-cols-[1fr_1.35fr_1fr]">
-          <Link href="/" className="flex min-w-0 items-center gap-3" aria-label={t("siteName")}>
+        <div className="grid min-h-[62px] grid-cols-[1fr_auto] items-center gap-2 sm:gap-4 md:grid-cols-[1fr_1.35fr_1fr]">
+          <Link
+            href="/"
+            className="flex min-w-0 items-center gap-2 sm:gap-3"
+            aria-label={t("siteName")}
+          >
             <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-end gap-[3px] pb-0.5">
               <span className="h-[19px] w-[4px] rounded-full bg-brand" />
               <span className="h-[30px] w-[4px] rounded-full bg-brand" />
               <span className="h-[24px] w-[4px] rounded-full bg-brand" />
               <span className="h-[10px] w-[4px] rounded-full bg-brand" />
             </span>
-            <span className="truncate text-[15px] font-black tracking-[-0.025em] text-[#121827] [font-family:var(--font-inter)] sm:text-[17px]">
+            <span className="truncate text-[14px] font-black tracking-[-0.025em] text-[#121827] [font-family:var(--font-inter)] min-[380px]:text-[15px] sm:text-[17px]">
               LiveStream Tech
             </span>
           </Link>
@@ -168,14 +172,14 @@ export function Navbar() {
             )}
           </div>
 
-          <div className="flex items-center justify-end gap-1 md:hidden">
+          <div className="flex shrink-0 items-center justify-end gap-0.5 md:hidden">
             {isAuthenticated && !isPending && (
               <>
                 <button
                   type="button"
                   onClick={handleLogout}
                   disabled={signingOut}
-                  className="inline-flex h-10 items-center justify-center gap-1.5 rounded-xl border border-black/[0.09] bg-white px-2.5 text-[12px] font-bold text-destructive transition hover:bg-[#f5f5f4] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-black/[0.09] bg-white px-2.5 text-[12px] font-bold text-destructive transition hover:bg-[#f5f5f4] disabled:cursor-not-allowed disabled:opacity-50"
                   aria-label={t("logout")}
                 >
                   {signingOut ? (
@@ -183,13 +187,8 @@ export function Navbar() {
                   ) : (
                     <LogOut className="size-4" />
                   )}
-                  <span className="max-w-[60px] truncate sm:max-w-none">{t("logout")}</span>
+                  <span className="whitespace-nowrap">{t("logoutShort")}</span>
                 </button>
-                {logoutError && (
-                  <p role="alert" className="text-[10px] font-medium text-destructive">
-                    {tCommon("logoutFailed")}
-                  </p>
-                )}
               </>
             )}
             <button
@@ -211,6 +210,18 @@ export function Navbar() {
             </button>
           </div>
         </div>
+
+        {/* On a phone the logout control is icon-only, so its failure message
+            gets its own row - inside the icon cluster it widened the bar and
+            pushed the brand name out. */}
+        {logoutError && (
+          <p
+            role="alert"
+            className="pb-2 text-center text-[11px] font-medium text-destructive md:hidden"
+          >
+            {tCommon("logoutFailed")}
+          </p>
+        )}
 
         <AnimatePresence initial={false}>
           {mobileOpen && (

@@ -38,10 +38,10 @@ export function HowItWorksSection() {
             <span className="relative z-10 mx-auto grid size-9 place-items-center rounded-full bg-brand text-base font-black text-white shadow-[0_7px_16px_-7px_rgba(255,77,103,.8)]">
               {index + 1}
             </span>
-            <h3 className="mt-4 text-[13px] font-bold text-[#252b37]">
+            <h3 className="mt-4 text-sm font-bold text-[#252b37] sm:text-[13px]">
               {t(`${step}CompactTitle`)}
             </h3>
-            <p className="mx-auto mt-2 max-w-[150px] text-[10px] leading-[1.8] text-[#717782]">
+            <p className="mx-auto mt-2 max-w-[260px] text-xs leading-[1.7] text-[#717782] sm:max-w-[150px] sm:text-[10px] sm:leading-[1.8]">
               {t(`${step}CompactDesc`)}
             </p>
           </motion.article>
