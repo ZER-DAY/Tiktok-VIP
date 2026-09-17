@@ -189,7 +189,7 @@ export default function AuditLogsPage() {
                 onClick={() => setPage(p)}
                 className={`w-10 h-10 rounded-lg transition-all ${
                   page === p
-                    ? "bg-brand-pink text-white"
+                    ? "bg-brand-pink text-brand-foreground"
                     : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >

@@ -181,7 +181,7 @@ export default function AdminSettingsPage() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-pink text-white font-semibold hover:opacity-90 transition-all disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-pink text-brand-foreground font-semibold hover:opacity-90 transition-all disabled:opacity-50"
         >
           <Save className="w-5 h-5" />
           {isSaving ? t("saving") : t("save")}

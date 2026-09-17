@@ -13,7 +13,7 @@ const features = [
   {
     key: "smartCompetitors",
     icon: Target,
-    iconClassName: "bg-[#fff0f0] text-brand border-[#ffdede]",
+    iconClassName: "bg-[#fff0f0] text-brand-ink border-[#ffdede]",
   },
   {
     key: "discoverResults",

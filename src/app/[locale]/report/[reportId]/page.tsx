@@ -305,7 +305,7 @@ export default function ReportPage({
             className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
           >
             <div>
-              <div className="mb-2 flex items-center gap-2 text-xs font-bold text-brand">
+              <div className="mb-2 flex items-center gap-2 text-xs font-bold text-brand-ink">
                 <BarChart3 className="size-4" />
                 {t("reportLabel")}
               </div>
@@ -319,7 +319,7 @@ export default function ReportPage({
               href={`/api/reports/${reportId}/pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand px-5 text-sm font-bold text-white shadow-lg shadow-brand/15 transition hover:-translate-y-0.5 hover:bg-brand/90"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-brand px-5 text-sm font-bold text-brand-foreground shadow-lg shadow-brand/15 transition hover:-translate-y-0.5 hover:bg-brand/90"
             >
               <Download className="w-4 h-4" />
               {t("exportPDF")}
@@ -375,7 +375,7 @@ export default function ReportPage({
                   </p>
                   <div className="mt-3 flex max-w-full flex-wrap gap-2">
                     <div className="flex w-full min-w-0 max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-border bg-muted/60 px-3 py-2 text-sm sm:w-auto sm:flex-nowrap">
-                      <MapPin className="size-4 shrink-0 text-brand" />
+                      <MapPin className="size-4 shrink-0 text-brand-ink" />
                       <span className="min-w-0 text-muted-foreground">
                         {t("countryRegistered")}:
                       </span>
@@ -511,7 +511,7 @@ export default function ReportPage({
             className="mb-6"
           >
             <h3 className="mb-4 flex items-center gap-2 text-lg font-black text-foreground">
-              <BarChart3 className="w-5 h-5 text-brand" />
+              <BarChart3 className="w-5 h-5 text-brand-ink" />
               {t("aiResults")}
             </h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -600,7 +600,7 @@ export default function ReportPage({
               insights={report.insights}
               type="competitor"
               icon={Users}
-              colorClass="text-brand-pink"
+              colorClass="text-brand-ink"
             />
           </motion.div>
 

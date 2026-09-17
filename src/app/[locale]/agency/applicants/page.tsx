@@ -32,11 +32,11 @@ interface Application {
 }
 
 const STATUS_CONFIG: Record<string, { color: string }> = {
-  new: { color: "bg-blue-500/20 text-blue-400" },
-  reviewed: { color: "bg-yellow-500/20 text-yellow-400" },
-  contacted: { color: "bg-purple-500/20 text-purple-400" },
-  joined: { color: "bg-green-500/20 text-green-400" },
-  rejected: { color: "bg-red-500/20 text-red-400" },
+  new: { color: "bg-blue-100 text-blue-800" },
+  reviewed: { color: "bg-amber-100 text-amber-800" },
+  contacted: { color: "bg-purple-100 text-purple-800" },
+  joined: { color: "bg-green-100 text-green-800" },
+  rejected: { color: "bg-red-100 text-red-800" },
 };
 
 export default function ApplicantsPage() {
@@ -243,7 +243,7 @@ export default function ApplicantsPage() {
                 return (
                   <li key={app.id} className="space-y-3 p-4">
                     <div className="flex items-start gap-3">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-pink/20 text-sm font-bold text-brand-pink">
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-pink/20 text-sm font-bold text-brand-ink">
                         {app.fullName.charAt(0)}
                       </div>
                       <div className="min-w-0 flex-1">
@@ -355,7 +355,7 @@ export default function ApplicantsPage() {
                       >
                         <td className="py-4 px-6">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-pink text-sm font-bold">
+                            <div className="w-8 h-8 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-ink text-sm font-bold">
                               {app.fullName.charAt(0)}
                             </div>
                             <span className="text-foreground font-medium">{app.fullName}</span>
@@ -437,7 +437,7 @@ export default function ApplicantsPage() {
                 onClick={() => setCurrentPage(page)}
                 className={`w-10 h-10 rounded-lg transition-all ${
                   currentPage === page
-                    ? "bg-brand-pink text-white"
+                    ? "bg-brand-pink text-brand-foreground"
                     : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >

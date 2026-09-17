@@ -111,7 +111,7 @@ export default function AdminUsersPage() {
           {users.map((user) => (
             <li key={user.id} className="space-y-3 p-4">
               <div className="flex items-center gap-3">
-                <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-pink/20 text-sm font-bold text-brand-pink">
+                <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-pink/20 text-sm font-bold text-brand-ink">
                   {user.name?.charAt(0) || "U"}
                 </div>
                 <div className="min-w-0">
@@ -138,7 +138,7 @@ export default function AdminUsersPage() {
                     user.roles.map((ur, i) => (
                       <span
                         key={i}
-                        className="rounded bg-brand-pink/20 px-2 py-0.5 text-brand-pink"
+                        className="rounded bg-brand-pink/20 px-2 py-0.5 text-brand-ink"
                       >
                         {ur.role.name}
                       </span>
@@ -188,7 +188,7 @@ export default function AdminUsersPage() {
                 >
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-pink text-sm font-bold">
+                      <div className="w-8 h-8 rounded-full bg-brand-pink/20 flex items-center justify-center text-brand-ink text-sm font-bold">
                         {user.name?.charAt(0) || "U"}
                       </div>
                       <span className="text-foreground">{user.name}</span>
@@ -205,7 +205,7 @@ export default function AdminUsersPage() {
                       {user.roles.map((ur, i) => (
                         <span
                           key={i}
-                          className="px-2 py-0.5 rounded text-xs bg-brand-pink/20 text-brand-pink"
+                          className="px-2 py-0.5 rounded text-xs bg-brand-pink/20 text-brand-ink"
                         >
                           {ur.role.name}
                         </span>
@@ -232,7 +232,7 @@ export default function AdminUsersPage() {
                 onClick={() => setPage(p)}
                 className={`w-10 h-10 rounded-lg transition-all ${
                   page === p
-                    ? "bg-brand-pink text-white"
+                    ? "bg-brand-pink text-brand-foreground"
                     : "bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >

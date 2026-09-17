@@ -366,12 +366,12 @@ function BillingPageContent() {
                   }`}
                 >
                   {selected && (
-                    <span className="absolute end-4 top-4 grid size-7 place-items-center rounded-full bg-[#ed1763] text-white">
+                    <span className="absolute end-4 top-4 grid size-7 place-items-center rounded-full bg-brand text-brand-foreground">
                       <Check className="size-4" strokeWidth={3} />
                     </span>
                   )}
                   {item.name === "saver" && !selected && (
-                    <span className="absolute end-4 top-4 rounded-full bg-[#ed1763] px-2.5 py-1 text-[10px] font-black text-white">
+                    <span className="absolute end-4 top-4 rounded-full bg-brand px-2.5 py-1 text-[10px] font-black text-brand-foreground">
                       {t("mostPopular")}
                     </span>
                   )}
@@ -505,7 +505,7 @@ function BillingPageContent() {
                   <ol className="space-y-3">
                     {["depositStep1", "depositStep2", "depositStep3"].map((key, index) => (
                       <li key={key} className="flex items-start gap-3 text-sm text-[#9aa5ba]">
-                        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-[#ed1763] font-black text-white">
+                        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-brand font-black text-brand-foreground">
                           {index + 1}
                         </span>
                         <span className="pt-1">{t(key)}</span>
@@ -563,11 +563,7 @@ function BillingPageContent() {
 
               <button
                 type="button"
-                disabled={
-                  isSubmitting ||
-                  !methodEnabled ||
-                  phone.trim().length < 8
-                }
+                disabled={isSubmitting || !methodEnabled || phone.trim().length < 8}
                 onClick={submitCheckout}
                 className="mt-6 inline-flex h-16 w-full items-center justify-center gap-3 rounded-[22px] bg-gradient-to-l from-[#ff1768] to-[#d80e55] px-6 text-lg font-black text-white shadow-[0_18px_34px_-16px_rgba(255,23,104,.8)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
               >
@@ -688,8 +684,7 @@ function BillingPageContent() {
                     )}
                   </div>
                   <strong dir="ltr">
-                    {formatNumber(order.paymentAmountCents / 100, locale)}{" "}
-                    {order.paymentCurrency}
+                    {formatNumber(order.paymentAmountCents / 100, locale)} {order.paymentCurrency}
                   </strong>
                   <span
                     className={`inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold status-${order.status}`}
@@ -773,7 +768,7 @@ function PaymentMethodButton({
       }`}
     >
       <span
-        className={`grid size-11 shrink-0 place-items-center rounded-2xl ${active ? "bg-[#ed1763] text-white" : "bg-[#222936] text-[#8390a7]"}`}
+        className={`grid size-11 shrink-0 place-items-center rounded-2xl ${active ? "bg-brand text-brand-foreground" : "bg-[#222936] text-[#8390a7]"}`}
       >
         {icon}
       </span>

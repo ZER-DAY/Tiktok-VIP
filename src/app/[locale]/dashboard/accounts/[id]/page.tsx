@@ -129,14 +129,14 @@ export default function AccountReportPage() {
         className="flex items-center justify-between"
       >
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white text-xl font-bold">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#f8d866] to-[#d4a017] flex items-center justify-center text-[#111827] text-xl font-bold">
             {report.account.username.charAt(0).toUpperCase()}
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-2xl font-bold text-foreground">@{report.account.username}</h1>
               {report.account.isVerified && (
-                <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white text-xs">
+                <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-[#f8d866] to-[#d4a017] text-[#111827] text-xs">
                   {t("verified")}
                 </span>
               )}
@@ -204,7 +204,7 @@ export default function AccountReportPage() {
         transition={{ delay: 0.2 }}
       >
         <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-brand-pink" />
+          <BarChart3 className="w-5 h-5 text-brand-ink" />
           {t("aiResults")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -321,7 +321,7 @@ export default function AccountReportPage() {
           href={`/api/reports/${report.reportId}/pdf`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#f8d866] to-[#d4a017] text-[#111827] font-semibold hover:opacity-90 transition-all"
         >
           {t("exportPDF")}
         </a>

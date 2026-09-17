@@ -20,7 +20,7 @@ type JobStatus = "queued" | "processing" | "ready" | "failed";
 
 const statusConfig: Record<JobStatus, { icon: React.ElementType; colorClass: string }> = {
   queued: { icon: Clock, colorClass: "text-muted-foreground" },
-  processing: { icon: Cpu, colorClass: "text-brand-pink" },
+  processing: { icon: Cpu, colorClass: "text-brand-ink" },
   ready: { icon: CheckCircle2, colorClass: "text-success" },
   failed: { icon: AlertCircle, colorClass: "text-destructive" },
 };
@@ -131,7 +131,7 @@ export default function AnalyzePage({
         {jobStatus === "failed" && requiresSubscription ? (
           <>
             <div className="mx-auto mb-5 grid size-16 place-items-center rounded-2xl bg-brand/10">
-              <CreditCard className="size-8 text-brand" />
+              <CreditCard className="size-8 text-brand-ink" />
             </div>
             <h1 className="mb-2 text-2xl font-black text-foreground">{t("trialEndedTitle")}</h1>
             <p className="mx-auto mb-6 max-w-sm text-sm leading-7 text-muted-foreground">
@@ -146,7 +146,7 @@ export default function AnalyzePage({
                   <p className="text-sm font-black text-foreground">
                     {t(`paywallPlans.${plan}.name`)}
                   </p>
-                  <p className="mt-2 text-xl font-black text-brand" dir="ltr">
+                  <p className="mt-2 text-xl font-black text-brand-ink" dir="ltr">
                     {t(`paywallPlans.${plan}.price`)}
                   </p>
                   <p className="mt-2 flex items-start gap-1.5 text-xs leading-5 text-muted-foreground">

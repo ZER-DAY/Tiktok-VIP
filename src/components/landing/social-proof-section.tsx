@@ -48,7 +48,7 @@ export function SocialProofSection() {
           <CreatorFaces />
         </div>
 
-        <div className="grid grid-cols-2 items-center gap-x-5 gap-y-4 text-center text-[#777c84] sm:grid-cols-5 xl:pl-[70px]">
+        <div className="grid grid-cols-2 items-center gap-x-5 gap-y-4 text-center text-[#656b77] sm:grid-cols-5 xl:pl-[70px]">
           <span className="text-[16px] font-light tracking-tight">ARAGEEK</span>
           <span className="text-[18px] font-black">المبدعون</span>
           <span className="text-[20px] font-black tracking-tight">أرقام</span>

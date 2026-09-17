@@ -78,7 +78,7 @@ export default function AdminStatsPage() {
       >
         <div className="bg-card border border-border rounded-2xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <Users className="w-8 h-8 text-brand-pink" />
+            <Users className="w-8 h-8 text-brand-ink" />
             <span className="text-2xl font-bold text-foreground">{stats?.users.total || 0}</span>
           </div>
           <p className="text-muted-foreground text-sm">{t("totalUsers")}</p>

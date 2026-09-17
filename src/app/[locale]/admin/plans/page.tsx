@@ -116,7 +116,7 @@ export default function AdminPlansPage() {
                   type="checkbox"
                   checked={plan.isActive}
                   onChange={(e) => updatePlan(plan.id, "isActive", e.target.checked)}
-                  className="size-6 rounded bg-muted border-border text-brand-pink focus:ring-brand-pink"
+                  className="size-6 rounded bg-muted border-border text-brand-ink focus:ring-brand-pink"
                 />
                 <span className="text-muted-foreground text-sm">{t("active")}</span>
               </label>
@@ -172,7 +172,7 @@ export default function AdminPlansPage() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-pink text-white font-semibold hover:opacity-90 transition-all disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-pink text-brand-foreground font-semibold hover:opacity-90 transition-all disabled:opacity-50"
         >
           <Save className="w-5 h-5" />
           {isSaving ? t("saving") : t("save")}

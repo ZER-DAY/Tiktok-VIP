@@ -65,7 +65,7 @@ export default function ComparePage() {
     <div className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-        <p className="mb-2 text-sm font-bold text-brand">{t("kicker")}</p>
+        <p className="mb-2 text-sm font-bold text-brand-ink">{t("kicker")}</p>
         <h1 className="text-3xl font-black tracking-tight text-foreground">{t("title")}</h1>
         <p className="mt-1 text-sm leading-6 text-muted-foreground">{t("subtitle")}</p>
       </motion.div>
@@ -97,7 +97,7 @@ export default function ComparePage() {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="grid size-10 shrink-0 place-items-center rounded-full bg-brand/10 font-bold text-brand">
+                      <div className="grid size-10 shrink-0 place-items-center rounded-full bg-brand/10 font-bold text-brand-ink">
                         {account.username.charAt(0).toUpperCase()}
                       </div>
                       <div className="text-start">

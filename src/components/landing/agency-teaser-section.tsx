@@ -30,7 +30,7 @@ function getIconBgClass(color: string): string {
 function getIconColorClass(color: string): string {
   switch (color) {
     case "brand":
-      return "text-brand";
+      return "text-brand-ink";
     case "brand-secondary":
       return "text-brand-secondary";
     case "success":
@@ -38,7 +38,7 @@ function getIconColorClass(color: string): string {
     case "warning":
       return "text-warning";
     default:
-      return "text-brand";
+      return "text-brand-ink";
   }
 }
 
@@ -57,7 +57,7 @@ export function AgencyTeaserSection() {
         >
           <div className="grid items-center gap-10 md:grid-cols-[.9fr_1.1fr] md:gap-14">
             <div>
-              <p className="text-sm font-bold text-brand">{t("eyebrow")}</p>
+              <p className="text-sm font-bold text-brand-ink">{t("eyebrow")}</p>
               <h2 className="mb-4 mt-2 text-3xl font-black text-foreground md:text-4xl">
                 {t("title")}
               </h2>
@@ -66,7 +66,7 @@ export function AgencyTeaserSection() {
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(255,77,103,.9)] transition hover:-translate-y-0.5 hover:bg-brand/90"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(242, 197, 73, .9)] transition hover:-translate-y-0.5 hover:bg-brand/90"
               >
                 {t("cta")}
                 <ArrowUpLeft className="size-4 rtl:rotate-0 ltr:rotate-90" />

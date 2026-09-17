@@ -42,7 +42,7 @@ export function HeroSection() {
             <span className="block origin-right xl:scale-x-[0.916]">{t("titleLine1")}</span>
             <span className="block origin-right xl:scale-x-[0.849]">{t("titleLine2")}</span>
           </h1>
-          <p className="mx-auto mt-0 max-w-[500px] origin-right text-pretty text-[14px] leading-7 text-[#6f7480] sm:text-[15px] lg:mx-0 xl:scale-x-[0.892]">
+          <p className="mx-auto mt-0 max-w-[500px] origin-right text-pretty text-[14px] leading-7 text-[#636974] sm:text-[15px] lg:mx-0 xl:scale-x-[0.892]">
             {t("subtitleShort")}
           </p>
 
@@ -68,7 +68,7 @@ export function HeroSection() {
             <button
               type="submit"
               dir={locale === "ar" ? "rtl" : "ltr"}
-              className="inline-flex h-[58px] items-center justify-center rounded-[12px] bg-[#fe5351] px-5 text-[15px] font-extrabold text-white shadow-[0_13px_28px_-13px_rgba(255,77,103,.75)] transition hover:-translate-y-0.5 hover:bg-[#f64b4d] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20"
+              className="inline-flex h-[58px] items-center justify-center rounded-[12px] bg-brand px-5 text-[15px] font-extrabold text-brand-foreground shadow-[0_13px_28px_-13px_rgba(242, 197, 73, .75)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20"
             >
               {t("cta")}
             </button>

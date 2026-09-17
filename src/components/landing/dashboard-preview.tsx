@@ -115,7 +115,7 @@ function ScoreRing() {
       </svg>
       <div className="text-center leading-none">
         <strong className="block text-[29px] font-black tracking-tight text-[#151925]">87</strong>
-        <span className="mt-1 block text-[10px] text-[#737986]">/100</span>
+        <span className="mt-1 block text-[10px] text-[#656b77]">/100</span>
       </div>
     </div>
   );
@@ -138,7 +138,7 @@ export function DashboardPreview() {
               <div
                 key={key}
                 className={`flex h-[39px] items-center gap-3 rounded-[8px] px-3 text-[11px] font-medium ${
-                  key === "overview" ? "bg-[#fff2f2] text-brand" : "text-[#666d79]"
+                  key === "overview" ? "bg-[#fff2f2] text-brand-ink" : "text-[#666d79]"
                 }`}
               >
                 <Icon className="size-[15px] shrink-0" strokeWidth={1.8} />
@@ -161,7 +161,7 @@ export function DashboardPreview() {
                     ✓
                   </span>
                 </div>
-                <span className="mt-1 block text-[11px] text-[#727783]" dir="rtl">
+                <span className="mt-1 block text-[11px] text-[#656b77]" dir="rtl">
                   {t("creator")}
                 </span>
               </div>
@@ -184,7 +184,7 @@ export function DashboardPreview() {
                 <div className="scale-[.78] sm:scale-100">
                   <ScoreRing />
                 </div>
-                <p className="-mt-4 text-center text-[8px] text-[#777d87] sm:-mt-2 sm:text-[9px]">
+                <p className="-mt-4 text-center text-[8px] text-[#656b77] sm:-mt-2 sm:text-[9px]">
                   {t("overallScore")}
                 </p>
               </div>
@@ -247,7 +247,7 @@ export function DashboardPreview() {
                 </span>
               </div>
               <div className="relative mt-2 h-[113px]" dir="ltr">
-                <div className="absolute inset-0 flex flex-col justify-between text-[8px] text-[#7a808b]">
+                <div className="absolute inset-0 flex flex-col justify-between text-[8px] text-[#656b77]">
                   <span>150K</span>
                   <span>100K</span>
                   <span>50K</span>
@@ -281,7 +281,7 @@ export function DashboardPreview() {
                   />
                   <circle cx="420" cy="7" r="6" fill="#7659ea" />
                 </svg>
-                <div className="absolute inset-x-8 bottom-0 flex justify-between text-[7px] text-[#7b818b]">
+                <div className="absolute inset-x-8 bottom-0 flex justify-between text-[7px] text-[#656b77]">
                   <span>{t("dates.apr20")}</span>
                   <span>{t("dates.apr27")}</span>
                   <span>{t("dates.may4")}</span>

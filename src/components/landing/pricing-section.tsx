@@ -32,13 +32,13 @@ export function PricingSection() {
             transition={{ duration: 0.3, delay: index * 0.05 }}
             className={`relative flex min-h-[240px] flex-col rounded-[13px] border bg-white px-4 pb-4 pt-[18px] text-center ${
               plan.popular
-                ? "border-brand/65 shadow-[0_13px_28px_-18px_rgba(255,77,103,.65)]"
+                ? "border-brand/65 shadow-[0_13px_28px_-18px_rgba(242, 197, 73, .65)]"
                 : "border-black/[0.07]"
             }`}
           >
             {plan.popular && (
               <>
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#fff0f0] px-3 py-1 text-[10px] font-black text-brand sm:text-[9px]">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#fff0f0] px-3 py-1 text-[10px] font-black text-brand-ink sm:text-[9px]">
                   {t("mostPopular")}
                 </span>
               </>
@@ -52,8 +52,8 @@ export function PricingSection() {
                 {t(`${plan.key}.price`)}
               </strong>
             </div>
-            <span className="text-xs text-[#7a808a] sm:text-[9px]">{t(`${plan.key}.period`)}</span>
-            <p className="mt-2 min-h-8 text-xs leading-5 text-[#6e7480] sm:text-[9px] sm:leading-4">
+            <span className="text-xs text-[#656b77] sm:text-[9px]">{t(`${plan.key}.period`)}</span>
+            <p className="mt-2 min-h-8 text-xs leading-5 text-[#636974] sm:text-[9px] sm:leading-4">
               {t(`${plan.key}.description`)}
             </p>
 
@@ -77,8 +77,8 @@ export function PricingSection() {
               }
               className={`mt-4 inline-flex h-11 items-center justify-center rounded-[9px] text-sm font-bold transition sm:h-9 sm:text-[11px] ${
                 plan.popular
-                  ? "bg-brand text-white hover:bg-[#f33f5b]"
-                  : "border border-black/[0.08] text-[#353b47] hover:border-brand/25 hover:text-brand"
+                  ? "bg-brand text-brand-foreground hover:bg-[#e2b23c]"
+                  : "border border-black/[0.08] text-[#353b47] hover:border-brand/25 hover:text-brand-ink"
               }`}
             >
               {t("cta")}

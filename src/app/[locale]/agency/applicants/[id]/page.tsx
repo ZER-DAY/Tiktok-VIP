@@ -73,11 +73,11 @@ interface ApplicationDetail {
 }
 
 const STATUS_CONFIG: Record<string, { color: string }> = {
-  new: { color: "bg-blue-500/20 text-blue-400" },
-  reviewed: { color: "bg-yellow-500/20 text-yellow-400" },
-  contacted: { color: "bg-purple-500/20 text-purple-400" },
-  joined: { color: "bg-green-500/20 text-green-400" },
-  rejected: { color: "bg-red-500/20 text-red-400" },
+  new: { color: "bg-blue-100 text-blue-800" },
+  reviewed: { color: "bg-amber-100 text-amber-800" },
+  contacted: { color: "bg-purple-100 text-purple-800" },
+  joined: { color: "bg-green-100 text-green-800" },
+  rejected: { color: "bg-red-100 text-red-800" },
 };
 
 const TRANSITION_STATUSES = ["reviewed", "contacted", "joined", "rejected"] as const;
@@ -253,7 +253,7 @@ export default function ApplicantDetailPage() {
             className="bg-card border border-border rounded-2xl p-6"
           >
             <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-              <Eye className="w-5 h-5 text-brand-pink" />
+              <Eye className="w-5 h-5 text-brand-ink" />
               {t("contactInfo")}
               <span className="text-xs text-warning bg-warning/10 px-2 py-0.5 rounded-full">
                 {t("protected")}
@@ -309,7 +309,7 @@ export default function ApplicantDetailPage() {
             className="bg-card border border-border rounded-2xl p-6"
           >
             <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-brand-pink" />
+              <MessageSquare className="w-5 h-5 text-brand-ink" />
               {t("notes")}
             </h2>
             <div className="mb-4">
@@ -323,7 +323,7 @@ export default function ApplicantDetailPage() {
               <button
                 onClick={handleAddNote}
                 disabled={isAddingNote || !newNote.trim()}
-                className="mt-2 px-4 py-2 rounded-lg bg-brand-pink text-white text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50"
+                className="mt-2 px-4 py-2 rounded-lg bg-brand-pink text-brand-foreground text-sm font-medium hover:opacity-90 transition-all disabled:opacity-50"
               >
                 {isAddingNote ? t("addingNote") : t("addNote")}
               </button>
@@ -418,7 +418,7 @@ export default function ApplicantDetailPage() {
             className="bg-card border border-border rounded-2xl p-6"
           >
             <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-brand-pink" />
+              <Clock className="w-5 h-5 text-brand-ink" />
               {t("statusHistory")}
             </h2>
             <div className="space-y-4">

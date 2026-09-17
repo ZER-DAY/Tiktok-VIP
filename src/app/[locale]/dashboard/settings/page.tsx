@@ -143,14 +143,14 @@ export default function SettingsPage() {
         className="bg-card border border-border rounded-2xl p-6"
       >
         <h2 className="text-lg font-semibold text-foreground mb-6 flex items-center gap-2">
-          <User className="w-5 h-5 text-brand-pink" />
+          <User className="w-5 h-5 text-brand-ink" />
           {t("profile")}
         </h2>
 
         <div className="space-y-4">
           {/* Avatar */}
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center text-white text-xl font-bold">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#f8d866] to-[#d4a017] flex items-center justify-center text-[#111827] text-xl font-bold">
               {user?.name?.charAt(0).toUpperCase() || "U"}
             </div>
             <div>
@@ -197,7 +197,7 @@ export default function SettingsPage() {
             <p className="text-foreground font-medium">{user?.plan?.name || t("freePlan")}</p>
             <p className="text-muted-foreground text-sm">{t("currentPlan")}</p>
           </div>
-          <button className="px-6 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all">
+          <button className="px-6 py-2 rounded-xl bg-gradient-to-r from-[#f8d866] to-[#d4a017] text-[#111827] font-semibold hover:opacity-90 transition-all">
             {t("upgrade")}
           </button>
         </div>
@@ -211,7 +211,7 @@ export default function SettingsPage() {
         className="bg-card border border-border rounded-2xl p-6"
       >
         <h2 className="text-lg font-semibold text-foreground mb-6 flex items-center gap-2">
-          <Bell className="w-5 h-5 text-brand-pink" />
+          <Bell className="w-5 h-5 text-brand-ink" />
           {t("notifications")}
         </h2>
 
@@ -242,7 +242,7 @@ export default function SettingsPage() {
         className="bg-card border border-border rounded-2xl p-6"
       >
         <h2 className="text-lg font-semibold text-foreground mb-6 flex items-center gap-2">
-          <Globe className="w-5 h-5 text-brand-pink" />
+          <Globe className="w-5 h-5 text-brand-ink" />
           {t("language")}
         </h2>
 
@@ -320,7 +320,7 @@ export default function SettingsPage() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#f8d866] to-[#d4a017] text-[#111827] font-semibold hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Save className="w-5 h-5" />
           {isSaving ? t("saving") : t("save")}

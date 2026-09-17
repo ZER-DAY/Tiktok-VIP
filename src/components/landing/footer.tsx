@@ -22,14 +22,14 @@ export function Footer() {
               <a
                 href="mailto:hello@tiktok-intelligence.com"
                 aria-label={t("contact")}
-                className="grid size-9 place-items-center rounded-lg border border-border text-muted-foreground transition hover:border-brand/30 hover:bg-brand/5 hover:text-brand"
+                className="grid size-9 place-items-center rounded-lg border border-border text-muted-foreground transition hover:border-brand/30 hover:bg-brand/5 hover:text-brand-ink"
               >
                 <Mail className="size-4" />
               </a>
               <a
                 href="#"
                 aria-label={t("socialInstagram")}
-                className="grid size-9 place-items-center rounded-lg border border-border text-muted-foreground transition hover:border-brand/30 hover:bg-brand/5 hover:text-brand"
+                className="grid size-9 place-items-center rounded-lg border border-border text-muted-foreground transition hover:border-brand/30 hover:bg-brand/5 hover:text-brand-ink"
               >
                 <AtSign className="size-4" />
               </a>
@@ -43,7 +43,7 @@ export function Footer() {
               <li>
                 <a
                   href="#features"
-                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand-ink"
                 >
                   {t("features")}
                 </a>
@@ -51,7 +51,7 @@ export function Footer() {
               <li>
                 <a
                   href="#pricing"
-                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand-ink"
                 >
                   {t("pricing")}
                 </a>
@@ -59,7 +59,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand-ink"
                 >
                   {t("analyzer")}
                 </Link>
@@ -74,7 +74,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand-ink"
                 >
                   {t("about")}
                 </Link>
@@ -95,7 +95,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/privacy"
-                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand-ink"
                 >
                   {t("privacy")}
                 </Link>
@@ -103,7 +103,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/terms"
-                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand"
+                  className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand-ink"
                 >
                   {t("terms")}
                 </Link>
@@ -116,7 +116,7 @@ export function Footer() {
           <p>
             &copy; {new Date().getFullYear()} {t("siteName")}. {t("rights")}
           </p>
-          <Link href="/" className="inline-flex items-center gap-1 font-semibold text-brand">
+          <Link href="/" className="inline-flex items-center gap-1 font-semibold text-brand-ink">
             {t("analyzer")}
             <ArrowUpLeft className="size-4 rtl:rotate-0 ltr:rotate-90" />
           </Link>

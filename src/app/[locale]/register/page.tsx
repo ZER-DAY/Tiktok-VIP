@@ -250,7 +250,7 @@ function RegisterForm() {
             {t("hasAccount")}{" "}
             <Link
               href={`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`}
-              className="text-brand hover:text-brand/80 transition-colors"
+              className="text-brand-ink hover:text-brand-ink/80 transition-colors"
             >
               {t("loginLink")}
             </Link>

@@ -82,13 +82,13 @@ export default function DashboardPage() {
         className="flex flex-col justify-between gap-5 md:flex-row md:items-center"
       >
         <div>
-          <p className="mb-2 text-sm font-bold text-brand">{t("kicker")}</p>
+          <p className="mb-2 text-sm font-bold text-brand-ink">{t("kicker")}</p>
           <h1 className="text-3xl font-black tracking-tight text-foreground">{t("welcome")}</h1>
           <p className="mt-1 text-sm leading-6 text-muted-foreground">{t("welcomeSubtitle")}</p>
         </div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(255,77,103,.85)] transition hover:-translate-y-0.5 hover:bg-brand/90"
+          className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(242, 197, 73, .85)] transition hover:-translate-y-0.5 hover:bg-brand/90"
         >
           <Plus className="w-5 h-5" />
           {t("analyzeNew")}
@@ -106,7 +106,7 @@ export default function DashboardPage() {
         <div className="surface-card p-6">
           <div className="mb-5 flex items-center justify-between">
             <div className="grid size-11 place-items-center rounded-xl bg-brand/10">
-              <BarChart3 className="size-5 text-brand" />
+              <BarChart3 className="size-5 text-brand-ink" />
             </div>
             <span className="text-2xl font-bold text-foreground">{data?.accounts.length || 0}</span>
           </div>
@@ -161,7 +161,7 @@ export default function DashboardPage() {
           <h2 className="text-lg font-semibold text-foreground">{t("recentAccounts")}</h2>
           <Link
             href="/dashboard/accounts"
-            className="flex items-center gap-1 text-sm font-bold text-brand transition-colors hover:text-brand/80"
+            className="flex items-center gap-1 text-sm font-bold text-brand-ink transition-colors hover:text-brand-ink/80"
           >
             {t("viewAll")}
           </Link>
@@ -193,7 +193,7 @@ export default function DashboardPage() {
                   className="flex items-center justify-between gap-4 rounded-xl border border-border/70 bg-muted/35 p-4 transition-colors hover:border-brand/25 hover:bg-muted/60"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="grid size-10 shrink-0 place-items-center rounded-full bg-brand/10 font-bold text-brand">
+                    <div className="grid size-10 shrink-0 place-items-center rounded-full bg-brand/10 font-bold text-brand-ink">
                       {account.username.charAt(0).toUpperCase()}
                     </div>
                     <div>

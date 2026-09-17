@@ -159,7 +159,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/register"
-                  className="inline-flex h-10 min-w-[92px] items-center justify-center rounded-[10px] bg-brand px-5 text-sm font-bold text-white shadow-[0_9px_20px_-10px_rgba(255,77,103,.85)] transition hover:-translate-y-0.5 hover:bg-[#f33f5b]"
+                  className="inline-flex h-10 min-w-[92px] items-center justify-center rounded-[10px] bg-brand px-5 text-sm font-bold text-brand-foreground shadow-[0_9px_20px_-10px_rgba(242, 197, 73, .85)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c]"
                 >
                   {t("register")}
                 </Link>
@@ -282,7 +282,7 @@ export function Navbar() {
                       <Link
                         href="/register"
                         onClick={() => setMobileOpen(false)}
-                        className="inline-flex h-11 items-center justify-center rounded-xl bg-brand px-4 text-sm font-bold text-white"
+                        className="inline-flex h-11 items-center justify-center rounded-xl bg-brand px-4 text-sm font-bold text-brand-foreground"
                       >
                         {t("register")}
                       </Link>

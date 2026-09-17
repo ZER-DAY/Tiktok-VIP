@@ -48,21 +48,22 @@
   --radius-4xl: calc(var(--radius) * 2.6);
   --color-brand: var(--brand);
   --color-brand-pink: var(--brand);
+  --color-brand-ink: var(--brand-ink);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-purple: var(--brand-secondary);
   --color-brand-secondary-foreground: var(--brand-secondary-foreground);
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
-  --color-success: #16a34a;
+  --color-success: #15803d;
   --color-success-foreground: #ffffff;
-  --color-warning: #ea580c;
+  --color-warning: #9a3412;
   --color-warning-foreground: #ffffff;
   --color-info: #2563eb;
   --color-info-foreground: #ffffff;
-  --color-score-excellent: #16a34a;
-  --color-score-good: #22c55e;
-  --color-score-average: #f59e0b;
+  --color-score-excellent: #166534;
+  --color-score-good: #15803d;
+  --color-score-average: #b8480e;
   --color-score-poor: #ef4444;
 }
 
@@ -73,38 +74,39 @@
   --card-foreground: #111827;
   --popover: #ffffff;
   --popover-foreground: #111827;
-  --primary: #ff4d67;
-  --primary-foreground: #ffffff;
+  --primary: #f2c549;
+  --primary-foreground: #111827;
   --secondary: #f3f4f6;
   --secondary-foreground: #374151;
   --muted: #f3f4f6;
-  --muted-foreground: #6b7280;
+  --muted-foreground: #5b6371;
   --accent: #f3f4f6;
   --accent-foreground: #111827;
-  --destructive: #dc2626;
+  --destructive: #b91c1c;
   --border: #e5e7eb;
   --input: #e5e7eb;
-  --ring: #ff4d67;
-  --brand: #ff4d67;
-  --brand-foreground: #ffffff;
-  --brand-secondary: #6d5dfb;
+  --ring: #b8860b;
+  --brand: #f2c549;
+  --brand-ink: #8a6410;
+  --brand-foreground: #111827;
+  --brand-secondary: #7a5a0c;
   --brand-secondary-foreground: #ffffff;
   --surface: #ffffff;
   --surface-foreground: #111827;
-  --chart-1: #ff4d67;
-  --chart-2: #6d5dfb;
+  --chart-1: #d4a017;
+  --chart-2: #7a5a0c;
   --chart-3: #22c55e;
   --chart-4: #f59e0b;
   --chart-5: #3b82f6;
   --radius: 0.75rem;
   --sidebar: #ffffff;
   --sidebar-foreground: #374151;
-  --sidebar-primary: #ff4d67;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #fff1f3;
-  --sidebar-accent-foreground: #ff4d67;
+  --sidebar-primary: #f2c549;
+  --sidebar-primary-foreground: #111827;
+  --sidebar-accent: #fdf6e3;
+  --sidebar-accent-foreground: #8a6410;
   --sidebar-border: #e5e7eb;
-  --sidebar-ring: #ff4d67;
+  --sidebar-ring: #b8860b;
   --shadow-color: 220 3% 15%;
 }
 
@@ -150,7 +152,7 @@
   }
 
   .eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/5 px-3 py-1.5 text-sm font-bold text-brand;
+    @apply inline-flex items-center gap-2 rounded-full border border-brand/35 bg-brand/10 px-3 py-1.5 text-sm font-bold text-brand-ink;
   }
 
   .status-paid {

@@ -63,13 +63,13 @@ export default function AccountsPage() {
         className="flex flex-col justify-between gap-5 md:flex-row md:items-center"
       >
         <div>
-          <p className="mb-2 text-sm font-bold text-brand">{t("kicker")}</p>
+          <p className="mb-2 text-sm font-bold text-brand-ink">{t("kicker")}</p>
           <h1 className="text-3xl font-black tracking-tight text-foreground">{t("title")}</h1>
           <p className="mt-1 text-sm leading-6 text-muted-foreground">{t("subtitle")}</p>
         </div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(255,77,103,.85)] transition hover:-translate-y-0.5 hover:bg-brand/90"
+          className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(242, 197, 73, .85)] transition hover:-translate-y-0.5 hover:bg-brand/90"
         >
           <Plus className="w-5 h-5" />
           {t("addAccount")}
@@ -109,7 +109,7 @@ export default function AccountsPage() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="grid size-12 shrink-0 place-items-center rounded-full bg-brand/10 text-lg font-bold text-brand">
+                    <div className="grid size-12 shrink-0 place-items-center rounded-full bg-brand/10 text-lg font-bold text-brand-ink">
                       {account.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -146,7 +146,7 @@ export default function AccountsPage() {
                       e.preventDefault();
                       // Trigger re-analysis
                     }}
-                    className="flex items-center gap-1 text-sm font-bold text-brand transition-colors hover:text-brand/80"
+                    className="flex items-center gap-1 text-sm font-bold text-brand-ink transition-colors hover:text-brand-ink/80"
                   >
                     <RefreshCw className="w-4 h-4" />
                     {t("refresh")}

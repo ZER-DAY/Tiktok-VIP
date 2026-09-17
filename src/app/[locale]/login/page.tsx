@@ -164,7 +164,7 @@ function LoginForm() {
             <div className="text-end">
               <Link
                 href="/forgot-password"
-                className="text-sm text-brand hover:text-brand/80 transition-colors"
+                className="text-sm text-brand-ink hover:text-brand-ink/80 transition-colors"
               >
                 {t("forgotPassword")}
               </Link>
@@ -215,7 +215,7 @@ function LoginForm() {
             {t("noAccount")}{" "}
             <Link
               href={`/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}
-              className="text-brand hover:text-brand/80 transition-colors"
+              className="text-brand-ink hover:text-brand-ink/80 transition-colors"
             >
               {t("registerLink")}
             </Link>
