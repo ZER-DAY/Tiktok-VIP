@@ -60,6 +60,15 @@ describe("Navbar", () => {
     mockSignOut.mockReset();
   });
 
+  /**
+   * Logout is reached through a menu on both surfaces now - the account menu on
+   * a wide screen, the sheet on a phone - because having it in the bar as well
+   * was duplicating it. Opening the account menu is how a signed-in user gets
+   * to it.
+   */
+  const openAccountMenu = () =>
+    fireEvent.click(screen.getByRole("button", { name: "accountMenu" }));
+
   it("shows separate login and create-account buttons for guests", () => {
     mockUseSession.mockReturnValue(sessionLike(null));
     render(<Navbar />);
@@ -123,11 +132,8 @@ describe("Navbar", () => {
     mockSignOut.mockResolvedValue({ error: null });
 
     render(<Navbar />);
-    await waitFor(() =>
-      expect(screen.getAllByRole("button", { name: "logout" }).length).toBeGreaterThan(0)
-    );
-
-    fireEvent.click(screen.getAllByRole("button", { name: "logout" })[0]);
+    openAccountMenu();
+    fireEvent.click(screen.getByRole("menuitem", { name: /logout/ }));
 
     await waitFor(() => expect(mockSignOut).toHaveBeenCalledTimes(1));
     await waitFor(() => expect(mockRouter.refresh).toHaveBeenCalledTimes(1));
@@ -139,7 +145,8 @@ describe("Navbar", () => {
     mockSignOut.mockResolvedValue({ error: { message: "boom" } });
 
     render(<Navbar />);
-    fireEvent.click(screen.getAllByRole("button", { name: "logout" })[0]);
+    openAccountMenu();
+    fireEvent.click(screen.getByRole("menuitem", { name: /logout/ }));
 
     await waitFor(() => expect(mockSignOut).toHaveBeenCalledTimes(1));
     expect(mockRouter.push).not.toHaveBeenCalled();
@@ -152,7 +159,8 @@ describe("Navbar", () => {
     mockSignOut.mockRejectedValue(new Error("network down"));
 
     render(<Navbar />);
-    fireEvent.click(screen.getAllByRole("button", { name: "logout" })[0]);
+    openAccountMenu();
+    fireEvent.click(screen.getByRole("menuitem", { name: /logout/ }));
 
     await waitFor(() => expect(mockSignOut).toHaveBeenCalledTimes(1));
     expect(mockRouter.push).not.toHaveBeenCalled();
@@ -160,19 +168,19 @@ describe("Navbar", () => {
     await waitFor(() => expect(screen.getAllByRole("alert").length).toBeGreaterThan(0));
   });
 
-  it("renders an explicitly labeled logout control on mobile (not icon-only)", async () => {
+  it("offers logout once per surface, with a visible label, never in the bar", () => {
     mockUseSession.mockReturnValue(sessionLike({ name: "أحمد", email: "ahmed@example.com" }));
 
     render(<Navbar />);
 
-    // The phone bar carries its own logout with a visible label beside the icon
-    // rather than being icon-only. It uses a shorter word ("خروج") because the
-    // full label did not fit a 360px bar - it was clamped to 60px and cut
-    // mid-word - so assert that a label is rendered, not which string it is.
-    const logoutButtons = screen.getAllByRole("button", { name: "logout" });
-    expect(logoutButtons.length).toBeGreaterThanOrEqual(1);
-    for (const button of logoutButtons) {
-      expect(button.textContent?.trim()).not.toBe("");
-    }
+    // Nothing logs out from the bar itself: that copy duplicated the one in the
+    // menu the bar opens.
+    expect(screen.queryByRole("button", { name: "logout" })).toBeNull();
+
+    // The phone sheet carries it, labelled rather than icon-only.
+    fireEvent.click(screen.getByRole("button", { name: "openMenu" }));
+    const inSheet = screen.getAllByRole("button", { name: "logout" });
+    expect(inSheet).toHaveLength(1);
+    expect(inSheet[0].textContent?.trim()).not.toBe("");
   });
 });

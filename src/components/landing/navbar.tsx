@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDown, Globe2, LayoutDashboard, Loader2, LogOut, Menu, X } from "lucide-react";
+import { Globe2, LayoutDashboard, Loader2, LogOut, Menu, X } from "lucide-react";
 import { BrandLogo } from "@/components/brand/brand-mark";
 import { AccountMenu } from "./account-menu";
 import { useLocale, useTranslations } from "next-intl";
@@ -122,7 +122,7 @@ export function Navbar() {
               <a
                 key={item.key}
                 href={item.href}
-                className={`relative flex items-center text-[14px] font-medium transition-all duration-300 ease-out ${
+                className={`relative flex items-center whitespace-nowrap text-[14px] font-medium transition-all duration-300 ease-out ${
                   condensed ? "h-[52px]" : "h-[62px]"
                 } ${
                   item.key === "home"
@@ -146,12 +146,12 @@ export function Navbar() {
               <button
                 type="button"
                 onClick={switchLanguage}
-                className="inline-flex h-10 min-w-[105px] items-center justify-center gap-2 rounded-[10px] border border-white/[0.14] bg-white/[0.06] px-3 text-xs font-medium text-white/80 transition hover:border-brand/40 hover:text-brand"
+                className="inline-flex h-10 items-center justify-center gap-1.5 whitespace-nowrap rounded-[10px] border border-white/[0.14] bg-white/[0.06] px-3 text-xs font-bold text-white/80 transition hover:border-brand/40 hover:text-brand"
                 aria-label={tCommon("switchLanguage")}
+                title={isRtl ? tCommon("english") : tCommon("arabic")}
               >
-                <Globe2 className="size-4" />
-                <span>{isRtl ? "العربية" : "English"}</span>
-                <ChevronDown className="size-3.5 text-white/50" />
+                <Globe2 className="size-4 shrink-0" />
+                <span dir="ltr">{isRtl ? "AR" : "EN"}</span>
               </button>
             )}
 
@@ -177,13 +177,13 @@ export function Navbar() {
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="inline-flex h-10 min-w-[90px] items-center justify-center rounded-[10px] border border-white/[0.18] bg-white/[0.06] px-5 text-sm font-bold text-white/85 transition hover:border-brand/45 hover:text-brand"
+                  className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-[10px] border border-white/[0.18] bg-white/[0.06] px-4 text-sm font-bold text-white/85 transition hover:border-brand/45 hover:text-brand"
                 >
                   {t("login")}
                 </Link>
                 <Link
                   href="/register"
-                  className="inline-flex h-10 min-w-[92px] items-center justify-center rounded-[10px] bg-brand px-5 text-sm font-bold text-brand-foreground shadow-[0_9px_20px_-10px_rgba(242,197,73,.85)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c]"
+                  className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-[10px] bg-brand px-4 text-sm font-bold text-brand-foreground shadow-[0_9px_20px_-10px_rgba(242,197,73,.85)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c]"
                 >
                   {t("register")}
                 </Link>
@@ -191,25 +191,10 @@ export function Navbar() {
             )}
           </div>
 
+          {/* The phone bar holds language and the menu toggle only: logout and
+              the account live inside the sheet this opens, and having them in
+              both places was the duplication. */}
           <div className="flex shrink-0 items-center justify-end gap-0.5 md:hidden">
-            {isAuthenticated && !isPending && (
-              <>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  disabled={signingOut}
-                  className="inline-flex h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-white/[0.14] bg-white/[0.06] px-2.5 text-[12px] font-bold text-[#ff8f9f] transition hover:bg-white/[0.12] disabled:cursor-not-allowed disabled:opacity-50"
-                  aria-label={t("logout")}
-                >
-                  {signingOut ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <LogOut className="size-4" />
-                  )}
-                  <span className="whitespace-nowrap">{t("logoutShort")}</span>
-                </button>
-              </>
-            )}
             <button
               type="button"
               onClick={switchLanguage}
@@ -272,13 +257,32 @@ export function Navbar() {
                     <AuthActionsSkeleton mobile />
                   ) : isAuthenticated ? (
                     <>
+                      <div className="flex items-center gap-3 rounded-xl bg-white/[0.04] px-4 py-3">
+                        <span
+                          aria-hidden="true"
+                          className="grid size-9 shrink-0 place-items-center rounded-full bg-brand text-sm font-black text-brand-foreground"
+                        >
+                          {(session?.user?.name || session?.user?.email || "?")
+                            .trim()
+                            .charAt(0)
+                            .toUpperCase()}
+                        </span>
+                        <span className="min-w-0">
+                          <strong className="block truncate text-sm font-bold text-white">
+                            {session?.user?.name || session?.user?.email}
+                          </strong>
+                          <span className="block truncate text-xs text-white/50" dir="ltr">
+                            {session?.user?.email}
+                          </span>
+                        </span>
+                      </div>
                       <Link
                         href="/dashboard"
                         onClick={() => setMobileOpen(false)}
                         className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/[0.14] bg-white/[0.06] px-4 py-3 text-sm font-bold text-white/85"
                       >
                         <LayoutDashboard className="size-4" />
-                        {session?.user?.name || session?.user?.email}
+                        {t("dashboard")}
                       </Link>
                       <button
                         type="button"

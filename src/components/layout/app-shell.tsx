@@ -221,21 +221,6 @@ export function AppShell({ children, sidebarItems, namespace }: AppShellProps) {
         </Link>
         <div className="flex shrink-0 items-center gap-0.5">
           <button
-            onClick={handleLogout}
-            disabled={isLoggingOut}
-            className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-lg px-2 text-white/70 transition-smooth hover:bg-white/[0.10] hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
-            aria-label={t("logout")}
-          >
-            {isLoggingOut ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <LogOut className="w-4 h-4" />
-            )}
-            <span className="whitespace-nowrap text-xs font-semibold">
-              {tCommon("logoutShort")}
-            </span>
-          </button>
-          <button
             onClick={switchLanguage}
             className="grid size-10 shrink-0 place-items-center rounded-lg text-white/70 transition-smooth hover:bg-white/[0.10] hover:text-white"
             aria-label={tCommon("switchLanguage")}
