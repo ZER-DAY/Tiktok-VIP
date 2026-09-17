@@ -130,7 +130,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             </div>
             <Link
               href="/"
-              className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-[12px] bg-brand px-6 text-[15px] font-extrabold text-brand-foreground shadow-[0_13px_28px_-13px_rgba(242, 197, 73, .75)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20"
+              className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-[12px] bg-brand px-6 text-[15px] font-extrabold text-brand-foreground shadow-[0_13px_28px_-13px_rgba(242,197,73,.75)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20"
             >
               {t("ctaButton")}
               <ArrowUpLeft className="size-4 rtl:rotate-0 ltr:rotate-90" />

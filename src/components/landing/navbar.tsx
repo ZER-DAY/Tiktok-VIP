@@ -3,8 +3,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Globe2, LayoutDashboard, Loader2, LogOut, Menu, X } from "lucide-react";
 import { BrandLogo } from "@/components/brand/brand-mark";
+import { AccountMenu } from "./account-menu";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { authClient, useSession } from "@/lib/auth-client";
 
@@ -33,6 +34,29 @@ export function Navbar() {
     router.replace(pathname, { locale: isRtl ? "en" : "ar" });
   };
 
+  // The bar condenses once the page moves: it rises toward the edge, loses a
+  // little height, and its shadow deepens, so it reads as floating over the
+  // content instead of being painted on it. A rAF guard keeps the scroll
+  // handler off the critical path, and the reduced-motion block in globals.css
+  // collapses the transition for anyone who asks for that.
+  const [condensed, setCondensed] = useState(false);
+  useEffect(() => {
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      setCondensed(window.scrollY > 24);
+    };
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
   const handleLogout = async () => {
     if (signingOut) return;
     setSigningOut(true);
@@ -56,13 +80,26 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-[17px] sm:px-6">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 px-3 transition-[padding] duration-300 ease-out sm:px-6 ${
+        condensed ? "pt-1.5" : "pt-[17px]"
+      }`}
+    >
       <nav
         data-testid="landing-navbar"
+        data-condensed={condensed ? "true" : "false"}
         dir="ltr"
-        className="mx-auto w-full max-w-[1100px] rounded-[17px] border border-white/[0.09] bg-[#0b0b0d]/95 px-3 shadow-[0_12px_34px_rgba(0,0,0,0.30)] backdrop-blur-xl sm:px-4 xl:w-[71.615vw]"
+        className={`mx-auto w-full max-w-[1100px] border border-white/[0.09] px-3 backdrop-blur-xl transition-all duration-300 ease-out sm:px-4 xl:w-[71.615vw] ${
+          condensed
+            ? "rounded-[13px] bg-[#0b0b0d]/98 shadow-[0_18px_44px_rgba(0,0,0,0.46)]"
+            : "rounded-[17px] bg-[#0b0b0d]/95 shadow-[0_12px_34px_rgba(0,0,0,0.30)]"
+        }`}
       >
-        <div className="grid min-h-[62px] grid-cols-[1fr_auto] items-center gap-2 sm:gap-4 md:grid-cols-[1fr_1.35fr_1fr]">
+        <div
+          className={`grid grid-cols-[1fr_auto] items-center gap-2 transition-[min-height] duration-300 ease-out sm:gap-4 md:grid-cols-[1fr_1.35fr_1fr] ${
+            condensed ? "min-h-[52px]" : "min-h-[62px]"
+          }`}
+        >
           <Link
             href="/"
             className="flex min-w-0 items-center gap-2 sm:gap-3"
@@ -70,7 +107,11 @@ export function Navbar() {
           >
             {/* The lockup carries the name, so nothing here can truncate the
                 way the old text wordmark did on a narrow phone. */}
-            <BrandLogo className="h-9 w-auto sm:h-10" />
+            <BrandLogo
+              className={`w-auto transition-all duration-300 ease-out ${
+                condensed ? "h-8 sm:h-8" : "h-9 sm:h-10"
+              }`}
+            />
           </Link>
 
           <div
@@ -81,7 +122,9 @@ export function Navbar() {
               <a
                 key={item.key}
                 href={item.href}
-                className={`relative flex h-[62px] items-center text-[14px] font-medium transition-colors ${
+                className={`relative flex items-center text-[14px] font-medium transition-all duration-300 ease-out ${
+                  condensed ? "h-[52px]" : "h-[62px]"
+                } ${
                   item.key === "home"
                     ? "text-brand after:absolute after:inset-x-0 after:bottom-[8px] after:h-px after:bg-brand"
                     : "text-white/70 hover:text-brand"
@@ -96,59 +139,40 @@ export function Navbar() {
             className="hidden items-center justify-end gap-2 md:flex xl:translate-x-1"
             dir={isRtl ? "rtl" : "ltr"}
           >
-            <button
-              type="button"
-              onClick={switchLanguage}
-              className="inline-flex h-10 min-w-[105px] items-center justify-center gap-2 rounded-[10px] border border-white/[0.14] bg-white/[0.06] px-3 text-xs font-medium text-white/80 transition hover:border-brand/40 hover:text-brand"
-              aria-label={tCommon("switchLanguage")}
-            >
-              <Globe2 className="size-4" />
-              <span>{isRtl ? "العربية" : "English"}</span>
-              <ChevronDown className="size-3.5 text-white/50" />
-            </button>
+            {/* Guests get the language switch inline; signed-in users get it
+                inside the account menu, so the bar carries one control of a
+                predictable width instead of five that fought for space. */}
+            {!isAuthenticated && !isPending && (
+              <button
+                type="button"
+                onClick={switchLanguage}
+                className="inline-flex h-10 min-w-[105px] items-center justify-center gap-2 rounded-[10px] border border-white/[0.14] bg-white/[0.06] px-3 text-xs font-medium text-white/80 transition hover:border-brand/40 hover:text-brand"
+                aria-label={tCommon("switchLanguage")}
+              >
+                <Globe2 className="size-4" />
+                <span>{isRtl ? "العربية" : "English"}</span>
+                <ChevronDown className="size-3.5 text-white/50" />
+              </button>
+            )}
 
             {isPending ? (
               <AuthActionsSkeleton />
             ) : isAuthenticated ? (
-              <div className="flex items-center gap-2">
-                <div className="flex min-w-0 max-w-[180px] flex-col items-end" role="status">
-                  <Link
-                    href="/dashboard"
-                    className="flex min-w-0 items-center gap-1.5 rounded-[10px] border border-white/[0.14] bg-white/[0.06] py-1.5 pl-3 pr-3 text-xs font-black text-white/85 transition hover:border-brand/40 hover:text-brand"
-                    aria-label={t("dashboard")}
-                  >
-                    <LayoutDashboard className="size-3.5 shrink-0" />
-                    <span className="max-w-[90px] truncate">
-                      {session?.user?.name || session?.user?.email}
-                    </span>
-                  </Link>
-                  <span className="mt-1 hidden max-w-[180px] truncate text-[10px] text-white/45 xl:block">
-                    {session?.user?.email}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  disabled={signingOut}
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-[10px] border border-white/[0.14] bg-white/[0.06] px-4 text-xs font-bold text-white/80 transition hover:border-destructive/50 hover:text-destructive disabled:cursor-not-allowed disabled:opacity-50"
-                  aria-label={t("logout")}
-                >
-                  {signingOut ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <LogOut className="size-4" />
-                  )}
-                  {t("logout")}
-                </button>
-                {logoutError && (
-                  <p
-                    role="alert"
-                    className="mt-1 flex items-center gap-1 text-[11px] font-medium text-destructive"
-                  >
-                    {tCommon("logoutFailed")}
-                  </p>
-                )}
-              </div>
+              <AccountMenu
+                name={session?.user?.name || ""}
+                email={session?.user?.email || ""}
+                avatarUrl={session?.user?.image}
+                dashboardHref="/dashboard"
+                dashboardLabel={t("dashboard")}
+                languageLabel={isRtl ? tCommon("english") : tCommon("arabic")}
+                logoutLabel={t("logout")}
+                logoutFailedLabel={tCommon("logoutFailed")}
+                menuLabel={t("accountMenu")}
+                signingOut={signingOut}
+                logoutFailed={logoutError}
+                onLogout={handleLogout}
+                onSwitchLanguage={switchLanguage}
+              />
             ) : (
               <div className="flex items-center gap-2">
                 <Link
@@ -159,7 +183,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/register"
-                  className="inline-flex h-10 min-w-[92px] items-center justify-center rounded-[10px] bg-brand px-5 text-sm font-bold text-brand-foreground shadow-[0_9px_20px_-10px_rgba(242, 197, 73, .85)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c]"
+                  className="inline-flex h-10 min-w-[92px] items-center justify-center rounded-[10px] bg-brand px-5 text-sm font-bold text-brand-foreground shadow-[0_9px_20px_-10px_rgba(242,197,73,.85)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c]"
                 >
                   {t("register")}
                 </Link>

@@ -69,7 +69,7 @@ export default function AccountsPage() {
         </div>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(242, 197, 73, .85)] transition hover:-translate-y-0.5 hover:bg-brand/90"
+          className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 font-bold text-brand-foreground shadow-[0_12px_24px_-16px_rgba(242,197,73,.85)] transition hover:-translate-y-0.5 hover:bg-brand/90"
         >
           <Plus className="w-5 h-5" />
           {t("addAccount")}

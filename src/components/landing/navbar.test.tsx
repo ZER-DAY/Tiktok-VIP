@@ -78,16 +78,35 @@ describe("Navbar", () => {
     mockUseSession.mockReturnValue(sessionLike({ name: "أحمد", email: "ahmed@example.com" }));
     render(<Navbar />);
 
-    const dashboardLink = screen.getByRole("link", { name: "dashboard" });
-    const logoutButton = screen.getAllByRole("button", { name: "logout" })[0];
-
-    expect(dashboardLink.getAttribute("href")).toBe("/dashboard");
+    // Identity and the account actions live in a menu now: showing them all in
+    // the bar at once is what made it overflow. The name is on the trigger; the
+    // rest appears once it is opened.
     expect(screen.getAllByText("أحمد").length).toBeGreaterThan(0);
+    expect(screen.queryByText("ahmed@example.com")).toBeNull();
+    expect(screen.queryByRole("menu")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "accountMenu" }));
+
+    expect(screen.getByRole("menu")).toBeTruthy();
     expect(screen.getByText("ahmed@example.com")).toBeTruthy();
-    expect(logoutButton).toBeTruthy();
+    expect(screen.getByRole("menuitem", { name: "dashboard" }).getAttribute("href")).toBe(
+      "/dashboard"
+    );
+    expect(screen.getByRole("menuitem", { name: /logout/ })).toBeTruthy();
 
     expect(screen.queryByRole("link", { name: "login" })).toBeNull();
     expect(screen.queryByRole("link", { name: "register" })).toBeNull();
+  });
+
+  it("closes the account menu on Escape", () => {
+    mockUseSession.mockReturnValue(sessionLike({ name: "أحمد", email: "ahmed@example.com" }));
+    render(<Navbar />);
+
+    fireEvent.click(screen.getByRole("button", { name: "accountMenu" }));
+    expect(screen.getByRole("menu")).toBeTruthy();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("menu")).toBeNull();
   });
 
   it("shows a skeleton while the session is loading", () => {
@@ -146,13 +165,12 @@ describe("Navbar", () => {
 
     render(<Navbar />);
 
+    // The phone bar carries its own logout with a visible label beside the icon
+    // rather than being icon-only. It uses a shorter word ("خروج") because the
+    // full label did not fit a 360px bar - it was clamped to 60px and cut
+    // mid-word - so assert that a label is rendered, not which string it is.
     const logoutButtons = screen.getAllByRole("button", { name: "logout" });
-    // Desktop header and mobile top control both exist, and each carries a
-    // visible text label beside the icon rather than being icon-only. The
-    // phone one uses a shorter word ("خروج") because the full label did not
-    // fit a 360px bar - it was being clamped to 60px and cut mid-word - so
-    // assert that a label is rendered, not which string it is.
-    expect(logoutButtons.length).toBeGreaterThanOrEqual(2);
+    expect(logoutButtons.length).toBeGreaterThanOrEqual(1);
     for (const button of logoutButtons) {
       expect(button.textContent?.trim()).not.toBe("");
     }

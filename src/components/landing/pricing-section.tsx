@@ -32,7 +32,7 @@ export function PricingSection() {
             transition={{ duration: 0.3, delay: index * 0.05 }}
             className={`relative flex min-h-[240px] flex-col rounded-[13px] border bg-white px-4 pb-4 pt-[18px] text-center ${
               plan.popular
-                ? "border-brand/65 shadow-[0_13px_28px_-18px_rgba(242, 197, 73, .65)]"
+                ? "border-brand/65 shadow-[0_13px_28px_-18px_rgba(242,197,73,.65)]"
                 : "border-black/[0.07]"
             }`}
           >

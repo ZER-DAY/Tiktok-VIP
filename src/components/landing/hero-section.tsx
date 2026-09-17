@@ -68,7 +68,7 @@ export function HeroSection() {
             <button
               type="submit"
               dir={locale === "ar" ? "rtl" : "ltr"}
-              className="inline-flex h-[58px] items-center justify-center rounded-[12px] bg-brand px-5 text-[15px] font-extrabold text-brand-foreground shadow-[0_13px_28px_-13px_rgba(242, 197, 73, .75)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20"
+              className="inline-flex h-[58px] items-center justify-center rounded-[12px] bg-brand px-5 text-[15px] font-extrabold text-brand-foreground shadow-[0_13px_28px_-13px_rgba(242,197,73,.75)] transition hover:-translate-y-0.5 hover:bg-[#e2b23c] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-brand/20"
             >
               {t("cta")}
             </button>

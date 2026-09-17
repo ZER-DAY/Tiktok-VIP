@@ -35,7 +35,7 @@ export function HowItWorksSection() {
               index === 0 ? "-left-px" : index === 1 ? "-left-[5px] -top-px" : "-left-[6px] -top-px"
             }`}
           >
-            <span className="relative z-10 mx-auto grid size-9 place-items-center rounded-full bg-brand text-base font-black text-brand-foreground shadow-[0_7px_16px_-7px_rgba(242, 197, 73, .8)]">
+            <span className="relative z-10 mx-auto grid size-9 place-items-center rounded-full bg-brand text-base font-black text-brand-foreground shadow-[0_7px_16px_-7px_rgba(242,197,73,.8)]">
               {index + 1}
             </span>
             <h3 className="mt-4 text-sm font-bold text-[#252b37] sm:text-[13px]">

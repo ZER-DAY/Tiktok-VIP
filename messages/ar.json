@@ -225,6 +225,7 @@
     "register": "إنشاء حساب",
     "logout": "تسجيل الخروج",
     "logoutShort": "خروج",
+    "accountMenu": "قائمة الحساب",
     "startNow": "ابدأ الآن",
     "switchLang": "English"
   },
