@@ -67,7 +67,11 @@ export default function AnalyzePage({
         if (!data.success) {
           setJobStatus("failed");
           setRequiresSubscription(data.error?.code === "SUBSCRIPTION_REQUIRED");
-          setErrorMessage(data.error?.message || t("errorGeneric"));
+          setErrorMessage(
+            data.error?.code === "SERVICE_UNAVAILABLE" || response.status === 503
+              ? t("errorUnavailable")
+              : t("errorGeneric")
+          );
           return;
         }
 

@@ -1,4 +1,5 @@
 import { randomUUID } from "node:crypto";
+import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getAnalyzeQueue } from "@/workers/queue";
@@ -164,15 +165,21 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     console.error("Analyze error:", error);
+    const databaseUnavailable =
+      error instanceof Prisma.PrismaClientInitializationError ||
+      (error instanceof Prisma.PrismaClientKnownRequestError &&
+        ["P1001", "P1002", "P1008", "P1017", "P2024"].includes(error.code));
     return NextResponse.json(
       {
         success: false,
         error: {
-          code: "INTERNAL_ERROR",
-          message: "An unexpected error occurred. Please try again.",
+          code: databaseUnavailable ? "SERVICE_UNAVAILABLE" : "INTERNAL_ERROR",
+          message: databaseUnavailable
+            ? "Analysis is temporarily unavailable. Please try again later."
+            : "An unexpected error occurred. Please try again.",
         },
       },
-      { status: 500 }
+      { status: databaseUnavailable ? 503 : 500 }
     );
   }
 }

@@ -513,6 +513,7 @@
     },
     "error": "An error occurred while starting the analysis",
     "errorGeneric": "Analysis failed. Please try again.",
+    "errorUnavailable": "Analysis is temporarily unavailable. Please try again later.",
     "retry": "Try Again",
     "backToHome": "Back to Home",
     "trialEndedTitle": "Your free trial has ended",
