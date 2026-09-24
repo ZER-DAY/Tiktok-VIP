@@ -7,6 +7,16 @@ const intlMiddleware = createMiddleware(routing);
 
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
+  if (pathname === "/api" || pathname.startsWith("/api/")) {
+    if (process.env.BACKEND_RELAY_ENABLED !== "true") return NextResponse.next();
+    if (pathname === "/api/backend-relay") {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    const destination = new URL("/api/backend-relay", request.url);
+    const headers = new Headers(request.headers);
+    headers.set("x-backend-relay-path", pathname + search);
+    return NextResponse.rewrite(destination, { request: { headers } });
+  }
   const locale = getPathLocale(pathname) ?? "ar";
 
   // A session cookie existing here only means a session might exist; the
@@ -26,5 +36,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/(ar|en)/:path*"],
+  matcher: ["/", "/(ar|en)/:path*", "/api/:path*"],
 };

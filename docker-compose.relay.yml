@@ -1,0 +1,16 @@
+services:
+  http-relay:
+    image: tiktok-vip-worker:latest
+    command: ["./node_modules/.bin/tsx", "src/workers/http-relay.ts"]
+    env_file:
+      - .env.relay
+    volumes:
+      - ./src:/app/src:ro
+    # The managed connection uses the host's working outbound route.
+    # No inbound port is opened by this process.
+    network_mode: host
+    healthcheck:
+      disable: true
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 35s

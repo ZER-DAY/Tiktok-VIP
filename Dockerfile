@@ -8,6 +8,7 @@ ENV HUSKY=0
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod --ignore-scripts
+COPY prisma ./prisma
 RUN pnpm rebuild
 
 # ─── Build ─────────────────────────────────────────────────
@@ -15,9 +16,11 @@ FROM base AS builder
 ENV HUSKY=0
 ENV BETTER_AUTH_SECRET=build-placeholder
 ENV BETTER_AUTH_URL=http://localhost:3000
+ENV DISABLE_WORKERS=true
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --ignore-scripts
+COPY prisma ./prisma
 RUN pnpm rebuild
 COPY . .
 RUN pnpm exec prisma generate

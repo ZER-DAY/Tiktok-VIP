@@ -16,7 +16,7 @@ function requiredUrl(name: "DATABASE_URL" | "REDIS_URL", protocols: string[]): U
   const localHosts = new Set(["localhost", "127.0.0.1", "::1", "db", "redis"]);
   if (process.env.ALLOW_LOCAL_SERVICES !== "true" && localHosts.has(url.hostname)) {
     throw new Error(
-      `${name} points to ${url.hostname}; use the shared managed service, or set ALLOW_LOCAL_SERVICES=true only for local development`
+      `${name} points to ${url.hostname}; set ALLOW_LOCAL_SERVICES=true for self-hosted services or local development, or use the shared managed service`
     );
   }
 

@@ -3,7 +3,5 @@ node_modules
 .git
 backups
 *.log
-.env
-.env.local
-.env.development
-.env.production
+.env*
+.admin-credentials

@@ -7,6 +7,8 @@ services:
       - "3000:3000"
     env_file:
       - .env.production
+    environment:
+      DISABLE_WORKERS: "true"
     depends_on:
       db:
         condition: service_healthy
@@ -14,7 +16,8 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      test:
+        ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -26,6 +29,8 @@ services:
       dockerfile: Dockerfile.worker
     env_file:
       - .env.production
+    environment:
+      ALLOW_LOCAL_SERVICES: "true"
     depends_on:
       db:
         condition: service_healthy
@@ -60,13 +65,18 @@ services:
       - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
+    env_file:
+      - .env.production
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD-SHELL", "REDISCLI_AUTH=$$REDIS_PASSWORD redis-cli ping | grep -q PONG"]
       interval: 10s
       timeout: 5s
       retries: 5
-    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    command:
+      - sh
+      - -c
+      - 'exec redis-server --requirepass "$$REDIS_PASSWORD" --appendonly yes --maxmemory 256mb --maxmemory-policy noeviction'
 
 volumes:
   postgres_data:
