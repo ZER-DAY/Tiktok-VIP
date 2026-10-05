@@ -14,6 +14,7 @@ import {
   Users,
 } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import Image from "next/image";
 
 const menuItems = [
   { key: "overview", icon: Home, active: true },
@@ -33,46 +34,13 @@ const videos = [
 
 function CreatorAvatar() {
   return (
-    <svg
-      viewBox="0 0 72 72"
-      className="size-[66px] shrink-0 overflow-hidden rounded-full"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id="creator-avatar-bg" x1="0" y1="0" x2="1" y2="1">
-          <stop stopColor="#6546df" />
-          <stop offset="1" stopColor="#9c7af6" />
-        </linearGradient>
-        <linearGradient id="creator-shirt" x1="0" y1="0" x2="0" y2="1">
-          <stop stopColor="#f1b481" />
-          <stop offset="1" stopColor="#de8e5a" />
-        </linearGradient>
-      </defs>
-      <circle cx="36" cy="36" r="36" fill="url(#creator-avatar-bg)" />
-      <path d="M9 72c1-13 10-21 27-21s26 8 27 21H9Z" fill="url(#creator-shirt)" />
-      <path d="M30 47h12v12H30z" fill="#b96c43" />
-      <ellipse cx="36" cy="30" rx="16" ry="20" fill="#c98152" />
-      <ellipse cx="20" cy="32" rx="3" ry="5" fill="#c98152" />
-      <ellipse cx="52" cy="32" rx="3" ry="5" fill="#c98152" />
-      <path
-        d="M19 27c0-14 7-22 18-22 12 0 18 8 18 21-4-3-8-4-13-4-9 1-16-1-23-5v10Z"
-        fill="#28201b"
-      />
-      <path d="M23 35c2 9 6 14 13 14 8 0 12-5 14-14-4 4-8 6-14 6-5 0-9-2-13-6Z" fill="#3d2820" />
-      <path d="M27 32h5M40 32h5" stroke="#281c18" strokeWidth="1.8" strokeLinecap="round" />
-      <path
-        d="M33 38c2 1 4 1 6 0M31 43c3 2 7 2 10 0"
-        stroke="#f0ad82"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M23 23c2-7 7-11 14-11 8 0 13 4 16 11"
-        stroke="#28201b"
-        strokeWidth="5"
-        strokeLinecap="round"
-      />
-    </svg>
+    <Image
+      src="/images/arab-falcon-agency.jpeg"
+      alt="وكالة صقر العرب"
+      width={66}
+      height={66}
+      className="size-[66px] shrink-0 rounded-full object-cover"
+    />
   );
 }
 
@@ -154,8 +122,11 @@ export function DashboardPreview() {
               <CreatorAvatar />
               <div className="min-w-0" dir="ltr">
                 <div className="flex items-center gap-1.5">
-                  <strong className="truncate text-[15px] font-black tracking-[-0.03em] text-[#141927] sm:text-[17px]">
-                    @ahmed.creator
+                  <strong
+                    dir="rtl"
+                    className="truncate text-[15px] font-black tracking-[-0.03em] text-[#141927] sm:text-[17px]"
+                  >
+                    وكالة صقر العرب
                   </strong>
                   <span className="grid size-3.5 shrink-0 place-items-center rounded-full bg-[#7258e8] text-[8px] font-black text-white">
                     ✓
