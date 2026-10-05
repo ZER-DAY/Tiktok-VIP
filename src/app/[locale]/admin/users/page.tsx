@@ -22,7 +22,8 @@ interface AdminUser {
 
 function QuotaEditor({ user, onSaved }: { user: AdminUser; onSaved: () => Promise<void> }) {
   const t = useTranslations("admin.users");
-  const [bonus, setBonus] = useState(String(user.analysisBonus));
+  const [edit, setEdit] = useState<{ original: number; value: string } | null>(null);
+  const bonus = edit?.original === user.analysisBonus ? edit.value : String(user.analysisBonus);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   return (
@@ -61,7 +62,7 @@ function QuotaEditor({ user, onSaved }: { user: AdminUser; onSaved: () => Promis
           required
           value={bonus}
           onChange={(event) => {
-            setBonus(event.target.value);
+            setEdit({ original: user.analysisBonus, value: event.target.value });
             setMessage("");
           }}
           className="mt-1 w-full rounded-lg border border-border bg-background p-2"
