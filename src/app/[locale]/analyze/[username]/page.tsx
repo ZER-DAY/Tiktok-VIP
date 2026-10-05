@@ -37,6 +37,7 @@ export default function AnalyzePage({
   const [requestId] = useState(() => crypto.randomUUID());
   const [jobStatus, setJobStatus] = useState<JobStatus>("queued");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isGuestTrial, setIsGuestTrial] = useState(false);
   const [requiresSubscription, setRequiresSubscription] = useState(false);
   const [elapsed, setElapsed] = useState(0);
 
@@ -67,6 +68,7 @@ export default function AnalyzePage({
         if (!data.success) {
           setJobStatus("failed");
           setRequiresSubscription(data.error?.code === "SUBSCRIPTION_REQUIRED");
+          setIsGuestTrial(data.error?.details?.isTrial === true);
           setErrorMessage(
             data.error?.code === "SERVICE_UNAVAILABLE" || response.status === 503
               ? t("errorUnavailable")
@@ -137,9 +139,11 @@ export default function AnalyzePage({
             <div className="mx-auto mb-5 grid size-16 place-items-center rounded-2xl bg-brand/10">
               <CreditCard className="size-8 text-brand-ink" />
             </div>
-            <h1 className="mb-2 text-2xl font-black text-foreground">{t("trialEndedTitle")}</h1>
+            <h1 className="mb-2 text-2xl font-black text-foreground">
+              {t(isGuestTrial ? "trialEndedTitle" : "quotaEndedTitle")}
+            </h1>
             <p className="mx-auto mb-6 max-w-sm text-sm leading-7 text-muted-foreground">
-              {t("trialEndedDescription")}
+              {t(isGuestTrial ? "trialEndedDescription" : "quotaEndedDescription")}
             </p>
             <div className="mb-6 grid gap-3 text-start sm:grid-cols-3">
               {(["individual", "saver", "agency"] as const).map((plan) => (
@@ -162,10 +166,10 @@ export default function AnalyzePage({
             </div>
             <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <Link
-                href="/#pricing"
+                href={isGuestTrial ? "/register" : "/dashboard/billing"}
                 className="rounded-xl bg-brand px-6 py-3 font-bold text-brand-foreground transition hover:bg-brand/90"
               >
-                {t("chooseSubscription")}
+                {t(isGuestTrial ? "registerFree" : "chooseSubscription")}
               </Link>
               <Link
                 href="/login"

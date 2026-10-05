@@ -16,6 +16,69 @@ interface AdminUser {
   plan: { name: string } | null;
   roles: Array<{ role: { name: string } }>;
   _count: { ownedAccounts: number };
+  analysisBonus: number;
+  quota: { used: number; limit: number | null; remaining: number | null };
+}
+
+function QuotaEditor({ user, onSaved }: { user: AdminUser; onSaved: () => Promise<void> }) {
+  const t = useTranslations("admin.users");
+  const [bonus, setBonus] = useState(String(user.analysisBonus));
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
+  return (
+    <form
+      className="min-w-48 space-y-2 text-start"
+      onSubmit={async (event) => {
+        event.preventDefault();
+        setSaving(true);
+        setMessage("");
+        try {
+          const response = await fetch("/api/admin/users", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId: user.id, analysisBonus: Number(bonus) }),
+          });
+          if (!response.ok) throw new Error("SAVE_FAILED");
+          await onSaved();
+          setMessage(t("quotaSaved"));
+        } catch {
+          setMessage(t("quotaError"));
+        } finally {
+          setSaving(false);
+        }
+      }}
+    >
+      <p className="text-xs text-muted-foreground">
+        {t("quotaUsage", { used: user.quota.used, limit: user.quota.limit ?? "∞" })}
+      </p>
+      <label className="block text-xs">
+        {t("analysisBonus")}
+        <input
+          type="number"
+          min={0}
+          max={100000}
+          step={1}
+          required
+          value={bonus}
+          onChange={(event) => {
+            setBonus(event.target.value);
+            setMessage("");
+          }}
+          className="mt-1 w-full rounded-lg border border-border bg-background p-2"
+        />
+      </label>
+      <button
+        type="submit"
+        disabled={saving || bonus === "" || Number(bonus) === user.analysisBonus}
+        className="rounded-lg bg-brand px-3 py-2 text-sm font-bold text-brand-foreground disabled:opacity-50"
+      >
+        {t(saving ? "quotaSaving" : "quotaSave")}
+      </button>
+      <p role="status" className="text-xs">
+        {message}
+      </p>
+    </form>
+  );
 }
 
 export default function AdminUsersPage() {
@@ -76,6 +139,7 @@ export default function AdminUsersPage() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
         <p className="text-muted-foreground">{t("subtitle")}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{t("quotaHint")}</p>
       </motion.div>
 
       <motion.div
@@ -136,10 +200,7 @@ export default function AdminUsersPage() {
                     <span className="text-muted-foreground">—</span>
                   ) : (
                     user.roles.map((ur, i) => (
-                      <span
-                        key={i}
-                        className="rounded bg-brand-pink/20 px-2 py-0.5 text-brand-ink"
-                      >
+                      <span key={i} className="rounded bg-brand-pink/20 px-2 py-0.5 text-brand-ink">
                         {ur.role.name}
                       </span>
                     ))
@@ -152,6 +213,7 @@ export default function AdminUsersPage() {
                 <dt className="text-muted-foreground">{t("joined")}</dt>
                 <dd className="text-muted-foreground">{formatDate(user.createdAt, locale)}</dd>
               </dl>
+              <QuotaEditor user={user} onSaved={fetchUsers} />
             </li>
           ))}
         </ul>
@@ -177,6 +239,9 @@ export default function AdminUsersPage() {
                 </th>
                 <th className="text-center py-4 px-6 text-muted-foreground font-medium">
                   {t("joined")}
+                </th>
+                <th className="px-6 py-4 text-start font-medium text-muted-foreground">
+                  {t("quotaTitle")}
                 </th>
               </tr>
             </thead>
@@ -217,6 +282,9 @@ export default function AdminUsersPage() {
                   </td>
                   <td className="py-4 px-6 text-center text-muted-foreground text-sm">
                     {formatDate(user.createdAt, locale)}
+                  </td>
+                  <td className="px-6 py-4">
+                    <QuotaEditor user={user} onSaved={fetchUsers} />
                   </td>
                 </tr>
               ))}

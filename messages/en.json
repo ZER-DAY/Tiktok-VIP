@@ -138,11 +138,11 @@
   "pricing": {
     "kicker": "Simple plans, no surprises",
     "title": "Choose the right plan for you",
-    "subtitle": "Try one account analysis, then choose your monthly subscription",
+    "subtitle": "Try one account without signing up, then get 5 free analyses after registration",
     "free": "Free",
     "freePrice": "$0",
-    "freePeriod": "trial",
-    "freeFeature1": "One account analysis only",
+    "freePeriod": "after registration",
+    "freeFeature1": "5 account analyses after registration",
     "freeFeature2": "Basic account info",
     "freeFeature3": "Simple report",
     "pro": "Individuals",
@@ -165,13 +165,13 @@
     "mostPopular": "Most popular",
     "annualSaving": "Best start for individuals",
     "trial": {
-      "name": "Free Trial",
+      "name": "Free Plan",
       "price": "$0",
       "period": "Free",
-      "description": "Experience the platform before subscribing",
-      "feature1": "One account analysis only",
-      "feature2": "Full trial report",
-      "feature3": "The trial does not renew"
+      "description": "One trial analysis before registration",
+      "feature1": "5 account analyses after registration",
+      "feature2": "Dashboard and account reports",
+      "feature3": "One-time allowance, not renewed monthly"
     },
     "individual": {
       "name": "Individuals",
@@ -321,7 +321,7 @@
     "reportsUsed": "reports used",
     "unlimited": "Unlimited",
     "planNames": {
-      "free": "Free Trial",
+      "free": "Free Plan",
       "individual": "Individuals",
       "pro": "Individuals",
       "saver": "Saver",
@@ -453,7 +453,7 @@
     "noPayments": "No payments yet",
     "plans": {
       "free": {
-        "name": "Free Trial"
+        "name": "Free Plan"
       },
       "pro": {
         "name": "Individuals"
@@ -517,7 +517,7 @@
     "retry": "Try Again",
     "backToHome": "Back to Home",
     "trialEndedTitle": "Your free trial has ended",
-    "trialEndedDescription": "The free trial includes one account analysis only. Choose a plan to continue analyzing accounts.",
+    "trialEndedDescription": "You used your trial analysis. Register to get 5 additional free analyses.",
     "chooseSubscription": "Choose a subscription",
     "signIn": "Sign in",
     "paywallPlans": {
@@ -536,7 +536,10 @@
         "price": "$50 / month",
         "limit": "Unlimited accounts"
       }
-    }
+    },
+    "quotaEndedTitle": "Analysis allowance used",
+    "quotaEndedDescription": "You have used your available analyses. Upgrade your plan or contact an administrator to increase your allowance.",
+    "registerFree": "Register for 5 free analyses"
   },
   "report": {
     "reportLabel": "Account analysis / final report",
@@ -779,7 +782,15 @@
       "plan": "Plan",
       "roles": "Roles",
       "accounts": "Accounts",
-      "joined": "Joined"
+      "joined": "Joined",
+      "quotaTitle": "Analysis allowance",
+      "analysisBonus": "Extra allowance above plan limit",
+      "quotaUsage": "Used: {used} / {limit}",
+      "quotaSave": "Save allowance",
+      "quotaSaving": "Saving…",
+      "quotaSaved": "Analysis allowance updated",
+      "quotaError": "Could not save. Try again.",
+      "quotaHint": "The bonus increases each user’s plan limit. Free plans: one-time allowance; paid plans: monthly bonus. Set 0 to restore the plan limit."
     },
     "plans": {
       "title": "Plans",
@@ -833,7 +844,7 @@
       "rateLimitSettings": "Rate Limit Settings",
       "freePlanReportsPerDay": "Free Plan Reports / Day",
       "guestReportsPerDay": "Guest Reports / Day",
-      "quotaManagedInPlans": "Free-trial and monthly account limits are managed from Plans. The trial allows one analysis only, while Agents is unlimited.",
+      "quotaManagedInPlans": "Guests get one trial analysis. Registered users get 5 one-time free analyses. Increase an individual user’s allowance from Users.",
       "save": "Save Settings",
       "saving": "Saving...",
       "saveSuccess": "Settings saved successfully"

@@ -8,9 +8,10 @@ export const GUEST_ANALYSIS_COOKIE = "ti_guest_analysis";
 
 const FREE_PLAN_NAME = "free";
 const FREE_TRIAL_LIMIT = 1;
+const FREE_PLAN_LIMIT = 5;
 
 const DEFAULT_MONTHLY_LIMITS: Record<string, number | null> = {
-  free: FREE_TRIAL_LIMIT,
+  free: FREE_PLAN_LIMIT,
   individual: 100,
   pro: 100,
   saver: 200,
@@ -20,6 +21,7 @@ const DEFAULT_MONTHLY_LIMITS: Record<string, number | null> = {
 type PlanEntitlement = {
   name: string;
   reportsPerMonth: number | null;
+  isGuest?: boolean;
 };
 
 export type AnalysisQuotaSummary = {
@@ -65,6 +67,7 @@ async function getUserPlan(userId: string): Promise<PlanEntitlement> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
+      analysisBonus: true,
       plan: {
         select: { name: true, reportsPerMonth: true, isActive: true },
       },
@@ -88,12 +91,13 @@ async function getUserPlan(userId: string): Promise<PlanEntitlement> {
   const selectedPlan = subscribedPlan?.isActive ? subscribedPlan : user?.plan;
 
   if (!selectedPlan?.isActive) {
-    return { name: FREE_PLAN_NAME, reportsPerMonth: FREE_TRIAL_LIMIT };
+    return { name: FREE_PLAN_NAME, reportsPerMonth: FREE_PLAN_LIMIT + (user?.analysisBonus ?? 0) };
   }
 
+  const baseLimit = resolvePlanLimit(selectedPlan.name, selectedPlan.reportsPerMonth);
   return {
     name: selectedPlan.name,
-    reportsPerMonth: resolvePlanLimit(selectedPlan.name, selectedPlan.reportsPerMonth),
+    reportsPerMonth: baseLimit === null ? null : baseLimit + (user?.analysisBonus ?? 0),
   };
 }
 
@@ -113,7 +117,7 @@ function toSummary(plan: PlanEntitlement, periodKey: string, used: number): Anal
     limit,
     remaining: limit === null ? null : Math.max(limit - used, 0),
     periodKey,
-    isTrial: plan.name === FREE_PLAN_NAME,
+    isTrial: plan.isGuest === true,
     isUnlimited: limit === null,
   };
 }
@@ -257,27 +261,9 @@ export async function reserveAnalysisQuota(args: {
   const userId = sessionUser?.id ?? null;
   const plan = userId
     ? await getUserPlan(userId)
-    : { name: FREE_PLAN_NAME, reportsPerMonth: FREE_TRIAL_LIMIT };
+    : { name: FREE_PLAN_NAME, reportsPerMonth: FREE_TRIAL_LIMIT, isGuest: true };
   const subjectKey = userId ? `user:${userId}` : `guest:${guestTokenHash}`;
   const periodKey = getPeriodKey(plan.name);
-
-  // A guest trial already used in this browser remains consumed after sign-up.
-  if (userId && plan.name === FREE_PLAN_NAME && cookieToken) {
-    const guestUsed = await readCounter(`guest:${guestTokenHash}`, "lifetime");
-    if (guestUsed >= FREE_TRIAL_LIMIT) {
-      return {
-        ...toSummary(plan, periodKey, FREE_TRIAL_LIMIT),
-        allowed: false,
-        isNewReservation: false,
-        requestId: args.requestId,
-        userId,
-        guestToken,
-        guestTokenHash,
-        subjectKey,
-        reason: "LIMIT_REACHED",
-      };
-    }
-  }
 
   let result: Awaited<ReturnType<typeof reserveInTransaction>> | undefined;
   for (let attempt = 0; attempt < 3; attempt += 1) {

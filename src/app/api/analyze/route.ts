@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
                 ? "This analysis request is no longer valid. Please try again."
                 : "Your analysis allowance has been used. Choose a subscription to continue.",
             details: {
+              isTrial: reservation.isTrial,
               planName: reservation.planName,
               used: reservation.used,
               limit: reservation.limit,

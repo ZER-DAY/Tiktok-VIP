@@ -63,6 +63,7 @@ model User {
   emailVerified   Boolean   @default(false)
   emailVerifiedAt DateTime?
   preferredLocale String    @default("ar")
+  analysisBonus   Int       @default(0)
   planId          String    @db.Uuid
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
