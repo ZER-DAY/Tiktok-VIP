@@ -632,9 +632,9 @@
       "competitors": "Competitor Analysis"
     },
     "agency": {
-      "eligible": "Your account is eligible to join the agency!",
-      "scoreDescription": "Your account strength is {score}/100 — higher than many similar accounts. Join the TikTok LIVE agency network for dedicated support and additional earning opportunities.",
-      "joinCTA": "Join the Agency"
+      "eligible": "Apply to the agency",
+      "scoreDescription": "Your account strength is {score}/100. This is a performance score, not confirmation that TikTok allows an invitation. Applications require agency review and an eligibility check in LIVE Backstage.",
+      "joinCTA": "Request an agency review"
     },
     "application": {
       "formTitle": "Application Form",
