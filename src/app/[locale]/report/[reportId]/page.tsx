@@ -2,6 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 import Image from "next/image";
+import { ReportQuotaNotice } from "@/components/billing/quota-notice";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -299,6 +300,7 @@ export default function ReportPage({
       <Navbar />
       <main className="min-h-screen bg-background px-4 pb-16 pt-28 sm:px-8">
         <div className="mx-auto max-w-7xl">
+          <ReportQuotaNotice key={report.reportId} />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

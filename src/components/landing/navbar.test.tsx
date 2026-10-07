@@ -69,6 +69,19 @@ describe("Navbar", () => {
   const openAccountMenu = () =>
     fireEvent.click(screen.getByRole("button", { name: "accountMenu" }));
 
+  it("links mobile prices directly to subscription checkout", () => {
+    mockUseSession.mockReturnValue(sessionLike(null));
+    render(<Navbar />);
+    fireEvent.click(screen.getByRole("button", { name: "openMenu" }));
+    for (const link of screen.getAllByRole("link", { name: "pricing" })) {
+      expect(link.getAttribute("href")).toBe("/dashboard/billing");
+    }
+    fireEvent.click(screen.getAllByRole("link", { name: "pricing" }).at(-1)!);
+    expect(screen.getByRole("button", { name: "openMenu" }).getAttribute("aria-expanded")).toBe(
+      "false"
+    );
+  });
+
   it("shows separate login and create-account buttons for guests", () => {
     mockUseSession.mockReturnValue(sessionLike(null));
     render(<Navbar />);

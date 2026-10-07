@@ -4,6 +4,7 @@ import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { QuotaExhaustedDialog } from "@/components/billing/quota-notice";
 import { motion } from "framer-motion";
 import {
   AlertCircle,
@@ -136,6 +137,7 @@ export default function AnalyzePage({
       >
         {jobStatus === "failed" && requiresSubscription ? (
           <>
+            <QuotaExhaustedDialog isTrial={isGuestTrial} />
             <div className="mx-auto mb-5 grid size-16 place-items-center rounded-2xl bg-brand/10">
               <CreditCard className="size-8 text-brand-ink" />
             </div>

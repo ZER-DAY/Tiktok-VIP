@@ -997,5 +997,15 @@
     "title": "Something went wrong",
     "description": "We couldn't load this page. Please try again.",
     "retry": "Try again"
+  },
+  "quotaNotice": {
+    "title": "Your analysis allowance is used up",
+    "description": "You have used all available analyses. Choose a plan or renew your subscription to continue. You can dismiss this message and keep reading your report.",
+    "renew": "Choose a plan or renew",
+    "later": "Not now",
+    "trialTitle": "Your free trial is complete",
+    "trialDescription": "You used your trial analysis. Register to get 5 additional free analyses.",
+    "register": "Register for 5 free analyses",
+    "login": "Already have an account? Sign in"
   }
 }

@@ -49,12 +49,12 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#pricing"
+                <Link
+                  href="/dashboard/billing"
                   className="inline-block py-1.5 text-sm text-muted-foreground transition-colors hover:text-brand-ink"
                 >
                   {t("pricing")}
-                </a>
+                </Link>
               </li>
               <li>
                 <Link

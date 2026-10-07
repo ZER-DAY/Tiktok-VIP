@@ -129,6 +129,18 @@ export async function getUserAnalysisQuota(userId: string): Promise<AnalysisQuot
   return toSummary(plan, periodKey, used);
 }
 
+export async function getRequestAnalysisQuota(request: NextRequest): Promise<AnalysisQuotaSummary> {
+  const user = await getSessionUser(request);
+  if (user) return getUserAnalysisQuota(user.id);
+  const token = request.cookies.get(GUEST_ANALYSIS_COOKIE)?.value;
+  const used = token ? await readCounter(`guest:${hashGuestToken(token)}`, "lifetime") : 0;
+  return toSummary(
+    { name: FREE_PLAN_NAME, reportsPerMonth: FREE_TRIAL_LIMIT, isGuest: true },
+    "lifetime",
+    used
+  );
+}
+
 async function reserveInTransaction(args: {
   requestId: string;
   userId: string | null;

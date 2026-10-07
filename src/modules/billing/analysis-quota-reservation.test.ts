@@ -2,7 +2,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { NextRequest } from "next/server";
 import { getSessionUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { getUserAnalysisQuota, reserveAnalysisQuota } from "./analysis-quota";
+import {
+  getRequestAnalysisQuota,
+  getUserAnalysisQuota,
+  reserveAnalysisQuota,
+} from "./analysis-quota";
 
 vi.mock("@/lib/auth", () => ({ getSessionUser: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({
@@ -99,5 +103,29 @@ describe("separate guest and registered allowances", () => {
       analysisBonus: 7,
     } as never);
     expect(await getUserAnalysisQuota("user-1")).toMatchObject({ limit: null, isUnlimited: true });
+  });
+});
+
+describe("read-only quota for completed reports", () => {
+  it("does not consume a guest analysis when reading the allowance", async () => {
+    vi.mocked(getSessionUser).mockResolvedValue(null);
+    expect(
+      await getRequestAnalysisQuota(new NextRequest("https://example.com/api/analysis-quota"))
+    ).toMatchObject({ remaining: 1, isTrial: true });
+    expect(prisma.$transaction).not.toHaveBeenCalled();
+  });
+  it("recognizes an exhausted guest cookie", async () => {
+    vi.mocked(getSessionUser).mockResolvedValue(null);
+    vi.mocked(prisma.analysisUsageCounter.findUnique).mockResolvedValue({ used: 1 } as never);
+    expect(await getRequestAnalysisQuota(request)).toMatchObject({ remaining: 0, isTrial: true });
+  });
+  it("uses the registered allowance even with a spent guest cookie", async () => {
+    vi.mocked(prisma.analysisUsageCounter.findUnique).mockResolvedValue({ used: 4 } as never);
+    expect(await getRequestAnalysisQuota(request)).toMatchObject({ remaining: 1, isTrial: false });
+    expect(prisma.analysisUsageCounter.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { subjectKey_periodKey: { subjectKey: "user:user-1", periodKey: "lifetime" } },
+      })
+    );
   });
 });

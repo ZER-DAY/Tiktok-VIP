@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, BarChart3, Plus } from "lucide-react";
 import { redirectToLogin } from "@/lib/auth-client";
+import { QuotaExhaustedDialog } from "@/components/billing/quota-notice";
 import { formatDate } from "@/lib/format";
 
 interface DashboardData {
@@ -75,6 +76,7 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
+      {data?.subscription.remaining === 0 && <QuotaExhaustedDialog isTrial={false} />}
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}

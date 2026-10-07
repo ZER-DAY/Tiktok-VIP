@@ -13,7 +13,7 @@ const navigationItems = [
   { key: "home", href: "#home" },
   { key: "features", href: "#features" },
   { key: "howItWorks", href: "#how-it-works" },
-  { key: "pricing", href: "#pricing" },
+  { key: "pricing", href: "/dashboard/billing" },
 ] as const;
 
 export function Navbar() {
@@ -119,9 +119,9 @@ export function Navbar() {
             dir={isRtl ? "rtl" : "ltr"}
           >
             {navigationItems.map((item) => (
-              <a
+              <Link
                 key={item.key}
-                href={item.href}
+                href={item.href.startsWith("#") ? `/${item.href}` : item.href}
                 className={`relative flex items-center whitespace-nowrap text-[14px] font-medium transition-all duration-300 ease-out ${
                   condensed ? "h-[52px]" : "h-[62px]"
                 } ${
@@ -131,7 +131,7 @@ export function Navbar() {
                 }`}
               >
                 {t(item.key)}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -238,9 +238,9 @@ export function Navbar() {
             >
               <div className="grid gap-1 py-3">
                 {navigationItems.map((item) => (
-                  <a
+                  <Link
                     key={item.key}
-                    href={item.href}
+                    href={item.href.startsWith("#") ? `/${item.href}` : item.href}
                     onClick={() => setMobileOpen(false)}
                     className={`rounded-xl px-4 py-3 text-sm font-semibold ${
                       item.key === "home"
@@ -249,7 +249,7 @@ export function Navbar() {
                     }`}
                   >
                     {t(item.key)}
-                  </a>
+                  </Link>
                 ))}
 
                 <div className="mt-1 grid gap-2">
