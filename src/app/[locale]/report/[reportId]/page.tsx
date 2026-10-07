@@ -2,6 +2,7 @@
 
 import { use, useEffect, useState } from "react";
 import Image from "next/image";
+import { BackstageEligibility } from "@/components/report/backstage-eligibility";
 import { ReportQuotaNotice } from "@/components/billing/quota-notice";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
@@ -693,6 +694,7 @@ export default function ReportPage({
             </div>
           </motion.div>
 
+          <BackstageEligibility key={reportId} reportId={reportId} />
           {isAgencyEligible && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}

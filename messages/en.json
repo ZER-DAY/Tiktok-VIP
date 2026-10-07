@@ -648,6 +648,30 @@
       "success": "Your application has been submitted!",
       "successMessage": "We will contact you soon",
       "error": "An error occurred while submitting the application"
+    },
+    "backstage": {
+      "title": "Check agency invitation eligibility",
+      "description": "Check this account with our agency in TikTok LIVE Backstage. This check does not send an invitation. Results may be cached for 5 minutes.",
+      "check": "Check eligibility",
+      "checking": "Checking…",
+      "checkedAt": "Last checked: {time}",
+      "notInvitation": "The account is potentially eligible; sending an invitation still requires agency review and available quota.",
+      "login": "Sign in to check eligibility.",
+      "signIn": "Sign in",
+      "busy": "Too many checks. Please try later.",
+      "unavailable": "Unable to check right now. Eligibility has not been determined.",
+      "reasons": {
+        "available": "Available for invitation",
+        "not_found": "Account not found in Backstage",
+        "unsupported_region": "Account region is not supported by the agency",
+        "ineligible": "Account is currently ineligible for invitation",
+        "no_live_access": "Account lacks the required LIVE access",
+        "agency_restricted": "Agency invitations are currently restricted; account eligibility is undetermined",
+        "unknown": "Eligibility could not be confirmed",
+        "verification_required": "Checks are paused while the agency completes verification",
+        "login_required": "The agency session needs renewal. Please try later",
+        "unavailable": "Unable to check right now. Please try later"
+      }
     }
   },
   "common": {
